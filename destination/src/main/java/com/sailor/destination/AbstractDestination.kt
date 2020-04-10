@@ -1,0 +1,7 @@
+package com.sailor.destination
+
+interface AbstractDestination
+
+interface FragmentDestination: AbstractDestination
+
+interface ActivityDestination: AbstractDestination
