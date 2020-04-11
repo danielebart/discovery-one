@@ -2,4 +2,4 @@ package com.sailor.destination
 
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.CLASS)
-annotation class Destination(val name: String)
+annotation class FragmentNavigationDestination(val name: String, val containerId: Int)

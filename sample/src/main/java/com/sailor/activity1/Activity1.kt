@@ -1,12 +1,10 @@
 package com.sailor.activity1
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import com.sailor.R
-import com.sailor.destination.Destination
 
-@Destination("DESTINATION_1")
 class Activity1 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

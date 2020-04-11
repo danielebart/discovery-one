@@ -9,6 +9,6 @@ class AnnotationProcessor : BasicAnnotationProcessor() {
 
     override fun initSteps(): Iterable<ProcessingStep> {
         val env = processingEnv
-        return listOf(DestinationGenerationProcessingStep(env))
+        return listOf(FragmentDestinationGenerationProcessingStep(env))
     }
 }

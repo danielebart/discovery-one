@@ -1,7 +1,15 @@
 package com.sailor.destination
 
-interface AbstractDestination
+import kotlin.reflect.KClass
 
-interface FragmentDestination: AbstractDestination
+interface AbstractDestination {
+    val name: String
+    val clazz: KClass<*>
+}
 
-interface ActivityDestination: AbstractDestination
+interface FragmentDestination : AbstractDestination {
+
+    val containerId: Int
+}
+
+interface ActivityDestination : AbstractDestination
