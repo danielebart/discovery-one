@@ -5,7 +5,7 @@ plugins {
 }
 
 apply {
-    from("src/main/kotlin/com/sailor/buildsrc/extract-build-deps.gradle.kts")
+    from("src/main/kotlin/com/discoveryone/buildsrc/extract-build-deps.gradle.kts")
 }
 
 val agp: String by project.extra

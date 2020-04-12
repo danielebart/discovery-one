@@ -1,5 +1,5 @@
-import com.sailor.buildsrc.AndroidConfig
-import com.sailor.buildsrc.Dependencies
+import com.discoveryone.buildsrc.AndroidConfig
+import com.discoveryone.buildsrc.Dependencies
 import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":sailor"))
+    implementation(project(":discoveryone"))
 
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.appCompat)

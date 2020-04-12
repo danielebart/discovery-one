@@ -1,4 +1,4 @@
-import com.sailor.buildsrc.Dependencies
+import com.discoveryone.buildsrc.Dependencies
 
 plugins {
     id("kotlin")
