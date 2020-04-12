@@ -6,7 +6,7 @@ import java.util.Stack
 
 object Navigator {
 
-    val stack = Stack<AppCompatActivity>()
+    internal val stack = Stack<AppCompatActivity>()
 
     private val navigationHandler: NavigationHandler = AndroidNavigationHandler
 
