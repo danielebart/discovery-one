@@ -6,6 +6,6 @@ import com.sailor.activity2.DESTINATION_2
 object Presenter1 {
 
     fun onButton1Click() {
-        Navigator.navigate(DESTINATION_2)
+        Navigator.navigate(DESTINATION_2("pippo"))
     }
 }

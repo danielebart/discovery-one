@@ -10,5 +10,6 @@ dependencies {
 
     implementation(Dependencies.kotlinPoet)
     implementation(Dependencies.kotlinStdLib)
+    implementation(Dependencies.kotlinReflect)
     implementation(Dependencies.autocommon)
 }
