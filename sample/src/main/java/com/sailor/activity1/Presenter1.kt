@@ -1,11 +1,11 @@
 package com.sailor.activity1
 
-import com.sailor.activity2.Activity2
 import com.sailor.Navigator
+import com.sailor.activity2.DESTINATION_2
 
 object Presenter1 {
 
     fun onButton1Click() {
-        Navigator.navigateToActivity<Activity2>()
+        Navigator.navigate(DESTINATION_2)
     }
 }
