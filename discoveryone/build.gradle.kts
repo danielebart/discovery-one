@@ -23,5 +23,6 @@ dependencies {
 
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.kotlinReflect)
+    implementation(Dependencies.coreKtx)
     implementation(Dependencies.appCompat)
 }

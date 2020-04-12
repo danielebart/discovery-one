@@ -3,6 +3,7 @@ package com.discoveryone.processor
 import com.discoveryone.destination.ActivityDestination
 import com.discoveryone.destination.ActivityNavigationDestination
 import com.discoveryone.destination.DestinationArgument
+import com.discoveryone.destination.InternalDestinationArgumentMarker
 import com.google.auto.common.BasicAnnotationProcessor
 import com.google.common.collect.SetMultimap
 import com.squareup.kotlinpoet.FileSpec
@@ -78,11 +79,14 @@ internal class ActivityDestinationGenerationProcessingStep(
                 .build()
         } else {
             val constructor = FunSpec.constructorBuilder().run {
-                arguments.forEach { arg -> addParameter(arg.name, arg.getArgumentTypeName()) }
+                arguments.forEach { arg ->
+                    addParameter(arg.name, arg.getArgumentTypeName())
+                }
                 build()
             }
             val properties = arguments.map { arg ->
                 PropertySpec.builder(arg.name, arg.getArgumentTypeName()).initializer(arg.name)
+                    .addAnnotation(InternalDestinationArgumentMarker::class)
                     .build()
             }
             TypeSpec.classBuilder(destinationName)

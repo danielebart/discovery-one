@@ -10,4 +10,5 @@ object Dependencies {
     const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
     const val kotlinPoet = "com.squareup:kotlinpoet:${Versions.kotlinPoet}"
     const val autocommon = "com.google.auto:auto-common:${Versions.autocommon}"
+    const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
 }

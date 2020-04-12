@@ -11,4 +11,5 @@ object Versions {
     const val agp = "3.6.1"
     const val kotlinPoet = "1.3.0"
     const val autocommon = "0.10"
+    const val coreKtx = "1.2.0"
 }
