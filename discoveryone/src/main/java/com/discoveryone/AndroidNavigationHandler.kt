@@ -8,7 +8,7 @@ import com.discoveryone.destination.ActivityDestination
 import com.discoveryone.destination.FragmentDestination
 import kotlin.reflect.KClass
 
-object AndroidNavigationHandler : NavigationHandler {
+internal object AndroidNavigationHandler : NavigationHandler {
 
     override fun navigate(destination: AbstractDestination) {
         when (destination) {
