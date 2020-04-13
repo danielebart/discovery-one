@@ -1,16 +1,20 @@
 package com.discoveryone
 
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.discoveryone.destination.AbstractDestination
 import com.discoveryone.destination.ActivityDestination
 import com.discoveryone.destination.FragmentDestination
 import com.discoveryone.destination.InternalDestinationArgumentMarker
+import java.util.Stack
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
-internal object AndroidNavigationHandler : NavigationHandler {
+internal class AndroidNavigationHandler(
+    private val activityStack: Stack<AppCompatActivity>
+) : NavigationHandler {
 
     override fun navigate(destination: AbstractDestination) {
         when (destination) {
@@ -20,7 +24,7 @@ internal object AndroidNavigationHandler : NavigationHandler {
     }
 
     private fun ActivityDestination.navigateToActivity() {
-        val currentActivity = Navigator.stack.peek()
+        val currentActivity = activityStack.peek()
         val arguments = extractArgumentsFromDestination().toTypedArray()
         val intent = Intent(currentActivity, clazz.java).putExtras(bundleOf(*arguments))
 
@@ -29,7 +33,7 @@ internal object AndroidNavigationHandler : NavigationHandler {
 
     private fun FragmentDestination.navigateToFragment() {
         val fragmentClass = clazz as KClass<Fragment>
-        val currentActivity = Navigator.stack.peek()
+        val currentActivity = activityStack.peek()
         val arguments = extractArgumentsFromDestination().toTypedArray()
         val fragmentInstance = fragmentClass.java
             .newInstance()

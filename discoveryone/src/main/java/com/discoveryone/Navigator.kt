@@ -8,7 +8,7 @@ object Navigator {
 
     internal val stack = Stack<AppCompatActivity>()
 
-    private val navigationHandler: NavigationHandler = AndroidNavigationHandler
+    private val navigationHandler: NavigationHandler = AndroidNavigationHandler(stack)
 
     fun navigate(destination: AbstractDestination) {
         navigationHandler.navigate(destination)

@@ -25,4 +25,13 @@ dependencies {
     implementation(Dependencies.kotlinReflect)
     implementation(Dependencies.coreKtx)
     implementation(Dependencies.appCompat)
+
+    testImplementation(Dependencies.robolectric)
+    testImplementation(Dependencies.testCore)
+    testImplementation(Dependencies.junit)
+    testImplementation(Dependencies.espressoCore)
+    testImplementation(Dependencies.espressoIntents)
+    testImplementation(Dependencies.fragmentTesting)
+
+    testImplementation(project(":testutils"))
 }
