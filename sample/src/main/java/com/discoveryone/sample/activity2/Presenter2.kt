@@ -6,6 +6,6 @@ import com.discoveryone.sample.fragment1.DESTINATION_1
 object Presenter2 {
 
     fun onNavigateToFragment1Click() {
-        Navigator.navigate(DESTINATION_1)
+        Navigator.navigate(DESTINATION_1(foo1 = 30, foo2 = 500.0))
     }
 }
