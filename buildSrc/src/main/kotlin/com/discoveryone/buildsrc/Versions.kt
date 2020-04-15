@@ -20,4 +20,5 @@ object Versions {
     const val junit = "4.13"
     const val espresso = "3.2.0"
     const val fragmentTesting = "1.2.4"
+    const val kotlinCompileTesting = "1.2.7"
 }

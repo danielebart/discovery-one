@@ -19,4 +19,6 @@ object Dependencies {
     const val fragmentTesting = "androidx.fragment:fragment-testing:${Versions.fragmentTesting}"
     const val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espresso}"
     const val espressoIntents = "androidx.test.espresso:espresso-intents:${Versions.espresso}"
+    const val kotlinCompileTesting =
+        "com.github.tschuchortdev:kotlin-compile-testing:${Versions.kotlinCompileTesting}"
 }

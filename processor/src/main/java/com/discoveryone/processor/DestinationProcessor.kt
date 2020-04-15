@@ -3,7 +3,7 @@ package com.discoveryone.processor
 import com.google.auto.common.BasicAnnotationProcessor
 import javax.lang.model.SourceVersion
 
-class AnnotationProcessor : BasicAnnotationProcessor() {
+class DestinationProcessor : BasicAnnotationProcessor() {
 
     override fun getSupportedSourceVersion(): SourceVersion = SourceVersion.latest()
 

@@ -38,7 +38,7 @@ object DestinationClassGenerator {
             .commonClassTypeBuilder(annotation.name, arguments, ActivityDestination::class)
             .build()
 
-        FileSpec.builder(packageName, "$destinationClassName.kt")
+        FileSpec.builder(packageName, destinationClassName)
             .addType(classTypeSpec)
             .build()
             .writeTo(env.filer)
@@ -74,9 +74,6 @@ object DestinationClassGenerator {
         arguments: List<DestinationArgument>,
         destinationSupertype: KClass<out AbstractDestination>
     ): TypeSpec.Builder {
-        val nameProperty = PropertySpec.builder("name", String::class, KModifier.OVERRIDE)
-            .initializer("\"${destinationName}\"")
-            .build()
         val classProperty = PropertySpec.builder(
             "clazz",
             KClass::class.asClassName().parameterizedBy(STAR),
@@ -88,7 +85,7 @@ object DestinationClassGenerator {
         return if (arguments.isEmpty()) {
             TypeSpec.objectBuilder(destinationName)
                 .addSuperinterface(destinationSupertype)
-                .addProperties(listOf(nameProperty, classProperty))
+                .addProperty(classProperty)
         } else {
             val constructor = FunSpec.constructorBuilder().run {
                 arguments.forEach { arg ->
@@ -105,7 +102,7 @@ object DestinationClassGenerator {
                 .addModifiers(KModifier.DATA)
                 .addProperties(properties)
                 .addSuperinterface(destinationSupertype)
-                .addProperties(listOf(nameProperty, classProperty))
+                .addProperty(classProperty)
                 .primaryConstructor(constructor)
         }
     }

@@ -3,7 +3,6 @@ package com.discoveryone.destination
 import kotlin.reflect.KClass
 
 interface AbstractDestination {
-    val name: String
     val clazz: KClass<*>
 }
 

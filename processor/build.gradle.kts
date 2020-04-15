@@ -12,4 +12,7 @@ dependencies {
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.kotlinReflect)
     implementation(Dependencies.autocommon)
+
+    testImplementation(Dependencies.junit)
+    testImplementation(Dependencies.kotlinCompileTesting)
 }
