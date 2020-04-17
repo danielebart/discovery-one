@@ -35,12 +35,9 @@ internal class AndroidNavigationHandler(
         val fragmentClass = clazz as KClass<Fragment>
         val currentActivity = activityStack.peek()
         val arguments = extractArgumentsFromDestination().toTypedArray()
-        val fragmentInstance = fragmentClass.java
-            .newInstance()
-            .apply { setArguments(bundleOf(*arguments)) }
 
         currentActivity.supportFragmentManager.beginTransaction()
-            .replace(containerId, fragmentInstance)
+            .replace(containerId, fragmentClass.java, bundleOf(*arguments), null)
             .commit()
     }
 
