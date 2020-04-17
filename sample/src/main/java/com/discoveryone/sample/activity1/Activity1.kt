@@ -3,7 +3,7 @@ package com.discoveryone.sample.activity1
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.discoveryone.R
+import com.discoveryone.sample.R
 
 class Activity1 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

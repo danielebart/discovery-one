@@ -3,9 +3,9 @@ package com.discoveryone.sample.activity2
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.discoveryone.R
 import com.discoveryone.destination.ActivityNavigationDestination
 import com.discoveryone.destination.DestinationArgument
+import com.discoveryone.sample.R
 
 @ActivityNavigationDestination(
     name = "DESTINATION_2",
