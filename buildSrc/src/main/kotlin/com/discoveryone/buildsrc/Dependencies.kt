@@ -9,6 +9,8 @@ object Dependencies {
     const val kotlinPoet = "com.squareup:kotlinpoet:${Versions.kotlinPoet}"
     const val autocommon = "com.google.auto:auto-common:${Versions.autocommon}"
     const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
+    const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
+    const val activity = "androidx.activity:activity-ktx:${Versions.activity}"
 
     // testing
     const val robolectric = "org.robolectric:robolectric:${Versions.robolectric}"

@@ -3,9 +3,9 @@ package com.discoveryone.sample.fragment1
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.discoveryone.R
 import com.discoveryone.destination.DestinationArgument
 import com.discoveryone.destination.FragmentNavigationDestination
+import com.discoveryone.sample.R
 
 @FragmentNavigationDestination(
     name = "DESTINATION_1",

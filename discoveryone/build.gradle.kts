@@ -26,6 +26,8 @@ dependencies {
     implementation(Dependencies.coreKtx)
     implementation(Dependencies.appCompat)
     implementation(Dependencies.lifecycleExtensions)
+    implementation(Dependencies.fragment)
+    implementation(Dependencies.activity)
 
     testImplementation(Dependencies.robolectric)
     testImplementation(Dependencies.testCore)
