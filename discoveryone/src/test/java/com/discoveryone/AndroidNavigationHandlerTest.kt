@@ -118,13 +118,11 @@ class AndroidNavigationHandlerTest {
     }
 
     data class FakeFragmentDestinationWithoutArgs(
-        override val name: String = "fragment",
         override val clazz: KClass<*> = TestFragment::class,
         override val containerId: Int = com.discoveryone.testutils.R.id.container
     ) : FragmentDestination
 
     data class FakeFragmentDestinationWithArgs(
-        override val name: String = "fragment",
         override val clazz: KClass<*> = TestFragment::class,
         override val containerId: Int = com.discoveryone.testutils.R.id.container,
         @InternalDestinationArgumentMarker val arg1: String,
@@ -132,12 +130,10 @@ class AndroidNavigationHandlerTest {
     ) : FragmentDestination
 
     data class FakeActivityDestinationWithoutArgs(
-        override val name: String = "activity",
         override val clazz: KClass<*> = TestActivity2::class
     ) : ActivityDestination
 
     data class FakeActivityDestinationWithArgs(
-        override val name: String = "activity",
         override val clazz: KClass<*> = TestActivity2::class,
         @InternalDestinationArgumentMarker val arg1: String,
         @InternalDestinationArgumentMarker val arg2: Double
