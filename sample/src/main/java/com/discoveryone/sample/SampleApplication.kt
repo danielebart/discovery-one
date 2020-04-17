@@ -8,6 +8,6 @@ class SampleApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        registerActivityLifecycleCallbacks(NavigatorActivityLifecycleCallback())
+        registerActivityLifecycleCallbacks(NavigatorActivityLifecycleCallback)
     }
 }
