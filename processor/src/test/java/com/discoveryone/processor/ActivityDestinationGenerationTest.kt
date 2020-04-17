@@ -68,6 +68,31 @@ class ActivityDestinationGenerationTest {
         )
     }
 
+    @Test
+    fun `GIVEN a class annotated with @ActivityNavigationDestination without name WHEN compiling using DestinationProcessor THEN an ActivityDestination is generated`() {
+        val kotlinSource = SourceFile.kotlin(
+            "fakeClass.kt", """
+        package fakepackage
+        
+        import com.discoveryone.destination.ActivityNavigationDestination
+        
+        @ActivityNavigationDestination
+        class FakeActivity
+    """
+        )
+
+        val result = KotlinCompilation().apply {
+            sources = listOf(kotlinSource)
+            annotationProcessors = listOf(DestinationProcessor())
+            inheritClassPath = true
+        }.compile()
+
+        result.assertGeneratedAnActivityDestination(
+            "fakepackage.FakeActivityDestination",
+            "fakepackage.FakeActivity"
+        )
+    }
+
     private fun KotlinCompilation.Result.assertGeneratedAnActivityDestination(
         destinationName: String,
         originalActivityName: String

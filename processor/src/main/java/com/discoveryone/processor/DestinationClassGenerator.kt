@@ -30,12 +30,16 @@ object DestinationClassGenerator {
     ) {
         val annotation =
             typeElement.getAnnotation(ActivityNavigationDestination::class.java)
-        val destinationClassName = annotation.name
+        val destinationClassName = if (annotation.name.isNotBlank()) {
+            annotation.name
+        } else {
+            "${typeElement.simpleName}Destination"
+        }
         val packageName = typeElement.asClassName().packageName
         val arguments = annotation.arguments.toList()
 
         val classTypeSpec = typeElement
-            .commonClassTypeBuilder(annotation.name, arguments, ActivityDestination::class)
+            .commonClassTypeBuilder(destinationClassName, arguments, ActivityDestination::class)
             .build()
 
         FileSpec.builder(packageName, destinationClassName)
@@ -51,7 +55,11 @@ object DestinationClassGenerator {
         val annotation =
             typeElement.getAnnotation(FragmentNavigationDestination::class.java)
         val arguments = annotation.arguments.toList()
-        val destinationClassName = annotation.name
+        val destinationClassName = if (annotation.name.isNotBlank()) {
+            annotation.name
+        } else {
+            "${typeElement.simpleName}Destination"
+        }
         val packageName = typeElement.asClassName().packageName
         val containerIdProperty =
             PropertySpec.builder("containerId", Int::class, KModifier.OVERRIDE)
@@ -59,7 +67,7 @@ object DestinationClassGenerator {
                 .build()
 
         val classTypeSpec = typeElement
-            .commonClassTypeBuilder(annotation.name, arguments, FragmentDestination::class)
+            .commonClassTypeBuilder(destinationClassName, arguments, FragmentDestination::class)
             .addProperty(containerIdProperty)
             .build()
 
