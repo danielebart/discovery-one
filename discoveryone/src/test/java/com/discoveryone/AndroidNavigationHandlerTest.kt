@@ -2,6 +2,7 @@ package com.discoveryone
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
@@ -112,7 +113,7 @@ class AndroidNavigationHandlerTest {
     }
 
     private fun createAndroidNavigationHandler(withActivity: AppCompatActivity): AndroidNavigationHandler {
-        val stack = Stack<AppCompatActivity>()
+        val stack = Stack<FragmentActivity>()
         stack.push(withActivity)
         return AndroidNavigationHandler(stack)
     }
