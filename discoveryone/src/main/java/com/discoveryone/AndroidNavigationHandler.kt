@@ -25,6 +25,10 @@ internal class AndroidNavigationHandler(
         }
     }
 
+    override fun navigateBack() {
+        activityStack.peek().onBackPressed()
+    }
+
     private fun ActivityDestination.navigateToActivity(currentActivity: Activity) {
         val arguments = extractArgumentsFromDestination().toTypedArray()
         val intent = Intent(currentActivity, clazz.java).putExtras(bundleOf(*arguments))

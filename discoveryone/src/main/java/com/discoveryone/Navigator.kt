@@ -13,4 +13,8 @@ object Navigator {
     fun navigate(destination: AbstractDestination) {
         navigationHandler.navigate(destination)
     }
+
+    fun navigateBack() {
+        navigationHandler.navigateBack()
+    }
 }

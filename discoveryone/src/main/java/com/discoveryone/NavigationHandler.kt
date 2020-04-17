@@ -5,4 +5,6 @@ import com.discoveryone.destination.AbstractDestination
 internal interface NavigationHandler {
 
     fun navigate(destination: AbstractDestination)
+
+    fun navigateBack()
 }
