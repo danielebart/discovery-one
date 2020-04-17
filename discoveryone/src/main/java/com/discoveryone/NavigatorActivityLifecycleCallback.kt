@@ -3,12 +3,12 @@ package com.discoveryone
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 
 object NavigatorActivityLifecycleCallback : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        Navigator.stack.push(activity as AppCompatActivity)
+        Navigator.stack.push(activity as FragmentActivity)
     }
 
     override fun onActivityDestroyed(activity: Activity) {
