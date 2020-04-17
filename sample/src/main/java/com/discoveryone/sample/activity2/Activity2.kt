@@ -1,6 +1,7 @@
 package com.discoveryone.sample.activity2
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.discoveryone.destination.ActivityNavigationDestination
@@ -18,6 +19,9 @@ class Activity2 : AppCompatActivity() {
 
         findViewById<Button>(R.id.navigateToFragment1Button).setOnClickListener {
             Presenter2.onNavigateToFragment1Click()
+        }
+        findViewById<View>(R.id.backButton).setOnClickListener {
+            Presenter2.onNavigateBack()
         }
     }
 }
