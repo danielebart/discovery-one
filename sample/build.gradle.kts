@@ -1,6 +1,5 @@
 import com.discoveryone.buildsrc.AndroidConfig
 import com.discoveryone.buildsrc.Dependencies
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
     id("com.android.application")
@@ -33,7 +32,6 @@ dependencies {
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.appCompat)
     implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta4")
-    implementation("androidx.appcompat:appcompat:1.1.0")
 
     kapt(project(":processor"))
 }

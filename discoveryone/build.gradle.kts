@@ -25,6 +25,7 @@ dependencies {
     implementation(Dependencies.kotlinReflect)
     implementation(Dependencies.coreKtx)
     implementation(Dependencies.appCompat)
+    implementation(Dependencies.lifecycleExtensions)
 
     testImplementation(Dependencies.robolectric)
     testImplementation(Dependencies.testCore)
