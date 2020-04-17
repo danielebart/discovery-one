@@ -1,9 +1,10 @@
 package com.discoveryone
 
+import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.discoveryone.destination.AbstractDestination
 import com.discoveryone.destination.ActivityDestination
 import com.discoveryone.destination.FragmentDestination
@@ -13,27 +14,26 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
 internal class AndroidNavigationHandler(
-    private val activityStack: Stack<AppCompatActivity>
+    private val activityStack: Stack<FragmentActivity>
 ) : NavigationHandler {
 
     override fun navigate(destination: AbstractDestination) {
+        val currentActivity = activityStack.peek()
         when (destination) {
-            is FragmentDestination -> destination.navigateToFragment()
-            is ActivityDestination -> destination.navigateToActivity()
+            is FragmentDestination -> destination.navigateToFragment(currentActivity)
+            is ActivityDestination -> destination.navigateToActivity(currentActivity)
         }
     }
 
-    private fun ActivityDestination.navigateToActivity() {
-        val currentActivity = activityStack.peek()
+    private fun ActivityDestination.navigateToActivity(currentActivity: Activity) {
         val arguments = extractArgumentsFromDestination().toTypedArray()
         val intent = Intent(currentActivity, clazz.java).putExtras(bundleOf(*arguments))
 
         currentActivity.startActivity(intent)
     }
 
-    private fun FragmentDestination.navigateToFragment() {
+    private fun FragmentDestination.navigateToFragment(currentActivity: FragmentActivity) {
         val fragmentClass = clazz as KClass<Fragment>
-        val currentActivity = activityStack.peek()
         val arguments = extractArgumentsFromDestination().toTypedArray()
 
         currentActivity.supportFragmentManager.beginTransaction()
