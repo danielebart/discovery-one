@@ -27,15 +27,14 @@ fun BaseExtension.fixRobolectricCoverage() {
 }
 
 fun Project.registerCoverageTask(buildType: String? = null) {
-    val unitTestTask = if (buildType != null) {
-        "test${buildType.capitalize()}UnitTest"
+    val (unitTestTask, jacocoReportTaskName, classpath) = if (buildType != null) {
+        Triple(
+            "test${buildType.capitalize()}UnitTest",
+            "${buildType}JacocoReport",
+            "${project.buildDir}/tmp/kotlin-classes/$buildType"
+        )
     } else {
-        "test"
-    }
-    val jacocoReportTaskName = if (buildType != null) {
-        "${buildType}JacocoReport"
-    } else {
-        "jacocoReport"
+        Triple("test", "jacocoReport", "${project.buildDir}/classes/kotlin")
     }
 
     tasks.register(jacocoReportTaskName, JacocoReport::class) {
@@ -48,11 +47,6 @@ fun Project.registerCoverageTask(buildType: String? = null) {
             xml.destination = File("${project.buildDir}/jacoco/coverage.xml")
         }
 
-        val classpath = if (buildType != null) {
-            "${project.buildDir}/tmp/kotlin-classes/$buildType"
-        } else {
-            "${project.buildDir}/classes/kotlin"
-        }
         val classes = fileTree(
             mapOf(
                 "dir" to classpath,
