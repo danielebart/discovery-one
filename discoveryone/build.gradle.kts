@@ -35,6 +35,10 @@ android {
     tasks.withType(Test::class.java)
         .mapNotNull { it.extensions.findByType(JacocoTaskExtension::class.java) }
         .forEach { it.isIncludeNoLocationClasses = true }
+
+    lintOptions {
+        isWarningsAsErrors = true
+    }
 }
 
 dependencies {
