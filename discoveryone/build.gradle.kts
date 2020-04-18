@@ -1,5 +1,7 @@
 import com.discoveryone.buildsrc.AndroidConfig
 import com.discoveryone.buildsrc.Dependencies
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("com.android.library")
@@ -15,7 +17,28 @@ android {
         testInstrumentationRunner = AndroidConfig.testInstrumentationRunner
     }
 
-    testOptions.unitTests.isIncludeAndroidResources = true
+    testOptions.unitTests.apply {
+        isIncludeAndroidResources = true
+        all(KotlinClosure1<Test, Test>({
+            apply {
+                testLogging.exceptionFormat = TestExceptionFormat.FULL
+                testLogging.events = setOf(
+                    TestLogEvent.SKIPPED,
+                    TestLogEvent.PASSED,
+                    TestLogEvent.FAILED
+                )
+            }
+        }, this))
+    }
+
+    // fixes robolectric coverage calculation
+    tasks.withType(Test::class.java)
+        .mapNotNull { it.extensions.findByType(JacocoTaskExtension::class.java) }
+        .forEach { it.isIncludeNoLocationClasses = true }
+
+    lintOptions {
+        isWarningsAsErrors = true
+    }
 }
 
 dependencies {

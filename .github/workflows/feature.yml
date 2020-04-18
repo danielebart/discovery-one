@@ -1,0 +1,38 @@
+name: Feature branch
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  assemble:
+    name: Assemble artifacts
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - run: sh ./gradlew assemble
+  test:
+    name: Run tests
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - run: sh ./gradlew test
+  lint:
+    name: Perform static code cheks
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - run: sh ./gradlew lint
