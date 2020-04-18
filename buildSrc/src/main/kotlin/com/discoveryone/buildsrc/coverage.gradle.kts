@@ -45,7 +45,8 @@ fun Project.registerCoverageTask(buildType: String? = null) {
         setDependsOn(listOf(unitTestTask))
         reports {
             xml.isEnabled = true
-//            xml.destination = File("${project.buildDir}/jacoco/coverage.xml")
+            xml.destination =
+                File("${project.buildDir}/jacoco/coverage.xml") // helps GH action to auto discovery the coverage file
         }
 
         val classpath = if (buildType == null) {

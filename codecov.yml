@@ -6,6 +6,3 @@ coverage:
   if_no_uploads: error
   if_not_found: error
   if_ci_failed: error
-ignore:
-  - "*.kt"       # ignore coverage kt script
-  - "*.kts"     # ignore coverage kts script
