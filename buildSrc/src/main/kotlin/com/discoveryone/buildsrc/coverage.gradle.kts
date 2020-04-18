@@ -45,7 +45,7 @@ fun Project.registerCoverageTask(buildType: String? = null) {
         setDependsOn(listOf(unitTestTask))
         reports {
             xml.isEnabled = true
-            xml.destination = File("${project.buildDir}/jacoco/coverage.xml")
+//            xml.destination = File("${project.buildDir}/jacoco/coverage.xml")
         }
 
         val classpath = if (buildType == null) {
