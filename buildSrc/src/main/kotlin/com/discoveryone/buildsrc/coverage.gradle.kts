@@ -15,7 +15,6 @@ if (extensions.findByType(BaseExtension::class.java) != null) {
     project.registerCoverageTask()
 }
 
-
 fun BaseExtension.fixRobolectricCoverage() {
     testOptions.unitTests.all(
         KotlinClosure1<Test, Test>({
@@ -45,14 +44,14 @@ fun Project.registerCoverageTask(buildType: String? = null) {
         setDependsOn(listOf(unitTestTask))
         reports {
             xml.isEnabled = true
-            xml.destination =
-                File("${project.buildDir}/jacoco/coverage.xml") // helps GH action to auto discovery the coverage file
+            // helps CI to auto discovery the coverage report
+            xml.destination = File("${project.buildDir}/jacoco/coverage.xml")
         }
 
-        val classpath = if (buildType == null) {
-            "${project.buildDir}/classes/kotlin"
-        } else {
+        val classpath = if (buildType != null) {
             "${project.buildDir}/tmp/kotlin-classes/$buildType"
+        } else {
+            "${project.buildDir}/classes/kotlin"
         }
         val classes = fileTree(
             mapOf(
