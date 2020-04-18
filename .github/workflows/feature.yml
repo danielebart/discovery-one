@@ -27,6 +27,7 @@ jobs:
         with:
           java-version: 1.8
       - run: sh ./gradlew test
+      - uses: codecov/codecov-action@v1
   lint:
     name: Perform static code cheks
     runs-on: ubuntu-18.04

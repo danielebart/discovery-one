@@ -10,6 +10,7 @@ apply {
 
 val agp: String by project.extra
 val kotlin: String by project.extra
+val jacoco: String by project.extra
 
 kotlinDslPluginOptions {
     experimentalWarning.set(false)
@@ -23,4 +24,5 @@ repositories {
 dependencies {
     implementation("com.android.tools.build:gradle:$agp")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin")
+    implementation("org.jacoco:org.jacoco.core:$jacoco")
 }

@@ -13,6 +13,7 @@ object Versions {
     const val kotlinPoet = "1.3.0"
     const val autocommon = "0.10"
     const val coreKtx = "1.2.0"
+    const val jacoco = "0.8.5"
 
     // testing
     const val robolectric = "4.3.1"
