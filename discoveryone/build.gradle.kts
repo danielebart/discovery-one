@@ -6,6 +6,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("com.discoveryone.buildsrc.coverage")
 }
 
 android {
@@ -30,11 +31,6 @@ android {
             }
         }, this))
     }
-
-    // fixes robolectric coverage calculation
-    tasks.withType(Test::class.java)
-        .mapNotNull { it.extensions.findByType(JacocoTaskExtension::class.java) }
-        .forEach { it.isIncludeNoLocationClasses = true }
 
     lintOptions {
         isWarningsAsErrors = true
