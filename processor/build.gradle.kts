@@ -3,6 +3,7 @@ import com.discoveryone.buildsrc.Dependencies
 plugins {
     id("kotlin")
     id("kotlin-kapt")
+    id("com.discoveryone.buildsrc.coverage")
 }
 
 dependencies {
