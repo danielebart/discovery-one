@@ -43,6 +43,10 @@ fun Project.registerCoverageTask(buildType: String? = null) {
         description = "Generates a jacoco report task for the project"
         group = "verification"
         setDependsOn(listOf(unitTestTask))
+        reports {
+            xml.isEnabled = true
+            xml.destination = File("${project.buildDir}/jacoco/coverage.xml")
+        }
 
         val classpath = if (buildType == null) {
             "${project.buildDir}/classes/kotlin"
