@@ -14,6 +14,8 @@ dependencies {
 
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.appCompat)
+    implementation(Dependencies.activity)
+    implementation(Dependencies.fragment)
     implementation(Dependencies.testCore)
     implementation(Dependencies.espressoCore)
 }
