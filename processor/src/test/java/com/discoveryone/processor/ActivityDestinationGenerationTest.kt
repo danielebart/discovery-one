@@ -1,6 +1,6 @@
 package com.discoveryone.processor
 
-import com.discoveryone.destination.ActivityDestination
+import com.discoveryone.destinations.ActivityDestination
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import org.junit.Assert.assertEquals
@@ -18,7 +18,7 @@ class ActivityDestinationGenerationTest {
             "fakeClass.kt", """
         package fakepackage
         
-        import com.discoveryone.destination.ActivityNavigationDestination
+        import com.discoveryone.annotations.ActivityNavigationDestination
         
         @ActivityNavigationDestination("FAKE_DESTINATION")
         class FakeActivity
@@ -43,10 +43,17 @@ class ActivityDestinationGenerationTest {
             "fakeClass.kt", """
         package fakepackage
         
-        import com.discoveryone.destination.ActivityNavigationDestination
-        import com.discoveryone.destination.DestinationArgument
+        import com.discoveryone.annotations.ActivityNavigationDestination
+        import com.discoveryone.annotations.DestinationArgument
         
-        @ActivityNavigationDestination("FAKE_DESTINATION", arguments = [DestinationArgument("arg1", String::class), DestinationArgument("arg2", Int::class), DestinationArgument("arg3", Double::class)])
+        @ActivityNavigationDestination(
+            "FAKE_DESTINATION", 
+            arguments = [
+                DestinationArgument("arg1", String::class), 
+                DestinationArgument("arg2", Int::class), 
+                DestinationArgument("arg3", Double::class)
+                ]
+        )
         class FakeActivity
     """
         )
@@ -74,7 +81,7 @@ class ActivityDestinationGenerationTest {
             "fakeClass.kt", """
         package fakepackage
         
-        import com.discoveryone.destination.ActivityNavigationDestination
+        import com.discoveryone.annotations.ActivityNavigationDestination
         
         @ActivityNavigationDestination
         class FakeActivity

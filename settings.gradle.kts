@@ -2,8 +2,8 @@ rootProject.name = "discoveryone"
 
 include(
     ":sample",
-    ":discoveryone",
+    ":discoveryone-android",
     ":processor",
-    ":destination",
+    ":discoveryone-core",
     ":testutils"
 )

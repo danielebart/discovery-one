@@ -1,6 +1,6 @@
 package com.discoveryone.processor
 
-import com.discoveryone.destination.FragmentNavigationDestination
+import com.discoveryone.annotations.FragmentNavigationDestination
 import com.google.auto.common.BasicAnnotationProcessor
 import com.google.common.collect.SetMultimap
 import javax.annotation.processing.ProcessingEnvironment

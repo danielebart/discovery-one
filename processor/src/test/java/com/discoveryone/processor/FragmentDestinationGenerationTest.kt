@@ -1,6 +1,6 @@
 package com.discoveryone.processor
 
-import com.discoveryone.destination.FragmentDestination
+import com.discoveryone.destinations.FragmentDestination
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import org.junit.Assert.assertEquals
@@ -18,7 +18,7 @@ class FragmentDestinationGenerationTest {
             "fakeClass.kt", """
         package fakepackage
         
-        import com.discoveryone.destination.FragmentNavigationDestination
+        import com.discoveryone.annotations.FragmentNavigationDestination
         
         @FragmentNavigationDestination(name = "FAKE_DESTINATION", containerId = 439)
         class FakeFragment
@@ -44,8 +44,8 @@ class FragmentDestinationGenerationTest {
             "fakeClass.kt", """
         package fakepackage
 
-        import com.discoveryone.destination.FragmentNavigationDestination
-        import com.discoveryone.destination.DestinationArgument
+        import com.discoveryone.annotations.FragmentNavigationDestination
+        import com.discoveryone.annotations.DestinationArgument
 
         @FragmentNavigationDestination(
             "FAKE_DESTINATION", 
@@ -84,7 +84,7 @@ class FragmentDestinationGenerationTest {
             "fakeClass.kt", """
         package fakepackage
 
-        import com.discoveryone.destination.FragmentNavigationDestination
+        import com.discoveryone.annotations.FragmentNavigationDestination
 
         @FragmentNavigationDestination(containerId = 789)
         class FakeFragment

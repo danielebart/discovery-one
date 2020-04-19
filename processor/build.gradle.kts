@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":destination"))
+    implementation(project(":discoveryone-core"))
 
     implementation(Dependencies.kotlinPoet)
     implementation(Dependencies.kotlinStdLib)

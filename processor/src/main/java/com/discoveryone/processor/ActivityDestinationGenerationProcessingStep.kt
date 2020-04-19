@@ -1,6 +1,6 @@
 package com.discoveryone.processor
 
-import com.discoveryone.destination.ActivityNavigationDestination
+import com.discoveryone.annotations.ActivityNavigationDestination
 import com.google.auto.common.BasicAnnotationProcessor
 import com.google.common.collect.SetMultimap
 import javax.annotation.processing.ProcessingEnvironment

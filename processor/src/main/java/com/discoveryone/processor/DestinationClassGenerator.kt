@@ -1,12 +1,12 @@
 package com.discoveryone.processor
 
-import com.discoveryone.destination.AbstractDestination
-import com.discoveryone.destination.ActivityDestination
-import com.discoveryone.destination.ActivityNavigationDestination
-import com.discoveryone.destination.DestinationArgument
-import com.discoveryone.destination.FragmentDestination
-import com.discoveryone.destination.FragmentNavigationDestination
-import com.discoveryone.destination.InternalDestinationArgumentMarker
+import com.discoveryone.annotations.ActivityNavigationDestination
+import com.discoveryone.annotations.DestinationArgument
+import com.discoveryone.annotations.FragmentNavigationDestination
+import com.discoveryone.annotations.InternalDestinationArgumentMarker
+import com.discoveryone.destinations.AbstractDestination
+import com.discoveryone.destinations.ActivityDestination
+import com.discoveryone.destinations.FragmentDestination
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
