@@ -10,7 +10,7 @@ class Activity1 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_1)
 
-        findViewById<Button>(R.id.navigateToActivity2Button).setOnClickListener {
+        findViewById<Button>(R.id.navigateToActivity4Button).setOnClickListener {
             Presenter1.onButton1Click()
         }
     }

@@ -4,9 +4,9 @@ package com.discoveryone.buildsrc
 
 object Versions {
 
-    const val activity = "1.1.0"
+    const val activity = "1.2.0-alpha03"
     const val appCompat = "1.1.0"
-    const val fragment = "1.2.4"
+    const val fragment = "1.3.0-alpha03"
     const val lifecycle = "2.2.0"
     const val kotlin = "1.3.72"
     const val agp = "3.6.1"

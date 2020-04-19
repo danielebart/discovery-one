@@ -1,16 +1,32 @@
 package com.discoveryone
 
 import com.discoveryone.destinations.AbstractDestination
+import com.discoveryone.stubs.StubNavigationHandler
+import kotlin.reflect.KClass
 
-object Navigator {
+object Navigator : NavigationHandler {
 
-    private var navigationHandler: NavigationHandler = SimpleStackNavigationHandler()
+    private var navigationHandler: NavigationHandler =
+        StubNavigationHandler()
 
-    fun setNavigationHandler(navigationHandler: NavigationHandler) {
-        Navigator.navigationHandler = navigationHandler
+    fun initialize(navigationHandler: NavigationHandler) {
+        this.navigationHandler = navigationHandler
     }
 
-    fun navigate(destination: AbstractDestination) {
+    override fun navigate(destination: AbstractDestination) {
         navigationHandler.navigate(destination)
     }
+
+    override fun <T> navigateForResult(
+        destination: AbstractDestination,
+        token: ResultToken
+    ) {
+        navigationHandler.navigateForResult<T>(destination, token)
+    }
+
+    override fun <T : Any> registerResult(
+        resultClass: KClass<T>,
+        action: (T) -> Unit
+    ): ResultToken =
+        navigationHandler.registerResult(resultClass, action)
 }

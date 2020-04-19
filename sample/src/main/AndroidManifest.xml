@@ -12,17 +12,25 @@
         android:theme="@style/Theme.App">
         <activity
             android:name=".activity2.Activity2"
-            android:theme="@style/Theme.App.NoActionBar" />
-        <activity
-            android:name=".activity1.Activity1"
-            android:label="@string/app_name"
             android:theme="@style/Theme.App.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activity3.Activity3"
+            android:theme="@style/Theme.App.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity4.Activity4"
+            android:theme="@style/Theme.App.NoActionBar" />
+        <activity
+            android:name=".activity1.Activity1"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.App.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,36 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.discoveryone">
+
+    <application>
+        <activity
+            android:name=".testutils.TestContainerActivity"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".testutils.TestActivity2"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".testutils.TestActivityWithResultRegisterBeforeOnCreated"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".testutils.TestActivityWithResultRegisterAfterOnCreated"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".testutils.TestReturningValueActivity"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".testutils.TestReturningDifferentValueTypeActivity"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".testutils.TestActivityWithWrongResultType"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".testutils.TestReturningValueSequence1Activity"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".testutils.TestReturningValueSequence2Activity"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".testutils.TestReturningValueSequence3Activity"
+            android:theme="@style/Theme.AppCompat" />
+    </application>
+</manifest>

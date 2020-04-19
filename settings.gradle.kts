@@ -4,6 +4,5 @@ include(
     ":sample",
     ":discoveryone-android",
     ":discoveryone-processor",
-    ":discoveryone-core",
-    ":testutils"
+    ":discoveryone-core"
 )
