@@ -38,7 +38,7 @@ class ActivityDestinationGenerationTest {
     }
 
     @Test
-    fun `GIVEN a class annotated with @ActivityNavigationDestination with args WHEN compiling using DestinationProcessor THEN an ActivityDestination is generated`() {
+    fun `GIVEN a class annotated with @ActivityNavigationDestination with args WHEN compiling using DestinationProcessor THEN an ActivityDestination is generated with args`() {
         val kotlinSource = SourceFile.kotlin(
             "fakeClass.kt", """
         package fakepackage
@@ -69,7 +69,7 @@ class ActivityDestinationGenerationTest {
     }
 
     @Test
-    fun `GIVEN a class annotated with @ActivityNavigationDestination without name WHEN compiling using DestinationProcessor THEN an ActivityDestination is generated`() {
+    fun `GIVEN a class annotated with @ActivityNavigationDestination without name WHEN compiling using DestinationProcessor THEN an ActivityDestination is generated with name containing original class name`() {
         val kotlinSource = SourceFile.kotlin(
             "fakeClass.kt", """
         package fakepackage
