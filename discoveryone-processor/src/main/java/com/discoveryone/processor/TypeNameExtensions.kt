@@ -11,7 +11,8 @@ import kotlin.reflect.jvm.internal.impl.name.FqName
 fun TypeName.javaToKotlinType(): TypeName {
     return when (this) {
         is ParameterizedTypeName -> {
-            (rawType.javaToKotlinType() as ClassName).parameterizedBy(*(typeArguments.map { it.javaToKotlinType() }.toTypedArray()))
+            (rawType.javaToKotlinType() as ClassName).parameterizedBy(*(typeArguments.map { it.javaToKotlinType() }
+                .toTypedArray()))
         }
         is WildcardTypeName -> {
             outTypes[0].javaToKotlinType()

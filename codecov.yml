@@ -6,8 +6,4 @@ coverage:
   round: down
   precision: 2
   status:
-    patch:
-      default:
-        if_no_uploads: error
-        if_not_found: error
-        if_ci_failed: error
+    patch: off
