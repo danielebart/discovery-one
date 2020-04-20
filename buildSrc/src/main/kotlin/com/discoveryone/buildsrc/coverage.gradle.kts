@@ -43,7 +43,7 @@ fun Project.registerCoverageTask(buildType: String? = null) {
         setDependsOn(listOf(unitTestTask))
         reports {
             xml.isEnabled = true
-            // helps CI to auto discovery the coverage report
+            // helps CI to auto-discover the coverage report
             xml.destination = File("${project.buildDir}/jacoco/coverage.xml")
         }
 
