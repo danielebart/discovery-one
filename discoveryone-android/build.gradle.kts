@@ -7,6 +7,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("com.discoveryone.buildsrc.coverage")
+    id("kotlin-kapt")
 }
 
 android {
@@ -48,12 +49,12 @@ dependencies {
     implementation(Dependencies.fragment)
     implementation(Dependencies.activity)
 
-    testImplementation(Dependencies.robolectric)
-    testImplementation(Dependencies.testCore)
-    testImplementation(Dependencies.junit)
-    testImplementation(Dependencies.espressoCore)
-    testImplementation(Dependencies.espressoIntents)
-    testImplementation(Dependencies.fragmentTesting)
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.2")
 
-    testImplementation(project(":testutils"))
+    androidTestImplementation(Dependencies.testCore)
+    androidTestImplementation(Dependencies.espressoCore)
+    androidTestImplementation(Dependencies.espressoIntents)
+    androidTestImplementation(Dependencies.fragmentTesting)
+
+    kaptAndroidTest(project(":discoveryone-processor"))
 }

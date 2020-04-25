@@ -4,16 +4,21 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
+import com.discoveryone.result.AndroidResultRegistry
+import com.discoveryone.result.ResultActionCallbackRegistry
 
-object NavigatorActivityLifecycleCallback : Application.ActivityLifecycleCallbacks {
+internal object NavigatorActivityLifecycleCallback : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        Navigator.setNavigationHandler(AndroidNavigationHandler)
-        AndroidNavigationHandler.activityStack.push(activity as FragmentActivity)
+        (activity as? FragmentActivity)?.let {
+            ActivityStackContainer.push(activity)
+            ResultActionCallbackRegistry.executePendingCallbacks(activity)
+        }
     }
 
     override fun onActivityDestroyed(activity: Activity) {
-        AndroidNavigationHandler.activityStack.remove(activity)
+        ActivityStackContainer.remove(activity)
+        AndroidResultRegistry.unregisterAllActionsForActivity(activity)
     }
 
     override fun onActivityResumed(activity: Activity) = Unit

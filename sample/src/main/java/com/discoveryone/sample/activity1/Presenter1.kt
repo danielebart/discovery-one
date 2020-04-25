@@ -6,6 +6,6 @@ import com.discoveryone.sample.activity2.DESTINATION_2
 object Presenter1 {
 
     fun onButton1Click() {
-        Navigator.navigate(DESTINATION_2("pippo"))
+        Navigator.navigate(DESTINATION_2("foo"))
     }
 }

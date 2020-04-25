@@ -1,11 +1,13 @@
 package com.discoveryone.sample.activity2
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.discoveryone.annotations.ActivityNavigationDestination
 import com.discoveryone.annotations.DestinationArgument
 import com.discoveryone.sample.R
+import com.discoveryone.sample.activity3.Activity3
 
 @ActivityNavigationDestination(
     name = "DESTINATION_2",
@@ -20,7 +22,7 @@ class Activity2 : AppCompatActivity() {
         setContentView(R.layout.activity_2)
 
         findViewById<Button>(R.id.navigateToFragment1Button).setOnClickListener {
-            Presenter2.onNavigateToFragment1Click()
+            startActivity(Intent(this, Activity3::class.java))
         }
     }
 }

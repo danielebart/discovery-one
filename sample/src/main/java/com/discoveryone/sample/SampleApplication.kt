@@ -1,13 +1,14 @@
 package com.discoveryone.sample
 
 import android.app.Application
-import com.discoveryone.NavigatorActivityLifecycleCallback
+import com.discoveryone.AndroidNavigator
+import com.discoveryone.Navigator
 
-class SampleApplication: Application() {
+class SampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
-        registerActivityLifecycleCallbacks(NavigatorActivityLifecycleCallback)
+        Navigator.initialize(AndroidNavigator(this))
     }
 }
