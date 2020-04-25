@@ -14,13 +14,12 @@ import com.discoveryone.destinations.FragmentDestination
 import com.discoveryone.result.ActivityResultLauncherFactory
 import com.discoveryone.testutils.EmptyBundleMatcher
 import com.discoveryone.testutils.TestActivity2
-import com.discoveryone.testutils.TestActivityWithResultRegisterBeforeOnCreated
 import com.discoveryone.testutils.TestActivityWithResultRegisterAfterOnCreated
+import com.discoveryone.testutils.TestActivityWithResultRegisterBeforeOnCreated
 import com.discoveryone.testutils.TestActivityWithWrongResultType
 import com.discoveryone.testutils.TestContainerActivity
 import com.discoveryone.testutils.TestFragment
 import com.discoveryone.testutils.TestResultSpy
-import com.discoveryone.testutils.TestReturningDifferentValueTypeActivity
 import com.discoveryone.testutils.TestReturningValueSequence1Activity
 import com.discoveryone.testutils.waitForIdleSync
 import org.hamcrest.CoreMatchers.allOf
@@ -140,7 +139,7 @@ class AndroidNavigatorTest {
         waitForIdleSync()
 
         assertEquals(
-            listOf("arg_from_activity_2", "arg_from_activity_3"),
+            listOf("arg_from_activity_3", "arg_from_activity_2"),
             resultSpy.getRecorderResults()
         )
     }

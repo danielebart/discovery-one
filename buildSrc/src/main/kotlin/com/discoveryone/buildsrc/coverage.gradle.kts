@@ -8,11 +8,16 @@ plugins {
 
 if (extensions.findByType(BaseExtension::class.java) != null) {
     android {
-        buildTypes.forEach { project.registerCoverageTask(it.name) }
+        buildTypes {
+            getByName("debug") {
+                isTestCoverageEnabled = true
+            }
+        }
+        registerCoverageTaskForAndroidProject()
         fixRobolectricCoverage()
     }
 } else {
-    project.registerCoverageTask()
+    registerCoverageTaskForJvmProject()
 }
 
 fun BaseExtension.fixRobolectricCoverage() {
@@ -26,27 +31,44 @@ fun BaseExtension.fixRobolectricCoverage() {
     )
 }
 
-fun Project.registerCoverageTask(buildType: String? = null) {
-    val (unitTestTask, jacocoReportTaskName, classpath) = if (buildType != null) {
-        Triple(
-            "test${buildType.capitalize()}UnitTest",
-            "${buildType}JacocoReport",
-            "${project.buildDir}/tmp/kotlin-classes/$buildType"
-        )
-    } else {
-        Triple("test", "jacocoReport", "${project.buildDir}/classes/kotlin")
-    }
+fun Project.registerCoverageTaskForJvmProject() {
+    val unitTestTask = "test"
+    registerCoverageTask(
+        jacocoReportTaskName = "generateJacocoReport",
+        classpath = "${project.buildDir}/classes/kotlin",
+        dependencies = listOf(unitTestTask),
+        jacocoCoverageExecList = listOf("jacoco/$unitTestTask.exec")
+    )
+}
 
+fun Project.registerCoverageTaskForAndroidProject() {
+    val unitTestTask = "testDebugUnitTest"
+    registerCoverageTask(
+        jacocoReportTaskName = "generateJacocoReport",
+        classpath = "${project.buildDir}/tmp/kotlin-classes/debug",
+        dependencies = listOf(unitTestTask, "createDebugCoverageReport"),
+        jacocoCoverageExecList = listOf(
+            "jacoco/$unitTestTask.exec",
+            "outputs/code_coverage/debugAndroidTest/connected/*coverage.ec"
+        )
+    )
+}
+
+fun Project.registerCoverageTask(
+    jacocoReportTaskName: String,
+    classpath: String,
+    dependencies: List<String>,
+    jacocoCoverageExecList: List<String>
+) {
     tasks.register(jacocoReportTaskName, JacocoReport::class) {
         description = "Generates a jacoco report task for the project"
         group = "verification"
-        setDependsOn(listOf(unitTestTask))
+        setDependsOn(dependencies)
         reports {
             xml.isEnabled = true
             // helps CI to auto-discover the coverage report
             xml.destination = File("${project.buildDir}/jacoco/coverage.xml")
         }
-
         val classes = fileTree(
             mapOf(
                 "dir" to classpath,
@@ -55,9 +77,7 @@ fun Project.registerCoverageTask(buildType: String? = null) {
         )
         val sources = "${project.projectDir}/src/main/java"
         val jacocoCoverageExec = fileTree(
-            mapOf(
-                "dir" to buildDir, "includes" to listOf("jacoco/$unitTestTask.exec")
-            )
+            mapOf("dir" to buildDir, "includes" to jacocoCoverageExecList)
         )
 
         sourceDirectories.setFrom(sources)
