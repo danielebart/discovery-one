@@ -21,4 +21,5 @@ object Dependencies {
     const val espressoIntents = "androidx.test.espresso:espresso-intents:${Versions.espresso}"
     const val kotlinCompileTesting =
         "com.github.tschuchortdev:kotlin-compile-testing:${Versions.kotlinCompileTesting}"
+    const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanary}"
 }

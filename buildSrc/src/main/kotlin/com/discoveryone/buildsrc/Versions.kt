@@ -22,4 +22,5 @@ object Versions {
     const val espresso = "3.2.0"
     const val fragmentTesting = "1.2.4"
     const val kotlinCompileTesting = "1.2.7"
+    const val leakCanary = "2.2"
 }

@@ -49,7 +49,7 @@ dependencies {
     implementation(Dependencies.fragment)
     implementation(Dependencies.activity)
 
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.2")
+    debugImplementation(Dependencies.leakCanary)
 
     androidTestImplementation(Dependencies.testCore)
     androidTestImplementation(Dependencies.espressoCore)

@@ -33,7 +33,7 @@ dependencies {
     implementation(Dependencies.appCompat)
     implementation(Dependencies.activity)
     implementation(Dependencies.fragment)
-    implementation("androidx.constraintlayout:constraintlayout:2.0.0-beta4")
+    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
 
     kapt(project(":discoveryone-processor"))
 }
