@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/danielebart/discovery-one/branch/master/graph/badge.svg)](https://codecov.io/gh/danielebart/discovery-one)
 [![build](https://github.com/danielebart/discovery-one/workflows/master/badge.svg?branch=master)](https://github.com/danielebart/discovery-one/actions?query=workflow%3Amaster)
 [![Kotlin Version](https://img.shields.io/badge/Kotlin-1.3.72-blue.svg)](https://kotlinlang.org)
-[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+[![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![License MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
 
 The aim of this project is to provide a simple solution for navigation in Android
