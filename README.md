@@ -49,7 +49,7 @@ val resultToken = Navigator.registerResult<Double> { result ->
 `registerResult` returns a token that must be consumed by the `navigateForResult` method of the `Navigator` object, you can obviously have multiple result tokens for different navigation results.
 ```
 // navigating for result using the above result token.
-Navigator.navigateForResult<Double>(DESTINATION_X, resultToken)
+Navigator.navigateForResult(DESTINATION_X, resultToken)
 ```
 
 ## How does it work?

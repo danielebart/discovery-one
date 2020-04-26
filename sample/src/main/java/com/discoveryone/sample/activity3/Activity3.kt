@@ -41,7 +41,7 @@ class Presenter3(private val view: Activity3) {
     }
 
     fun onBtnClick() {
-        Navigator.navigateForResult<String>(ACTIVITY_4, token1)
+        Navigator.navigateForResult(ACTIVITY_4, token1)
     }
 }
 

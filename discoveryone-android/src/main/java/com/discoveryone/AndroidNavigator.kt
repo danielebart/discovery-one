@@ -25,13 +25,13 @@ class AndroidNavigator(application: Application) : NavigationHandler {
         }
     }
 
-    override fun <T> navigateForResult(
+    override fun navigateForResult(
         destination: AbstractDestination,
         token: ResultToken
     ) {
         when (destination) {
             is FragmentDestination -> TODO()
-            is ActivityDestination -> ActivityNavigation.navigateForResult<T>(
+            is ActivityDestination -> ActivityNavigation.navigateForResult(
                 currentActivity,
                 destination,
                 AndroidResultRegistry.get(RegistryKey(currentActivity.hashCode(), token))

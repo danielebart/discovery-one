@@ -17,11 +17,11 @@ object Navigator : NavigationHandler {
         navigationHandler.navigate(destination)
     }
 
-    override fun <T> navigateForResult(
+    override fun navigateForResult(
         destination: AbstractDestination,
         token: ResultToken
     ) {
-        navigationHandler.navigateForResult<T>(destination, token)
+        navigationHandler.navigateForResult(destination, token)
     }
 
     override fun <T : Any> registerResult(

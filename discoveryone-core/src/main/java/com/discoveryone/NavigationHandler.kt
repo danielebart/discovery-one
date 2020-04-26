@@ -7,7 +7,7 @@ interface NavigationHandler {
 
     fun navigate(destination: AbstractDestination)
 
-    fun <T> navigateForResult(destination: AbstractDestination, token: ResultToken)
+    fun navigateForResult(destination: AbstractDestination, token: ResultToken)
 
     fun <T : Any> registerResult(resultClass: KClass<T>, action: (T) -> Unit): ResultToken
 }

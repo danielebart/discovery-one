@@ -15,7 +15,7 @@ object ActivityNavigation {
         currentActivity.startActivity(intent)
     }
 
-    internal fun <T> navigateForResult(
+    internal fun navigateForResult(
         currentActivity: FragmentActivity,
         destination: ActivityDestination,
         activityResultLauncher: ActivityResultLauncher<Intent>

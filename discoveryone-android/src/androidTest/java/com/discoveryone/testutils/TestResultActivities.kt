@@ -16,7 +16,7 @@ class TestActivityWithResultRegisterBeforeOnCreated : AppCompatActivity() {
     private val resultToken = Navigator.registerResult<String> {}
 
     fun navigateToActivityReturningResult(valueWhichNextActivityShouldReturn: String) {
-        Navigator.navigateForResult<String>(
+        Navigator.navigateForResult(
             TestReturningValueActivityDestination(valueWhichNextActivityShouldReturn),
             resultToken
         )
@@ -33,7 +33,7 @@ class TestActivityWithResultRegisterAfterOnCreated : AppCompatActivity() {
     }
 
     fun navigateToActivityReturningResult(valueWhichNextActivityShouldReturn: String) {
-        Navigator.navigateForResult<String>(
+        Navigator.navigateForResult(
             TestReturningValueActivityDestination(valueWhichNextActivityShouldReturn),
             resultToken
         )
@@ -64,7 +64,7 @@ class TestActivityWithWrongResultType : AppCompatActivity() {
     private val resultToken = Navigator.registerResult<String> {}
 
     fun navigateToActivityReturningResult() {
-        Navigator.navigateForResult<String>(
+        Navigator.navigateForResult(
             TestReturningDifferentValueTypeActivityDestination,
             resultToken
         )
@@ -94,7 +94,7 @@ class TestReturningValueSequence1Activity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Navigator.navigateForResult<String>(
+        Navigator.navigateForResult(
             TestReturningValueSequence2ActivityDestination,
             resultToken
         )
@@ -115,7 +115,7 @@ class TestReturningValueSequence2Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Navigator.navigateForResult<String>(
+        Navigator.navigateForResult(
             TestReturningValueSequence3ActivityDestination,
             resultToken
         )
