@@ -31,7 +31,7 @@ class NavigatorTest {
 
     @Test
     fun `WHEN navigating to a destination for result given a token THEN handler is called for result with same token`() {
-        Navigator.navigateForResult<String>(FakeDestination1, ResultToken(345))
+        Navigator.navigateForResult(FakeDestination1, ResultToken(345))
 
         assertEquals(
             listOf(Pair(FakeDestination1, ResultToken(345))),
@@ -61,7 +61,7 @@ class NavigatorTest {
             destinationHistorySpy.add(destination)
         }
 
-        override fun <T> navigateForResult(destination: AbstractDestination, token: ResultToken) {
+        override fun navigateForResult(destination: AbstractDestination, token: ResultToken) {
             destinationForResultHistorySpy.add(Pair(destination, token))
         }
 

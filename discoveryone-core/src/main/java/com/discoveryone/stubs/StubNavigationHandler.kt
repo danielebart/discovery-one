@@ -14,7 +14,7 @@ class StubNavigationHandler : NavigationHandler {
         stack.push(destination)
     }
 
-    override fun <T> navigateForResult(
+    override fun navigateForResult(
         destination: AbstractDestination,
         token: ResultToken
     ) {
