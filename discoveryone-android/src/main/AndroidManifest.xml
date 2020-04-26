@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.discoveryone" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.discoveryone">
+
+    <application>
+        <provider
+            android:name=".DiscoveryOneInitializer"
+            android:authorities="${applicationId}.discoveryone-init"
+            android:exported="false" />
+    </application>
+</manifest>
