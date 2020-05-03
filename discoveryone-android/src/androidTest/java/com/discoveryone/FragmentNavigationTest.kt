@@ -21,7 +21,7 @@ import com.discoveryone.testutils.ReturningValueSequence3TestFragment
 import com.discoveryone.testutils.TestFragment
 import com.discoveryone.testutils.TestResultSpy
 import com.discoveryone.testutils.launchActivity
-import com.discoveryone.testutils.onMainThread
+import com.discoveryone.testutils.recreateAndWait
 import com.discoveryone.testutils.waitForIdleSync
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -131,7 +131,7 @@ class FragmentNavigationTest {
         waitForIdleSync()
         activity.getSpecificFragment<ReturningValueSequence2TestFragment>()
             .navigateToFragment3()
-        onMainThread { activity.recreate() }
+        activity.recreateAndWait()
         ActivityStackContainer.peek().getSpecificFragment<ReturningValueSequence3TestFragment>()
             .returnResult()
         waitForIdleSync()

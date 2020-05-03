@@ -13,16 +13,12 @@ inline fun <reified T : Activity> launchActivity(): T {
     return activity as T
 }
 
-//inline fun <reified T : Activity> launchActivityReturningScenario(): Pair<T, ActivityScenario<T>> {
-//    lateinit var activity: Activity
-//    val scenario = ActivityScenario.launch(T::class.java).onActivity { launchedActivity ->
-//        activity = launchedActivity
-//    }
-//    return Pair(activity as T, scenario)
-//}
-
 fun onMainThread(action: () -> Unit) {
     InstrumentationRegistry.getInstrumentation().runOnMainSync { action() }
     waitForIdleSync()
+}
+
+fun Activity.recreateAndWait() {
+    onMainThread { recreate() }
     SystemClock.sleep(700)
 }

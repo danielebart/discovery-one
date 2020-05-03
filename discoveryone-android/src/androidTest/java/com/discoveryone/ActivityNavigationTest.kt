@@ -20,7 +20,7 @@ import com.discoveryone.testutils.ReturningValueSequence1TestActivity
 import com.discoveryone.testutils.ReturningValueSequence2TestActivity
 import com.discoveryone.testutils.TestResultSpy
 import com.discoveryone.testutils.launchActivity
-import com.discoveryone.testutils.onMainThread
+import com.discoveryone.testutils.recreateAndWait
 import com.discoveryone.testutils.waitForIdleSync
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.allOf
@@ -127,7 +127,7 @@ class ActivityNavigationTest {
         val activity1 = launchActivity<ReturningValueSequence1TestActivity>()
         activity1.navigateToActivity2()
         val activity2 = getActivity<ReturningValueSequence2TestActivity>()
-        onMainThread { activity1.recreate() }
+        activity1.recreateAndWait()
         activity2.navigateToActivity3()
 
         assertEquals(
