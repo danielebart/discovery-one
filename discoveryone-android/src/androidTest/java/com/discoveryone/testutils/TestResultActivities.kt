@@ -30,7 +30,7 @@ class ReturnStringValueTestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val expectedReturningValue = intent.getStringExtra("expectedReturningValue")
-        scene.close(expectedReturningValue)
+        scene.closeWithResult(expectedReturningValue)
     }
 }
 
@@ -51,7 +51,7 @@ class ReturnIntValueTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scene.close(4599)
+        scene.closeWithResult(4599)
     }
 }
 
@@ -77,7 +77,7 @@ class ReturningValueSequence2TestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         scene.onResult<String>("key_result") {
-            scene.close("arg_from_activity_2")
+            scene.closeWithResult("arg_from_activity_2")
         }
     }
 
@@ -92,6 +92,6 @@ class ReturningValueSequence3TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scene.close("arg_from_activity_3")
+        scene.closeWithResult("arg_from_activity_3")
     }
 }

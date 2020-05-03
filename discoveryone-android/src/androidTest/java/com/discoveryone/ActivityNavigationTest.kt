@@ -1,6 +1,7 @@
 package com.discoveryone
 
 import androidx.fragment.app.FragmentActivity
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.BundleMatchers.hasEntry
@@ -8,12 +9,15 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtras
 import com.discoveryone.annotations.InternalDestinationArgumentMarker
 import com.discoveryone.destinations.ActivityDestination
+import com.discoveryone.extensions.close
 import com.discoveryone.extensions.scene
 import com.discoveryone.initialization.ActivityStackContainer
+import com.discoveryone.navigation.AndroidNavigator
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.testutils.ContainerTestActivity
 import com.discoveryone.testutils.EmptyBundleMatcher
 import com.discoveryone.testutils.EmptyTestActivity
+import com.discoveryone.testutils.EmptyTestActivityDestination
 import com.discoveryone.testutils.ListenForStringResultTestActivity
 import com.discoveryone.testutils.ListenForStringResultTestButReceiverWrongResultTypeActivity
 import com.discoveryone.testutils.ReturningValueSequence1TestActivity
@@ -21,6 +25,7 @@ import com.discoveryone.testutils.ReturningValueSequence2TestActivity
 import com.discoveryone.testutils.TestResultSpy
 import com.discoveryone.testutils.launchActivity
 import com.discoveryone.testutils.recreateAndWait
+import com.discoveryone.testutils.waitForActivity
 import com.discoveryone.testutils.waitForIdleSync
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.allOf
@@ -34,6 +39,7 @@ class ActivityNavigationTest {
 
     @Before
     fun setup() {
+        DiscoveryOne.install(AndroidNavigator(ApplicationProvider.getApplicationContext()))
         Intents.init()
     }
 
@@ -135,6 +141,19 @@ class ActivityNavigationTest {
             resultSpy.getRecorderResults()
         )
     }
+
+    @Test
+    fun whenNavigatingToTwoNewDestinationsAndClosingTheLastOne_thenCurrentVisibleActivityShouldBeTheFirstOne() {
+        val activity1 = launchActivity<ContainerTestActivity>()
+
+        activity1.scene.navigate(EmptyTestActivityDestination)
+        waitForIdleSync()
+        ActivityStackContainer.peek().scene.close()
+        waitForActivity()
+
+        assertEquals(activity1, ActivityStackContainer.peek())
+    }
+
 
     private inline fun <reified T : FragmentActivity> getActivity(): T =
         ActivityStackContainer.getByName(T::class.simpleName.toString()) as T

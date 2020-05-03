@@ -20,5 +20,14 @@ fun onMainThread(action: () -> Unit) {
 
 fun Activity.recreateAndWait() {
     onMainThread { recreate() }
-    SystemClock.sleep(700)
+    waitForActivity()
+}
+
+fun waitForIdleSync() {
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+}
+
+fun waitForActivity() {
+    waitForIdleSync()
+    SystemClock.sleep(700) // Activity creation timeout. Refers to ProcessLifecycleOwner
 }

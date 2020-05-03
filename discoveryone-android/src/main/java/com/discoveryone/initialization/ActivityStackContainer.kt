@@ -22,6 +22,9 @@ internal object ActivityStackContainer {
     fun isEmpty(): Boolean =
         stack.isEmpty()
 
+    fun size(): Int =
+        stack.size
+
     @VisibleForTesting
     fun getByName(name: String): FragmentActivity =
         stack.first { it::class.simpleName == name }

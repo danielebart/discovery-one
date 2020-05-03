@@ -26,7 +26,7 @@ class AndroidScene internal constructor(
         DiscoveryOne.onResult(this, key, resultClass, action)
     }
 
-    override fun <T> close(result: T?) {
+    override fun <T> closeWithResult(result: T?) {
         if (result != null) {
             DiscoveryOne.closeWithResult(this, result)
         } else {

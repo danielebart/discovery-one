@@ -11,5 +11,5 @@ interface Scene {
 
     fun <T : Any> onResult(key: String, resultClass: KClass<T>, action: (T) -> Unit)
 
-    fun <T> close(result: T? = null)
+    fun <T> closeWithResult(result: T? = null)
 }

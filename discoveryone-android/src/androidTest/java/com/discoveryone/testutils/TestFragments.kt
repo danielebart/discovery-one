@@ -8,7 +8,11 @@ import com.discoveryone.annotations.FragmentNavigationDestination
 import com.discoveryone.extensions.onResult
 import com.discoveryone.extensions.scene
 
+@FragmentNavigationDestination(containerId = com.discoveryone.test.R.id.container)
 class TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout)
+
+@FragmentNavigationDestination(containerId = com.discoveryone.test.R.id.container)
+class TestFragment2 : Fragment(com.discoveryone.test.R.layout.empty_layout)
 
 @FragmentNavigationDestination(containerId = com.discoveryone.test.R.id.container)
 class ListenForStringResultTestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
@@ -33,7 +37,7 @@ class ReturnStringValueTestFragment : Fragment(com.discoveryone.test.R.layout.em
 
     fun returnResult() {
         val expectedReturningValue = requireArguments().getString("expectedReturningValue")
-        scene.close(expectedReturningValue)
+        scene.closeWithResult(expectedReturningValue)
     }
 }
 
@@ -56,7 +60,7 @@ class ListenForStringResultTestButReceiverWrongResultTypFragment :
 class ReturnIntValueTestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     fun returnResult() {
-        scene.close(1231)
+        scene.closeWithResult(1231)
     }
 }
 
@@ -79,7 +83,7 @@ class ReturningValueSequence2TestFragment : Fragment(com.discoveryone.test.R.lay
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         scene.onResult<String>("key_result2") {
-            scene.close("arg_from_fragment_2")
+            scene.closeWithResult("arg_from_fragment_2")
         }
     }
 
@@ -93,6 +97,6 @@ class ReturningValueSequence2TestFragment : Fragment(com.discoveryone.test.R.lay
 class ReturningValueSequence3TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     fun returnResult() {
-        scene.close("arg_from_fragment_3")
+        scene.closeWithResult("arg_from_fragment_3")
     }
 }

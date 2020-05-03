@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.annotations.InternalDestinationArgumentMarker
 import com.discoveryone.destinations.FragmentDestination
+import com.discoveryone.extensions.close
 import com.discoveryone.extensions.scene
 import com.discoveryone.initialization.ActivityStackContainer
 import com.discoveryone.navigation.result.ActionLauncher
@@ -19,6 +20,9 @@ import com.discoveryone.testutils.ReturningValueSequence1TestFragmentDestination
 import com.discoveryone.testutils.ReturningValueSequence2TestFragment
 import com.discoveryone.testutils.ReturningValueSequence3TestFragment
 import com.discoveryone.testutils.TestFragment
+import com.discoveryone.testutils.TestFragment2
+import com.discoveryone.testutils.TestFragment2Destination
+import com.discoveryone.testutils.TestFragmentDestination
 import com.discoveryone.testutils.TestResultSpy
 import com.discoveryone.testutils.launchActivity
 import com.discoveryone.testutils.recreateAndWait
@@ -140,6 +144,20 @@ class FragmentNavigationTest {
             listOf("arg_from_fragment_3", "arg_from_fragment_2"),
             resultSpy.getRecorderResults()
         )
+    }
+
+    @Test
+    fun whenNavigatingToTwoNewDestinationsAndClosingTheLastOne_thenCurrentTopFragmentShouldBeTheFirstOne() {
+        val activity = launchActivity<ContainerTestActivity>()
+        activity.scene.navigate(TestFragmentDestination)
+
+        activity.scene.navigate(TestFragment2Destination)
+        waitForIdleSync()
+        activity.getSpecificFragment<TestFragment2>().scene.close()
+        waitForIdleSync()
+
+        assertEquals(TestFragment::class, activity.getFragment()::class)
+        assertEquals(1, activity.supportFragmentManager.fragments.size)
     }
 
     private fun FragmentActivity.getFragment(position: Int = 0): Fragment =
