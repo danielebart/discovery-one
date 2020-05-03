@@ -1,41 +1,23 @@
 package com.discoveryone.testutils
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.discoveryone.Navigator
-import com.discoveryone.ResultToken
 import com.discoveryone.annotations.ActivityNavigationDestination
 import com.discoveryone.annotations.DestinationArgument
-import com.discoveryone.registerResult
-import com.discoveryone.result.ActivityResultLauncherFactory.DEFAULT_INTENT_EXTRA_KEY
+import com.discoveryone.extensions.onResult
+import com.discoveryone.extensions.scene
 
-class TestActivityWithResultRegisterBeforeOnCreated : AppCompatActivity() {
-
-    private val resultToken = Navigator.registerResult<String> {}
-
-    fun navigateToActivityReturningResult(valueWhichNextActivityShouldReturn: String) {
-        Navigator.navigateForResult(
-            TestReturningValueActivityDestination(valueWhichNextActivityShouldReturn),
-            resultToken
-        )
-    }
-}
-
-class TestActivityWithResultRegisterAfterOnCreated : AppCompatActivity() {
-
-    private lateinit var resultToken: ResultToken
+class ListenForStringResultTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        resultToken = Navigator.registerResult<String> {}
+        scene.onResult<String>("key_result") {}
     }
 
     fun navigateToActivityReturningResult(valueWhichNextActivityShouldReturn: String) {
-        Navigator.navigateForResult(
-            TestReturningValueActivityDestination(valueWhichNextActivityShouldReturn),
-            resultToken
+        scene.navigateForResult(
+            "key_result",
+            ReturnStringValueTestActivityDestination(valueWhichNextActivityShouldReturn)
         )
     }
 }
@@ -43,95 +25,73 @@ class TestActivityWithResultRegisterAfterOnCreated : AppCompatActivity() {
 @ActivityNavigationDestination(
     arguments = [DestinationArgument("expectedReturningValue", String::class)]
 )
-class TestReturningValueActivity : AppCompatActivity() {
+class ReturnStringValueTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val expectedReturningValue = intent.getStringExtra("expectedReturningValue")
-
-        setResult(
-            Activity.RESULT_OK,
-            Intent().putExtra(DEFAULT_INTENT_EXTRA_KEY, expectedReturningValue)
-        )
-        finish()
+        scene.closeWithResult(expectedReturningValue)
     }
 }
 
-/////////////////////////////////
+class ListenForStringResultTestButReceiverWrongResultTypeActivity : AppCompatActivity() {
 
-class TestActivityWithWrongResultType : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        scene.onResult<String>("key_result") {}
+    }
 
-    private val resultToken = Navigator.registerResult<String> {}
-
-    fun navigateToActivityReturningResult() {
-        Navigator.navigateForResult(
-            TestReturningDifferentValueTypeActivityDestination,
-            resultToken
-        )
+    fun navigateToActivityReturningWrongResultType() {
+        scene.navigateForResult("key_result", ReturnIntValueTestActivityDestination)
     }
 }
 
 @ActivityNavigationDestination
-class TestReturningDifferentValueTypeActivity : AppCompatActivity() {
+class ReturnIntValueTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val differentValueTypeThanExpected = 500
-
-        setResult(
-            Activity.RESULT_OK,
-            Intent().putExtra(DEFAULT_INTENT_EXTRA_KEY, differentValueTypeThanExpected)
-        )
-        finish()
+        scene.closeWithResult(4599)
     }
 }
 
-/////////////////////////////////
 
-class TestReturningValueSequence1Activity : AppCompatActivity() {
+//////////////////////////////////////////////////////////////////
 
-    private val resultToken = Navigator.registerResult<String> {}
+class ReturningValueSequence1TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Navigator.navigateForResult(
-            TestReturningValueSequence2ActivityDestination,
-            resultToken
-        )
+        scene.onResult<String>("key_result") {}
+    }
+
+    fun navigateToActivity2() {
+        scene.navigateForResult("key_result", ReturningValueSequence2TestActivityDestination)
+        waitForIdleSync()
     }
 }
 
 @ActivityNavigationDestination
-class TestReturningValueSequence2Activity : AppCompatActivity() {
-
-    private val resultToken = Navigator.registerResult<String> {
-        setResult(
-            Activity.RESULT_OK,
-            Intent().putExtra(DEFAULT_INTENT_EXTRA_KEY, "arg_from_activity_2")
-        )
-        finish()
-    }
+class ReturningValueSequence2TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        scene.onResult<String>("key_result") {
+            scene.closeWithResult("arg_from_activity_2")
+        }
+    }
 
-        Navigator.navigateForResult(
-            TestReturningValueSequence3ActivityDestination,
-            resultToken
-        )
+    fun navigateToActivity3() {
+        scene.navigateForResult("key_result", ReturningValueSequence3TestActivityDestination)
+        waitForIdleSync()
     }
 }
 
 @ActivityNavigationDestination
-class TestReturningValueSequence3Activity : AppCompatActivity() {
+class ReturningValueSequence3TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setResult(
-            Activity.RESULT_OK,
-            Intent().putExtra(DEFAULT_INTENT_EXTRA_KEY, "arg_from_activity_3")
-        )
-        finish()
+        scene.closeWithResult("arg_from_activity_3")
     }
 }

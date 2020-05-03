@@ -1,10 +1,10 @@
 package com.discoveryone.testutils
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.discoveryone.AndroidNavigator
-import com.discoveryone.registerResult
+import com.discoveryone.annotations.ActivityNavigationDestination
 
-class TestContainerActivity : AppCompatActivity(com.discoveryone.test.R.layout.container_layout)
+@ActivityNavigationDestination
+class ContainerTestActivity : AppCompatActivity(com.discoveryone.test.R.layout.container_layout)
 
-class TestActivity2 : AppCompatActivity()
+@ActivityNavigationDestination
+class EmptyTestActivity : AppCompatActivity()
