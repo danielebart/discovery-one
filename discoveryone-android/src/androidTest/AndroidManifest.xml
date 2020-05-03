@@ -3,34 +3,34 @@
 
     <application>
         <activity
-            android:name=".testutils.TestContainerActivity"
+            android:name=".testutils.ContainerTestActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".testutils.TestActivity2"
+            android:name=".testutils.EmptyTestActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".testutils.TestActivityWithResultRegisterBeforeOnCreated"
+            android:name=".testutils.ListenForStringResultTestActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".testutils.TestActivityWithResultRegisterAfterOnCreated"
+            android:name=".testutils.ListenForStringResultTestButReceiverWrongResultTypeActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".testutils.TestReturningValueActivity"
+            android:name=".testutils.ReturnStringValueTestActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".testutils.TestReturningDifferentValueTypeActivity"
+            android:name=".testutils.ReturnIntValueTestActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".testutils.TestActivityWithWrongResultType"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".testutils.TestReturningValueSequence1Activity"
+            android:name=".testutils.ReturningValueSequence1TestActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".testutils.TestReturningValueSequence2Activity"
+            android:name=".testutils.ReturningValueSequence2TestActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".testutils.TestReturningValueSequence3Activity"
+            android:name=".testutils.ReturningValueSequence3TestActivity"
             android:theme="@style/Theme.AppCompat" />
     </application>
 </manifest>

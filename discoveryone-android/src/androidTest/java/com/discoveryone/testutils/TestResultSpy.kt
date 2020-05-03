@@ -1,6 +1,6 @@
 package com.discoveryone.testutils
 
-import com.discoveryone.result.ResultSpy
+import com.discoveryone.navigation.result.ResultSpy
 
 class TestResultSpy: ResultSpy {
 
