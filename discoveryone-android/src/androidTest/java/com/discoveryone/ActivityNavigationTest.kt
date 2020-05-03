@@ -25,12 +25,13 @@ import com.discoveryone.testutils.ReturningValueSequence2TestActivity
 import com.discoveryone.testutils.TestResultSpy
 import com.discoveryone.testutils.launchActivity
 import com.discoveryone.testutils.recreateAndWait
-import com.discoveryone.testutils.waitForActivity
 import com.discoveryone.testutils.waitForIdleSync
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import kotlin.reflect.KClass
@@ -143,15 +144,17 @@ class ActivityNavigationTest {
     }
 
     @Test
-    fun whenNavigatingToTwoNewDestinationsAndClosingTheLastOne_thenCurrentVisibleActivityShouldBeTheFirstOne() {
+    fun whenNavigatingToTwoNewDestinationsAndClosingTheLastOne_thenSecondActivityShouldBeInFinishingStateAndFirstNot() {
         val activity1 = launchActivity<ContainerTestActivity>()
 
         activity1.scene.navigate(EmptyTestActivityDestination)
         waitForIdleSync()
-        ActivityStackContainer.peek().scene.close()
-        waitForActivity()
+        val activity2 = ActivityStackContainer.peek()
+        activity2.scene.close()
+        waitForIdleSync()
 
-        assertEquals(activity1, ActivityStackContainer.peek())
+        assertTrue(activity2.isFinishing)
+        assertFalse(activity1.isFinishing)
     }
 
 
