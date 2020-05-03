@@ -2,8 +2,7 @@ package com.discoveryone.annotations
 
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.CLASS)
-annotation class FragmentNavigationDestination(
+annotation class ActivityRoute(
     val name: String = "",
-    val containerId: Int,
-    vararg val arguments: DestinationArgument
+    vararg val arguments: RouteArgument
 )

@@ -7,34 +7,34 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
-import com.discoveryone.destinations.FragmentDestination
 import com.discoveryone.exceptions.FragmentNotFoundOnResultRegistration
-import com.discoveryone.extensions.extractArgumentsFromDestination
+import com.discoveryone.extensions.extractArgumentsFromRoute
 import com.discoveryone.extensions.firstFragmentOrNull
 import com.discoveryone.initialization.ActivityStackContainer
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.navigation.result.ActionLauncher.launchActionOnResult
+import com.discoveryone.routes.GeneratedFragmentRoute
 import kotlin.reflect.KClass
 
 internal object FragmentNavigation {
 
-    fun navigate(currentActivity: FragmentActivity, destination: FragmentDestination) {
-        val fragmentClass = destination.clazz as KClass<Fragment>
-        val arguments = destination.extractArgumentsFromDestination().toTypedArray()
+    fun navigate(currentActivity: FragmentActivity, route: GeneratedFragmentRoute) {
+        val fragmentClass = route.clazz as KClass<Fragment>
+        val arguments = route.extractArgumentsFromRoute().toTypedArray()
 
         currentActivity.supportFragmentManager.beginTransaction()
             .addToBackStack("")
-            .replace(destination.containerId, fragmentClass.java, bundleOf(*arguments), null)
+            .replace(route.containerId, fragmentClass.java, bundleOf(*arguments), null)
             .commit()
     }
 
     fun navigateForResult(
         currentActivity: FragmentActivity,
-        destination: FragmentDestination,
+        route: GeneratedFragmentRoute,
         key: String
     ) {
-        val fragmentClass = destination.clazz as KClass<Fragment>
-        val userArgs = destination.extractArgumentsFromDestination().toTypedArray()
+        val fragmentClass = route.clazz as KClass<Fragment>
+        val userArgs = route.extractArgumentsFromRoute().toTypedArray()
         val fragmentArgs = bundleOf(
             *userArgs,
             FRAGMENT_NAVIGATION_FOR_RESULT_KEY to key
@@ -42,7 +42,7 @@ internal object FragmentNavigation {
 
         currentActivity.supportFragmentManager.beginTransaction()
             .addToBackStack("")
-            .replace(destination.containerId, fragmentClass.java, fragmentArgs, null)
+            .replace(route.containerId, fragmentClass.java, fragmentArgs, null)
             .commit()
     }
 

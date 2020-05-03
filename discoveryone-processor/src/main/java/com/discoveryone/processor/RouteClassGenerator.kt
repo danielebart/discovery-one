@@ -1,12 +1,12 @@
 package com.discoveryone.processor
 
-import com.discoveryone.annotations.ActivityNavigationDestination
-import com.discoveryone.annotations.DestinationArgument
-import com.discoveryone.annotations.FragmentNavigationDestination
-import com.discoveryone.annotations.InternalDestinationArgumentMarker
-import com.discoveryone.destinations.AbstractDestination
-import com.discoveryone.destinations.ActivityDestination
-import com.discoveryone.destinations.FragmentDestination
+import com.discoveryone.annotations.ActivityRoute
+import com.discoveryone.annotations.FragmentRoute
+import com.discoveryone.annotations.InternalRouteArgumentMarker
+import com.discoveryone.annotations.RouteArgument
+import com.discoveryone.routes.AbstractRoute
+import com.discoveryone.routes.GeneratedActivityRoute
+import com.discoveryone.routes.GeneratedFragmentRoute
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
@@ -22,43 +22,43 @@ import javax.lang.model.element.TypeElement
 import javax.lang.model.type.MirroredTypeException
 import kotlin.reflect.KClass
 
-object DestinationClassGenerator {
+object RouteClassGenerator {
 
-    fun generateActivityDestinationClass(
+    fun generateActivityRouteClass(
         env: ProcessingEnvironment,
         typeElement: TypeElement
     ) {
         val annotation =
-            typeElement.getAnnotation(ActivityNavigationDestination::class.java)
-        val destinationClassName = if (annotation.name.isNotBlank()) {
+            typeElement.getAnnotation(ActivityRoute::class.java)
+        val routeClassName = if (annotation.name.isNotBlank()) {
             annotation.name
         } else {
-            "${typeElement.simpleName}Destination"
+            "${typeElement.simpleName}Route"
         }
         val packageName = typeElement.asClassName().packageName
         val arguments = annotation.arguments.toList()
 
         val classTypeSpec = typeElement
-            .commonClassTypeBuilder(destinationClassName, arguments, ActivityDestination::class)
+            .commonClassTypeBuilder(routeClassName, arguments, GeneratedActivityRoute::class)
             .build()
 
-        FileSpec.builder(packageName, destinationClassName)
+        FileSpec.builder(packageName, routeClassName)
             .addType(classTypeSpec)
             .build()
             .writeTo(env.filer)
     }
 
-    fun generateFragmentDestinationClass(
+    fun generateFragmentRouteClass(
         env: ProcessingEnvironment,
         typeElement: TypeElement
     ) {
         val annotation =
-            typeElement.getAnnotation(FragmentNavigationDestination::class.java)
+            typeElement.getAnnotation(FragmentRoute::class.java)
         val arguments = annotation.arguments.toList()
-        val destinationClassName = if (annotation.name.isNotBlank()) {
+        val routeClassName = if (annotation.name.isNotBlank()) {
             annotation.name
         } else {
-            "${typeElement.simpleName}Destination"
+            "${typeElement.simpleName}Route"
         }
         val packageName = typeElement.asClassName().packageName
         val containerIdProperty =
@@ -67,20 +67,20 @@ object DestinationClassGenerator {
                 .build()
 
         val classTypeSpec = typeElement
-            .commonClassTypeBuilder(destinationClassName, arguments, FragmentDestination::class)
+            .commonClassTypeBuilder(routeClassName, arguments, GeneratedFragmentRoute::class)
             .addProperty(containerIdProperty)
             .build()
 
-        FileSpec.builder(packageName, "$destinationClassName.kt")
+        FileSpec.builder(packageName, "$routeClassName.kt")
             .addType(classTypeSpec)
             .build()
             .writeTo(env.filer)
     }
 
     private fun TypeElement.commonClassTypeBuilder(
-        destinationName: String,
-        arguments: List<DestinationArgument>,
-        destinationSupertype: KClass<out AbstractDestination>
+        routeName: String,
+        arguments: List<RouteArgument>,
+        routeSupertype: KClass<out AbstractRoute>
     ): TypeSpec.Builder {
         val classProperty = PropertySpec.builder(
             "clazz",
@@ -91,8 +91,8 @@ object DestinationClassGenerator {
             .build()
 
         return if (arguments.isEmpty()) {
-            TypeSpec.objectBuilder(destinationName)
-                .addSuperinterface(destinationSupertype)
+            TypeSpec.objectBuilder(routeName)
+                .addSuperinterface(routeSupertype)
                 .addProperty(classProperty)
         } else {
             val constructor = FunSpec.constructorBuilder().run {
@@ -103,19 +103,19 @@ object DestinationClassGenerator {
             }
             val properties = arguments.map { arg ->
                 PropertySpec.builder(arg.name, arg.getArgumentTypeName()).initializer(arg.name)
-                    .addAnnotation(InternalDestinationArgumentMarker::class)
+                    .addAnnotation(InternalRouteArgumentMarker::class)
                     .build()
             }
-            return TypeSpec.classBuilder(destinationName)
+            return TypeSpec.classBuilder(routeName)
                 .addModifiers(KModifier.DATA)
                 .addProperties(properties)
-                .addSuperinterface(destinationSupertype)
+                .addSuperinterface(routeSupertype)
                 .addProperty(classProperty)
                 .primaryConstructor(constructor)
         }
     }
 
-    private fun DestinationArgument.getArgumentTypeName(): TypeName {
+    private fun RouteArgument.getArgumentTypeName(): TypeName {
         return try {
             type.java.asTypeName().javaToKotlinType()
         } catch (mte: MirroredTypeException) {

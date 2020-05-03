@@ -7,17 +7,16 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.BundleMatchers.hasEntry
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtras
-import com.discoveryone.annotations.InternalDestinationArgumentMarker
-import com.discoveryone.destinations.ActivityDestination
+import com.discoveryone.annotations.InternalRouteArgumentMarker
 import com.discoveryone.extensions.close
 import com.discoveryone.extensions.scene
 import com.discoveryone.initialization.ActivityStackContainer
 import com.discoveryone.navigation.AndroidNavigator
 import com.discoveryone.navigation.result.ActionLauncher
+import com.discoveryone.routes.GeneratedActivityRoute
 import com.discoveryone.testutils.ContainerTestActivity
 import com.discoveryone.testutils.EmptyBundleMatcher
 import com.discoveryone.testutils.EmptyTestActivity
-import com.discoveryone.testutils.EmptyTestActivityDestination
 import com.discoveryone.testutils.ListenForStringResultTestActivity
 import com.discoveryone.testutils.ListenForStringResultTestButReceiverWrongResultTypeActivity
 import com.discoveryone.testutils.ReturningValueSequence1TestActivity
@@ -52,11 +51,11 @@ class ActivityNavigationTest {
     }
 
     @Test
-    fun givenAnActivityDestinationWithoutArguments_whenNavigatingToThatActivity_thenInterceptedIntentContainsTheActivityCmpName() {
-        val fakeActivityDestination = FakeActivityDestinationWithoutArgs()
+    fun givenAnActivityRouteWithoutArguments_whenNavigatingToThatActivity_thenInterceptedIntentContainsTheActivityCmpName() {
+        val fakeActivityRoute = FakeActivityRouteWithoutArgs()
         val activity = launchActivity<ContainerTestActivity>()
 
-        activity.scene.navigate(fakeActivityDestination)
+        activity.scene.navigate(fakeActivityRoute)
 
         intended(
             CoreMatchers.allOf(
@@ -67,14 +66,14 @@ class ActivityNavigationTest {
     }
 
     @Test
-    fun givenAnActivityDestinationWithAStringAndADoubleArgs_whenNavigatingToThatActivity_thenInterceptedIntentContainsTheActivityCmpNameAndThoseArgs() {
-        val fakeActivityDestination = FakeActivityDestinationWithArgs(
+    fun givenAnActivityRouteWithAStringAndADoubleArgs_whenNavigatingToThatActivity_thenInterceptedIntentContainsTheActivityCmpNameAndThoseArgs() {
+        val fakeActivityRoute = FakeActivityRouteWithArgs(
             arg1 = "arg1_value",
             arg2 = 56789.0
         )
         val activity = launchActivity<ContainerTestActivity>()
 
-        activity.scene.navigate(fakeActivityDestination)
+        activity.scene.navigate(fakeActivityRoute)
 
         intended(
             allOf(
@@ -150,10 +149,10 @@ class ActivityNavigationTest {
     }
 
     @Test
-    fun whenNavigatingToTwoNewDestinationsAndClosingTheLastOne_thenSecondActivityShouldBeInFinishingStateAndFirstNot() {
+    fun whenNavigatingToTwoNewRoutesAndClosingTheLastOne_thenSecondActivityShouldBeInFinishingStateAndFirstNot() {
         val activity1 = launchActivity<ContainerTestActivity>()
 
-        activity1.scene.navigate(EmptyTestActivityDestination)
+        activity1.scene.navigate(EmptyTestActivityRoute)
         waitForActivity()
         val activity2 = ActivityStackContainer.peek()
         activity2.scene.close()
@@ -167,13 +166,13 @@ class ActivityNavigationTest {
     private inline fun <reified T : FragmentActivity> getActivity(): T =
         ActivityStackContainer.getByName(T::class.simpleName.toString()) as T
 
-    data class FakeActivityDestinationWithoutArgs(
+    data class FakeActivityRouteWithoutArgs(
         override val clazz: KClass<*> = EmptyTestActivity::class
-    ) : ActivityDestination
+    ) : GeneratedActivityRoute
 
-    data class FakeActivityDestinationWithArgs(
+    data class FakeActivityRouteWithArgs(
         override val clazz: KClass<*> = EmptyTestActivity::class,
-        @InternalDestinationArgumentMarker val arg1: String,
-        @InternalDestinationArgumentMarker val arg2: Double
-    ) : ActivityDestination
+        @InternalRouteArgumentMarker val arg1: String,
+        @InternalRouteArgumentMarker val arg2: Double
+    ) : GeneratedActivityRoute
 }

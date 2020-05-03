@@ -2,7 +2,7 @@ package com.discoveryone.navigation
 
 import com.discoveryone.DiscoveryOne
 import com.discoveryone.Scene
-import com.discoveryone.destinations.AbstractDestination
+import com.discoveryone.routes.AbstractRoute
 import kotlin.reflect.KClass
 
 class AndroidScene internal constructor(
@@ -10,12 +10,12 @@ class AndroidScene internal constructor(
     internal val instanceHashCode: Int
 ) : Scene {
 
-    override fun navigate(destination: AbstractDestination) {
-        DiscoveryOne.navigate(this, destination)
+    override fun navigate(route: AbstractRoute) {
+        DiscoveryOne.navigate(this, route)
     }
 
-    override fun navigateForResult(key: String, destination: AbstractDestination) {
-        DiscoveryOne.navigateForResult(this, key, destination)
+    override fun navigateForResult(key: String, route: AbstractRoute) {
+        DiscoveryOne.navigateForResult(this, key, route)
     }
 
     override fun <T : Any> onResult(

@@ -2,8 +2,8 @@ package com.discoveryone.testutils
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.discoveryone.annotations.ActivityNavigationDestination
-import com.discoveryone.annotations.DestinationArgument
+import com.discoveryone.annotations.ActivityRoute
+import com.discoveryone.annotations.RouteArgument
 import com.discoveryone.extensions.onResult
 import com.discoveryone.extensions.scene
 
@@ -17,13 +17,13 @@ class ListenForStringResultTestActivity : AppCompatActivity() {
     fun navigateToActivityReturningResult(valueWhichNextActivityShouldReturn: String) {
         scene.navigateForResult(
             "key_result",
-            ReturnStringValueTestActivityDestination(valueWhichNextActivityShouldReturn)
+            ReturnStringValueTestActivityRoute(valueWhichNextActivityShouldReturn)
         )
     }
 }
 
-@ActivityNavigationDestination(
-    arguments = [DestinationArgument("expectedReturningValue", String::class)]
+@ActivityRoute(
+    arguments = [RouteArgument("expectedReturningValue", String::class)]
 )
 class ReturnStringValueTestActivity : AppCompatActivity() {
 
@@ -42,11 +42,11 @@ class ListenForStringResultTestButReceiverWrongResultTypeActivity : AppCompatAct
     }
 
     fun navigateToActivityReturningWrongResultType() {
-        scene.navigateForResult("key_result", ReturnIntValueTestActivityDestination)
+        scene.navigateForResult("key_result", ReturnIntValueTestActivityRoute)
     }
 }
 
-@ActivityNavigationDestination
+@ActivityRoute
 class ReturnIntValueTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,11 +66,11 @@ class ReturningValueSequence1TestActivity : AppCompatActivity() {
     }
 
     fun navigateToActivity2() {
-        scene.navigateForResult("key_result", ReturningValueSequence2TestActivityDestination)
+        scene.navigateForResult("key_result", ReturningValueSequence2TestActivityRoute)
     }
 }
 
-@ActivityNavigationDestination
+@ActivityRoute
 class ReturningValueSequence2TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,11 +81,11 @@ class ReturningValueSequence2TestActivity : AppCompatActivity() {
     }
 
     fun navigateToActivity3() {
-        scene.navigateForResult("key_result", ReturningValueSequence3TestActivityDestination)
+        scene.navigateForResult("key_result", ReturningValueSequence3TestActivityRoute)
     }
 }
 
-@ActivityNavigationDestination
+@ActivityRoute
 class ReturningValueSequence3TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

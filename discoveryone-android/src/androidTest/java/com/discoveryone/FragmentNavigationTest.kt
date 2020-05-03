@@ -2,27 +2,27 @@ package com.discoveryone
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.discoveryone.annotations.InternalDestinationArgumentMarker
-import com.discoveryone.destinations.FragmentDestination
+import com.discoveryone.annotations.InternalRouteArgumentMarker
 import com.discoveryone.extensions.close
 import com.discoveryone.extensions.scene
 import com.discoveryone.initialization.ActivityStackContainer
 import com.discoveryone.navigation.result.ActionLauncher
+import com.discoveryone.routes.GeneratedFragmentRoute
 import com.discoveryone.testutils.ContainerTestActivity
 import com.discoveryone.testutils.ListenForStringResultTestButReceiverWrongResultTypFragment
-import com.discoveryone.testutils.ListenForStringResultTestButReceiverWrongResultTypFragmentDestination
+import com.discoveryone.testutils.ListenForStringResultTestButReceiverWrongResultTypFragmentRoute
 import com.discoveryone.testutils.ListenForStringResultTestFragment
-import com.discoveryone.testutils.ListenForStringResultTestFragmentDestination
+import com.discoveryone.testutils.ListenForStringResultTestFragmentRoute
 import com.discoveryone.testutils.ReturnIntValueTestFragment
 import com.discoveryone.testutils.ReturnStringValueTestFragment
 import com.discoveryone.testutils.ReturningValueSequence1TestFragment
-import com.discoveryone.testutils.ReturningValueSequence1TestFragmentDestination
+import com.discoveryone.testutils.ReturningValueSequence1TestFragmentRoute
 import com.discoveryone.testutils.ReturningValueSequence2TestFragment
 import com.discoveryone.testutils.ReturningValueSequence3TestFragment
 import com.discoveryone.testutils.TestFragment
 import com.discoveryone.testutils.TestFragment2
-import com.discoveryone.testutils.TestFragment2Destination
-import com.discoveryone.testutils.TestFragmentDestination
+import com.discoveryone.testutils.TestFragment2Route
+import com.discoveryone.testutils.TestFragmentRoute
 import com.discoveryone.testutils.TestResultSpy
 import com.discoveryone.testutils.launchActivity
 import com.discoveryone.testutils.recreateAndWait
@@ -34,10 +34,10 @@ import kotlin.reflect.KClass
 class FragmentNavigationTest {
 
     @Test
-    fun givenAFragmentDestinationWithoutArgs_whenNavigatingToThatFragment_thenCurrentTopFragmentShouldBeThatFragmentWithNoArgs() {
+    fun givenAFragmentRouteWithoutArgs_whenNavigatingToThatFragment_thenCurrentTopFragmentShouldBeThatFragmentWithNoArgs() {
         val activity = launchActivity<ContainerTestActivity>()
 
-        activity.scene.navigate(FakeFragmentDestinationWithoutArgs())
+        activity.scene.navigate(FakeFragmentRouteWithoutArgs())
         waitForIdleSync()
 
         assertEquals(TestFragment::class, activity.getFragment()::class)
@@ -45,14 +45,14 @@ class FragmentNavigationTest {
     }
 
     @Test
-    fun givenAFragmentDestinationWithStringAndDoubleArgs_whenNavigatingToThatFragment_thenCurrentTopFragmentShouldBeThatFragmentWithThoseArgs() {
-        val fakeFragmentDestination = FakeFragmentDestinationWithArgs(
+    fun givenAFragmentRouteWithStringAndDoubleArgs_whenNavigatingToThatFragment_thenCurrentTopFragmentShouldBeThatFragmentWithThoseArgs() {
+        val fakeFragmentRoute = FakeFragmentRouteWithArgs(
             arg1 = "arg1_value",
             arg2 = 56789.0
         )
         val activity = launchActivity<ContainerTestActivity>()
 
-        activity.scene.navigate(fakeFragmentDestination)
+        activity.scene.navigate(fakeFragmentRoute)
         waitForIdleSync()
 
         val currentFragmentArgs = activity.getFragment().arguments!!
@@ -66,7 +66,7 @@ class FragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(ListenForStringResultTestFragmentDestination)
+        activity.scene.navigate(ListenForStringResultTestFragmentRoute)
         waitForIdleSync()
         val expectedResult = "expected-result"
 
@@ -85,7 +85,7 @@ class FragmentNavigationTest {
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
         activity.scene.navigate(
-            ListenForStringResultTestButReceiverWrongResultTypFragmentDestination
+            ListenForStringResultTestButReceiverWrongResultTypFragmentRoute
         )
         waitForIdleSync()
 
@@ -103,7 +103,7 @@ class FragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(ReturningValueSequence1TestFragmentDestination)
+        activity.scene.navigate(ReturningValueSequence1TestFragmentRoute)
         waitForIdleSync()
 
         activity.getSpecificFragment<ReturningValueSequence1TestFragment>()
@@ -127,7 +127,7 @@ class FragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(ReturningValueSequence1TestFragmentDestination)
+        activity.scene.navigate(ReturningValueSequence1TestFragmentRoute)
         waitForIdleSync()
 
         activity.getSpecificFragment<ReturningValueSequence1TestFragment>()
@@ -147,11 +147,11 @@ class FragmentNavigationTest {
     }
 
     @Test
-    fun whenNavigatingToTwoNewDestinationsAndClosingTheLastOne_thenCurrentTopFragmentShouldBeTheFirstOne() {
+    fun whenNavigatingToTwoNewRoutesAndClosingTheLastOne_thenCurrentTopFragmentShouldBeTheFirstOne() {
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(TestFragmentDestination)
+        activity.scene.navigate(TestFragmentRoute)
 
-        activity.scene.navigate(TestFragment2Destination)
+        activity.scene.navigate(TestFragment2Route)
         waitForIdleSync()
         activity.getSpecificFragment<TestFragment2>().scene.close()
         waitForIdleSync()
@@ -166,15 +166,15 @@ class FragmentNavigationTest {
     private inline fun <reified F : Fragment> FragmentActivity.getSpecificFragment(): F =
         supportFragmentManager.fragments.first { it is F } as F
 
-    data class FakeFragmentDestinationWithoutArgs(
+    data class FakeFragmentRouteWithoutArgs(
         override val clazz: KClass<*> = TestFragment::class,
         override val containerId: Int = com.discoveryone.test.R.id.container
-    ) : FragmentDestination
+    ) : GeneratedFragmentRoute
 
-    data class FakeFragmentDestinationWithArgs(
+    data class FakeFragmentRouteWithArgs(
         override val clazz: KClass<*> = TestFragment::class,
         override val containerId: Int = com.discoveryone.test.R.id.container,
-        @InternalDestinationArgumentMarker val arg1: String,
-        @InternalDestinationArgumentMarker val arg2: Double
-    ) : FragmentDestination
+        @InternalRouteArgumentMarker val arg1: String,
+        @InternalRouteArgumentMarker val arg2: Double
+    ) : GeneratedFragmentRoute
 }
