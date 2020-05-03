@@ -22,4 +22,5 @@ inline fun <reified T : Activity> launchActivity(): T {
 
 fun onMainThread(action: () -> Unit) {
     InstrumentationRegistry.getInstrumentation().runOnMainSync { action() }
+    waitForIdleSync()
 }

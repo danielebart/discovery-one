@@ -23,6 +23,7 @@ internal object FragmentNavigation {
         val arguments = destination.extractArgumentsFromDestination().toTypedArray()
 
         currentActivity.supportFragmentManager.beginTransaction()
+            .addToBackStack("")
             .replace(destination.containerId, fragmentClass.java, bundleOf(*arguments), null)
             .commit()
     }
