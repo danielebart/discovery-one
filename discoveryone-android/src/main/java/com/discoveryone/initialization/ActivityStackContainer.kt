@@ -3,18 +3,19 @@ package com.discoveryone.initialization
 import android.app.Activity
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentActivity
-import java.util.Stack
+import java.util.Deque
+import java.util.concurrent.LinkedBlockingDeque
 
 internal object ActivityStackContainer {
 
-    private val stack: Stack<FragmentActivity> = Stack()
+    private val stack: Deque<FragmentActivity> = LinkedBlockingDeque()
 
     fun push(activity: FragmentActivity) {
         stack.push(activity)
     }
 
     fun peek(): FragmentActivity =
-        stack.peek()
+        stack.last
 
     fun remove(activity: Activity) =
         stack.remove(activity)
