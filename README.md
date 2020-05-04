@@ -31,8 +31,9 @@ Navigation in Android has always been a pain. This library simplify how two rout
 ## Features
 - [x] Simple navigation between Fragments and Activities.
 - [x] Navigation for result between Activities.
-- [ ] Navigation for result between Fragments. *TODO*.
-- [ ] Support back navigation. *WIP*.
+- [x] Navigation for result between Fragments.
+- [x] Support back navigation.
+- [ ] Safe route arguments extraction. *WIP*.
 - [ ] Dialogs and BottomSheets route. *TODO*.
 - [ ] Support transactions. *TODO*.
 - [ ] Improve Jvm testing API. *TODO*.
