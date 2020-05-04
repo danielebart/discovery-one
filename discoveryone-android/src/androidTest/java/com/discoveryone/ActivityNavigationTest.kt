@@ -25,6 +25,7 @@ import com.discoveryone.testutils.ReturningValueSequence2TestActivity
 import com.discoveryone.testutils.TestResultSpy
 import com.discoveryone.testutils.launchActivity
 import com.discoveryone.testutils.recreateAndWait
+import com.discoveryone.testutils.waitForActivity
 import com.discoveryone.testutils.waitForIdleSync
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.allOf
@@ -47,6 +48,7 @@ class ActivityNavigationTest {
     @After
     fun teardown() {
         Intents.release()
+        ActivityStackContainer.clear()
     }
 
     @Test
@@ -95,7 +97,7 @@ class ActivityNavigationTest {
         val expectedResult = "expected-result"
 
         activity.navigateToActivityReturningResult(expectedResult)
-        waitForIdleSync()
+        waitForActivity()
 
         assertEquals(listOf(expectedResult), resultSpy.getRecorderResults())
     }
@@ -118,7 +120,9 @@ class ActivityNavigationTest {
         ActionLauncher.injectActivityResultSpy(resultSpy)
 
         launchActivity<ReturningValueSequence1TestActivity>().navigateToActivity2()
+        waitForActivity()
         getActivity<ReturningValueSequence2TestActivity>().navigateToActivity3()
+        waitForActivity()
 
         assertEquals(
             listOf("arg_from_activity_3", "arg_from_activity_2"),
@@ -133,9 +137,11 @@ class ActivityNavigationTest {
 
         val activity1 = launchActivity<ReturningValueSequence1TestActivity>()
         activity1.navigateToActivity2()
+        waitForActivity()
         val activity2 = getActivity<ReturningValueSequence2TestActivity>()
         activity1.recreateAndWait()
         activity2.navigateToActivity3()
+        waitForActivity()
 
         assertEquals(
             listOf("arg_from_activity_3", "arg_from_activity_2"),
@@ -148,10 +154,10 @@ class ActivityNavigationTest {
         val activity1 = launchActivity<ContainerTestActivity>()
 
         activity1.scene.navigate(EmptyTestActivityDestination)
-        waitForIdleSync()
+        waitForActivity()
         val activity2 = ActivityStackContainer.peek()
         activity2.scene.close()
-        waitForIdleSync()
+        waitForActivity()
 
         assertTrue(activity2.isFinishing)
         assertFalse(activity1.isFinishing)

@@ -31,6 +31,11 @@ internal object ActivityStackContainer {
     fun getByName(name: String): FragmentActivity =
         stack.first { it::class.simpleName == name }
 
+    @VisibleForTesting
+    fun clear() {
+        stack.clear()
+    }
+
     fun getByHashCode(hashCode: Int): FragmentActivity =
         stack.first { it.hashCode() == hashCode }
 }

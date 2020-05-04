@@ -29,5 +29,6 @@ fun waitForIdleSync() {
 
 fun waitForActivity() {
     waitForIdleSync()
-    SystemClock.sleep(700) // Activity creation timeout. Refers to ProcessLifecycleOwner
+    SystemClock.sleep(700) // Fixes flaky tests on activity creation
+    waitForIdleSync()
 }
