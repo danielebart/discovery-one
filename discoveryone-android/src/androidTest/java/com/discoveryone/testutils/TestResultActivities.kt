@@ -67,7 +67,6 @@ class ReturningValueSequence1TestActivity : AppCompatActivity() {
 
     fun navigateToActivity2() {
         scene.navigateForResult("key_result", ReturningValueSequence2TestActivityDestination)
-        waitForIdleSync()
     }
 }
 
@@ -83,7 +82,6 @@ class ReturningValueSequence2TestActivity : AppCompatActivity() {
 
     fun navigateToActivity3() {
         scene.navigateForResult("key_result", ReturningValueSequence3TestActivityDestination)
-        waitForIdleSync()
     }
 }
 

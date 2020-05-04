@@ -2,8 +2,6 @@ package com.discoveryone.navigation
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
@@ -60,9 +58,7 @@ internal object ActivityNavigation {
     }
 
     internal fun close(currentActivity: FragmentActivity) {
-        Handler(Looper.getMainLooper()).post {
-            currentActivity.onBackPressed()
-        }
+        currentActivity.finish()
     }
 
     internal fun <T> closeWithResult(currentActivity: FragmentActivity, result: T) {
@@ -70,9 +66,7 @@ internal object ActivityNavigation {
             Activity.RESULT_OK,
             Intent().putExtras(bundleOf(DEFAULT_INTENT_EXTRA_KEY to result))
         )
-        Handler(Looper.getMainLooper()).post {
-            currentActivity.onBackPressed()
-        }
+        currentActivity.finish()
     }
 
     internal fun unregisterActivityResultLauncher(activity: Activity) {

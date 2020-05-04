@@ -18,5 +18,4 @@ class FragmentNotFoundOnResultRegistration :
         """.trimIndent()
     )
 
-
 class NoActivityOnStack : RuntimeException()

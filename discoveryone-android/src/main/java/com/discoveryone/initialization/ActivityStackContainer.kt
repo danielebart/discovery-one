@@ -9,33 +9,33 @@ import java.util.concurrent.LinkedBlockingDeque
 
 internal object ActivityStackContainer {
 
-    private val stack: Deque<FragmentActivity> = LinkedBlockingDeque()
+    private val deque: Deque<FragmentActivity> = LinkedBlockingDeque()
 
     fun push(activity: FragmentActivity) {
-        stack.push(activity)
+        deque.push(activity)
     }
 
     fun peek(): FragmentActivity =
-        stack.peek() ?: throw NoActivityOnStack()
+        deque.peek() ?: throw NoActivityOnStack()
 
     fun remove(activity: Activity) =
-        stack.remove(activity)
+        deque.remove(activity)
 
     fun isEmpty(): Boolean =
-        stack.isEmpty()
+        deque.isEmpty()
 
     fun size(): Int =
-        stack.size
+        deque.size
 
     @VisibleForTesting
     fun getByName(name: String): FragmentActivity =
-        stack.first { it::class.simpleName == name }
+        deque.first { it::class.simpleName == name }
 
     @VisibleForTesting
     fun clear() {
-        stack.clear()
+        deque.clear()
     }
 
     fun getByHashCode(hashCode: Int): FragmentActivity =
-        stack.first { it.hashCode() == hashCode }
+        deque.first { it.hashCode() == hashCode }
 }
