@@ -3,7 +3,7 @@ package com.discoveryone.core
 import com.discoveryone.DiscoveryOne
 import com.discoveryone.Navigator
 import com.discoveryone.Scene
-import com.discoveryone.destinations.AbstractDestination
+import com.discoveryone.routes.AbstractRoute
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -23,24 +23,24 @@ class DiscoveryOneTest {
     }
 
     @Test
-    fun `WHEN navigating to 3 different destinations THEN navigator is called 3 times`() {
-        DiscoveryOne.navigate(StubScene(), FakeDestination1)
-        DiscoveryOne.navigate(StubScene(), FakeDestination2)
-        DiscoveryOne.navigate(StubScene(), FakeDestination3)
+    fun `WHEN navigating to 3 different routes THEN navigator is called 3 times`() {
+        DiscoveryOne.navigate(StubScene(), FakeRoute1)
+        DiscoveryOne.navigate(StubScene(), FakeRoute2)
+        DiscoveryOne.navigate(StubScene(), FakeRoute3)
 
         assertEquals(
-            listOf(FakeDestination1, FakeDestination2, FakeDestination3),
-            FakeNavigator.destinationHistorySpy
+            listOf(FakeRoute1, FakeRoute2, FakeRoute3),
+            FakeNavigator.routeHistorySpy
         )
     }
 
     @Test
-    fun `WHEN navigating to a destination for result given a token THEN navigator is called for result with same token`() {
-        DiscoveryOne.navigateForResult(StubScene(), "key", FakeDestination1)
+    fun `WHEN navigating to a route for result given a token THEN navigator is called for result with same token`() {
+        DiscoveryOne.navigateForResult(StubScene(), "key", FakeRoute1)
 
         assertEquals(
-            listOf(Pair(FakeDestination1, "key")),
-            FakeNavigator.destinationForResultHistorySpy
+            listOf(Pair(FakeRoute1, "key")),
+            FakeNavigator.ROUTE_FOR_RESULT_HISTORY_SPY
         )
     }
 
@@ -57,21 +57,21 @@ class DiscoveryOneTest {
     }
 
     @Test
-    fun `Given a previous destination showed, WHEN navigating to a new one and closing last destination THEN last visible destination is the only in the stack`() {
-        DiscoveryOne.navigate(StubScene(), FakeDestination1)
+    fun `Given a previous route showed, WHEN navigating to a new one and closing last route THEN last visible route is the only in the stack`() {
+        DiscoveryOne.navigate(StubScene(), FakeRoute1)
 
-        DiscoveryOne.navigate(StubScene(), FakeDestination2)
+        DiscoveryOne.navigate(StubScene(), FakeRoute2)
         DiscoveryOne.close(StubScene())
 
         assertEquals(
-            listOf(FakeDestination1),
-            FakeNavigator.destinationHistorySpy
+            listOf(FakeRoute1),
+            FakeNavigator.routeHistorySpy
         )
     }
 
     @Test
-    fun `WHEN navigating to a new Destination and closing it with result THEN closeWithResultSpy list contains the value set as result when closing the destination`() {
-        DiscoveryOne.navigate(StubScene(), FakeDestination1)
+    fun `WHEN navigating to a new route and closing it with result THEN closeWithResultSpy list contains the value set as result when closing the route`() {
+        DiscoveryOne.navigate(StubScene(), FakeRoute1)
 
         DiscoveryOne.closeWithResult(StubScene(), "fake-result")
 
@@ -83,22 +83,22 @@ class DiscoveryOneTest {
 
     object FakeNavigator : Navigator {
 
-        var destinationHistorySpy: MutableList<AbstractDestination> = mutableListOf()
-        val destinationForResultHistorySpy: MutableList<Pair<AbstractDestination, String>> =
+        var routeHistorySpy: MutableList<AbstractRoute> = mutableListOf()
+        val ROUTE_FOR_RESULT_HISTORY_SPY: MutableList<Pair<AbstractRoute, String>> =
             mutableListOf()
         var registerResultSpyCounter = 0
         var closeWithResultSpy: MutableList<Any> = mutableListOf()
 
-        override fun navigate(scene: Scene, destination: AbstractDestination) {
-            destinationHistorySpy.add(destination)
+        override fun navigate(scene: Scene, route: AbstractRoute) {
+            routeHistorySpy.add(route)
         }
 
         override fun navigateForResult(
             scene: Scene,
             key: String,
-            destination: AbstractDestination
+            route: AbstractRoute
         ) {
-            destinationForResultHistorySpy.add(Pair(destination, key))
+            ROUTE_FOR_RESULT_HISTORY_SPY.add(Pair(route, key))
         }
 
         override fun <T : Any> onResult(
@@ -111,31 +111,31 @@ class DiscoveryOneTest {
         }
 
         override fun close(scene: Scene) {
-            destinationHistorySpy.removeAt(destinationHistorySpy.lastIndex)
+            routeHistorySpy.removeAt(routeHistorySpy.lastIndex)
         }
 
         override fun <T> closeWithResult(scene: Scene, result: T) {
-            destinationHistorySpy.removeAt(destinationHistorySpy.lastIndex)
+            routeHistorySpy.removeAt(routeHistorySpy.lastIndex)
             closeWithResultSpy.add(result as Any)
         }
 
         fun clear() {
-            destinationHistorySpy.clear()
-            destinationForResultHistorySpy.clear()
+            routeHistorySpy.clear()
+            ROUTE_FOR_RESULT_HISTORY_SPY.clear()
             closeWithResultSpy.clear()
             registerResultSpyCounter = 0
         }
     }
 
-    object FakeDestination1 : AbstractDestination {
+    object FakeRoute1 : AbstractRoute {
         override val clazz: KClass<*> = Any::class
     }
 
-    object FakeDestination2 : AbstractDestination {
+    object FakeRoute2 : AbstractRoute {
         override val clazz: KClass<*> = Any::class
     }
 
-    object FakeDestination3 : AbstractDestination {
+    object FakeRoute3 : AbstractRoute {
         override val clazz: KClass<*> = Any::class
     }
 }

@@ -1,6 +1,6 @@
 package com.discoveryone.processor
 
-import com.discoveryone.destinations.FragmentDestination
+import com.discoveryone.routes.GeneratedFragmentRoute
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import org.junit.Assert.assertEquals
@@ -10,50 +10,50 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 
-class FragmentDestinationGenerationTest {
+class FragmentRouteGenerationTest {
 
     @Test
-    fun `GIVEN a class annotated with @FragmentNavigationDestination without args WHEN compiling using DestinationProcessor THEN a FragmentDestination is generated`() {
+    fun `GIVEN a class annotated with @FragmentRoute without args WHEN compiling using RouteProcessor THEN a FragmentRoute is generated`() {
         val kotlinSource = SourceFile.kotlin(
             "fakeClass.kt", """
         package fakepackage
         
-        import com.discoveryone.annotations.FragmentNavigationDestination
+        import com.discoveryone.annotations.FragmentRoute
         
-        @FragmentNavigationDestination(name = "FAKE_DESTINATION", containerId = 439)
+        @FragmentRoute(name = "FAKE_ROUTE", containerId = 439)
         class FakeFragment
     """
         )
 
         val result = KotlinCompilation().apply {
             sources = listOf(kotlinSource)
-            annotationProcessors = listOf(DestinationProcessor())
+            annotationProcessors = listOf(RouteProcessor())
             inheritClassPath = true
         }.compile()
 
-        result.assertGeneratedAFragmentDestination(
-            expectedDestinationName = "fakepackage.FAKE_DESTINATION",
+        result.assertGeneratedAFragmentRoute(
+            expectedRouteName = "fakepackage.FAKE_ROUTE",
             expectedClassArgQualifiedName = "fakepackage.FakeFragment",
             expectedContainerId = 439
         )
     }
 
     @Test
-    fun `GIVEN a class annotated with @FragmentNavigationDestination with args WHEN compiling using DestinationProcessor THEN an FragmentDestination is generated with args`() {
+    fun `GIVEN a class annotated with @FragmentRoute with args WHEN compiling using RouteProcessor THEN an FragmentRoute is generated with args`() {
         val kotlinSource = SourceFile.kotlin(
             "fakeClass.kt", """
         package fakepackage
 
-        import com.discoveryone.annotations.FragmentNavigationDestination
-        import com.discoveryone.annotations.DestinationArgument
+        import com.discoveryone.annotations.FragmentRoute
+        import com.discoveryone.annotations.RouteArgument
 
-        @FragmentNavigationDestination(
-            "FAKE_DESTINATION", 
+        @FragmentRoute(
+            "FAKE_ROUTE", 
             containerId = 789, 
             arguments = [
-                DestinationArgument("arg1", String::class), 
-                DestinationArgument("arg2", Int::class), 
-                DestinationArgument("arg3", Double::class)
+                RouteArgument("arg1", String::class), 
+                RouteArgument("arg2", Int::class), 
+                RouteArgument("arg3", Double::class)
                 ]
         )
         class FakeFragment
@@ -62,12 +62,12 @@ class FragmentDestinationGenerationTest {
 
         val result = KotlinCompilation().apply {
             sources = listOf(kotlinSource)
-            annotationProcessors = listOf(DestinationProcessor())
+            annotationProcessors = listOf(RouteProcessor())
             inheritClassPath = true
         }.compile()
 
-        result.assertGeneratedAFragmentDestinationWithArgs(
-            expectedDestinationName = "fakepackage.FAKE_DESTINATION",
+        result.assertGeneratedAFragmentRouteWithArgs(
+            expectedRouteName = "fakepackage.FAKE_ROUTE",
             expectedClassArgQualifiedName = "fakepackage.FakeFragment",
             expectedContainerId = 789,
             expectedArgs = listOf(
@@ -79,64 +79,64 @@ class FragmentDestinationGenerationTest {
     }
 
     @Test
-    fun `GIVEN a class annotated with @FragmentNavigationDestination without name WHEN compiling using DestinationProcessor THEN a FragmentDestination is generated with name containing original class name`() {
+    fun `GIVEN a class annotated with @FragmentRoute without name WHEN compiling using RouteProcessor THEN a FragmentRoute is generated with name containing original class name`() {
         val kotlinSource = SourceFile.kotlin(
             "fakeClass.kt", """
         package fakepackage
 
-        import com.discoveryone.annotations.FragmentNavigationDestination
+        import com.discoveryone.annotations.FragmentRoute
 
-        @FragmentNavigationDestination(containerId = 789)
+        @FragmentRoute(containerId = 789)
         class FakeFragment
     """
         )
 
         val result = KotlinCompilation().apply {
             sources = listOf(kotlinSource)
-            annotationProcessors = listOf(DestinationProcessor())
+            annotationProcessors = listOf(RouteProcessor())
             inheritClassPath = true
         }.compile()
 
-        result.assertGeneratedAFragmentDestination(
-            expectedDestinationName = "fakepackage.FakeFragmentDestination",
+        result.assertGeneratedAFragmentRoute(
+            expectedRouteName = "fakepackage.FakeFragmentRoute",
             expectedClassArgQualifiedName = "fakepackage.FakeFragment",
             expectedContainerId = 789
         )
     }
 
-    private fun KotlinCompilation.Result.assertGeneratedAFragmentDestination(
-        expectedDestinationName: String,
+    private fun KotlinCompilation.Result.assertGeneratedAFragmentRoute(
+        expectedRouteName: String,
         expectedClassArgQualifiedName: String,
         expectedContainerId: Int
     ) {
         assertEquals(KotlinCompilation.ExitCode.OK, exitCode)
-        val generatedClass = classLoader.loadClass(expectedDestinationName)
+        val generatedClass = classLoader.loadClass(expectedRouteName)
         val instance = generatedClass.getField("INSTANCE").get(null)
         val classValue = generatedClass.getMethod("getClazz").invoke(instance) as KClass<*>
         val containerIdValue = generatedClass.getMethod("getContainerId").invoke(instance) as Int
         assertEquals(expectedClassArgQualifiedName, classValue.qualifiedName)
         assertEquals(expectedContainerId, containerIdValue)
         assertEquals(
-            FragmentDestination::class.qualifiedName,
+            GeneratedFragmentRoute::class.qualifiedName,
             generatedClass.interfaces.first().name
         )
     }
 
-    private fun KotlinCompilation.Result.assertGeneratedAFragmentDestinationWithArgs(
-        expectedDestinationName: String,
+    private fun KotlinCompilation.Result.assertGeneratedAFragmentRouteWithArgs(
+        expectedRouteName: String,
         expectedClassArgQualifiedName: String,
         expectedContainerId: Int,
         expectedArgs: List<Pair<String, KClass<*>>> = emptyList()
     ) {
         assertEquals(KotlinCompilation.ExitCode.OK, exitCode)
-        val generatedClass = classLoader.loadClass(expectedDestinationName)
+        val generatedClass = classLoader.loadClass(expectedRouteName)
         val instance = generatedClass.constructors.first().newInstance("arg1", 30, 50.0)
         val classValue = generatedClass.getMethod("getClazz").invoke(instance) as KClass<*>
         val containerIdValue = generatedClass.getMethod("getContainerId").invoke(instance) as Int
         assertEquals(expectedClassArgQualifiedName, classValue.qualifiedName)
         assertEquals(expectedContainerId, containerIdValue)
         assertEquals(
-            FragmentDestination::class.qualifiedName,
+            GeneratedFragmentRoute::class.qualifiedName,
             generatedClass.interfaces.first().name
         )
         expectedArgs.forEach {

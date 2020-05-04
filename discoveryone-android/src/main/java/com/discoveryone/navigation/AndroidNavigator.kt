@@ -4,11 +4,11 @@ import android.app.Application
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.Navigator
 import com.discoveryone.Scene
-import com.discoveryone.destinations.AbstractDestination
-import com.discoveryone.destinations.ActivityDestination
-import com.discoveryone.destinations.FragmentDestination
 import com.discoveryone.initialization.ActivityStackContainer
 import com.discoveryone.initialization.NavigatorActivityLifecycleCallback
+import com.discoveryone.routes.AbstractRoute
+import com.discoveryone.routes.GeneratedActivityRoute
+import com.discoveryone.routes.GeneratedFragmentRoute
 import kotlin.reflect.KClass
 
 class AndroidNavigator(application: Application) : Navigator {
@@ -24,31 +24,31 @@ class AndroidNavigator(application: Application) : Navigator {
             ActivityStackContainer.peek()
         }
 
-    override fun navigate(scene: Scene, destination: AbstractDestination) {
+    override fun navigate(scene: Scene, route: AbstractRoute) {
         scene as AndroidScene
-        when (destination) {
-            is FragmentDestination -> FragmentNavigation.navigate(
+        when (route) {
+            is GeneratedFragmentRoute -> FragmentNavigation.navigate(
                 scene.currentActivity,
-                destination
+                route
             )
-            is ActivityDestination -> ActivityNavigation.navigate(
+            is GeneratedActivityRoute -> ActivityNavigation.navigate(
                 scene.currentActivity,
-                destination
+                route
             )
         }
     }
 
-    override fun navigateForResult(scene: Scene, key: String, destination: AbstractDestination) {
+    override fun navigateForResult(scene: Scene, key: String, route: AbstractRoute) {
         scene as AndroidScene
-        when (destination) {
-            is FragmentDestination -> FragmentNavigation.navigateForResult(
+        when (route) {
+            is GeneratedFragmentRoute -> FragmentNavigation.navigateForResult(
                 currentActivity = scene.currentActivity,
-                destination = destination,
+                route = route,
                 key = key
             )
-            is ActivityDestination -> ActivityNavigation.navigateForResult(
+            is GeneratedActivityRoute -> ActivityNavigation.navigateForResult(
                 currentActivity = scene.currentActivity,
-                destination = destination,
+                route = route,
                 userKey = key,
                 scene = scene
             )

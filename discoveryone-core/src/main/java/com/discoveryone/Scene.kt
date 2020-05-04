@@ -1,13 +1,13 @@
 package com.discoveryone
 
-import com.discoveryone.destinations.AbstractDestination
+import com.discoveryone.routes.AbstractRoute
 import kotlin.reflect.KClass
 
 interface Scene {
 
-    fun navigate(destination: AbstractDestination)
+    fun navigate(route: AbstractRoute)
 
-    fun navigateForResult(key: String, destination: AbstractDestination)
+    fun navigateForResult(key: String, route: AbstractRoute)
 
     fun <T : Any> onResult(key: String, resultClass: KClass<T>, action: (T) -> Unit)
 

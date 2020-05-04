@@ -1,10 +1,10 @@
 package com.discoveryone.testutils
 
 import androidx.appcompat.app.AppCompatActivity
-import com.discoveryone.annotations.ActivityNavigationDestination
+import com.discoveryone.annotations.ActivityRoute
 
-@ActivityNavigationDestination
+@ActivityRoute
 class ContainerTestActivity : AppCompatActivity(com.discoveryone.test.R.layout.container_layout)
 
-@ActivityNavigationDestination
+@ActivityRoute
 class EmptyTestActivity : AppCompatActivity()

@@ -2,14 +2,14 @@ package com.discoveryone.stubs
 
 import com.discoveryone.Navigator
 import com.discoveryone.Scene
-import com.discoveryone.destinations.AbstractDestination
+import com.discoveryone.routes.AbstractRoute
 import kotlin.reflect.KClass
 
 class StubNavigator : Navigator {
 
-    override fun navigate(scene: Scene, destination: AbstractDestination) = Unit
+    override fun navigate(scene: Scene, route: AbstractRoute) = Unit
 
-    override fun navigateForResult(scene: Scene, key: String, destination: AbstractDestination) =
+    override fun navigateForResult(scene: Scene, key: String, route: AbstractRoute) =
         Unit
 
     override fun <T : Any> onResult(

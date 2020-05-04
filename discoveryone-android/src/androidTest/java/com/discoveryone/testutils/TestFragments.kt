@@ -3,18 +3,18 @@ package com.discoveryone.testutils
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.discoveryone.annotations.DestinationArgument
-import com.discoveryone.annotations.FragmentNavigationDestination
+import com.discoveryone.annotations.FragmentRoute
+import com.discoveryone.annotations.RouteArgument
 import com.discoveryone.extensions.onResult
 import com.discoveryone.extensions.scene
 
-@FragmentNavigationDestination(containerId = com.discoveryone.test.R.id.container)
+@FragmentRoute(containerId = com.discoveryone.test.R.id.container)
 class TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout)
 
-@FragmentNavigationDestination(containerId = com.discoveryone.test.R.id.container)
+@FragmentRoute(containerId = com.discoveryone.test.R.id.container)
 class TestFragment2 : Fragment(com.discoveryone.test.R.layout.empty_layout)
 
-@FragmentNavigationDestination(containerId = com.discoveryone.test.R.id.container)
+@FragmentRoute(containerId = com.discoveryone.test.R.id.container)
 class ListenForStringResultTestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -24,14 +24,14 @@ class ListenForStringResultTestFragment : Fragment(com.discoveryone.test.R.layou
     fun navigateToFragmentReturningResult(valueWhichNextFragmentShouldReturn: String) {
         scene.navigateForResult(
             "key_result",
-            ReturnStringValueTestFragmentDestination(valueWhichNextFragmentShouldReturn)
+            ReturnStringValueTestFragmentRoute(valueWhichNextFragmentShouldReturn)
         )
     }
 }
 
-@FragmentNavigationDestination(
+@FragmentRoute(
     containerId = com.discoveryone.test.R.id.container,
-    arguments = [DestinationArgument("expectedReturningValue", String::class)]
+    arguments = [RouteArgument("expectedReturningValue", String::class)]
 )
 class ReturnStringValueTestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
@@ -43,7 +43,7 @@ class ReturnStringValueTestFragment : Fragment(com.discoveryone.test.R.layout.em
 
 //////////////////////////////////////////////////////////////////
 
-@FragmentNavigationDestination(containerId = com.discoveryone.test.R.id.container)
+@FragmentRoute(containerId = com.discoveryone.test.R.id.container)
 class ListenForStringResultTestButReceiverWrongResultTypFragment :
     Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
@@ -52,11 +52,11 @@ class ListenForStringResultTestButReceiverWrongResultTypFragment :
     }
 
     fun navigateToFragmentReturningWrongResultType() {
-        scene.navigateForResult("key_result", ReturnIntValueTestFragmentDestination)
+        scene.navigateForResult("key_result", ReturnIntValueTestFragmentRoute)
     }
 }
 
-@FragmentNavigationDestination(containerId = com.discoveryone.test.R.id.container)
+@FragmentRoute(containerId = com.discoveryone.test.R.id.container)
 class ReturnIntValueTestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     fun returnResult() {
@@ -65,7 +65,7 @@ class ReturnIntValueTestFragment : Fragment(com.discoveryone.test.R.layout.empty
 }
 
 //////////////////////////////////////////////////////////////////
-@FragmentNavigationDestination(containerId = com.discoveryone.test.R.id.container)
+@FragmentRoute(containerId = com.discoveryone.test.R.id.container)
 class ReturningValueSequence1TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,12 +73,12 @@ class ReturningValueSequence1TestFragment : Fragment(com.discoveryone.test.R.lay
     }
 
     fun navigateToFragment2() {
-        scene.navigateForResult("key_result", ReturningValueSequence2TestFragmentDestination)
+        scene.navigateForResult("key_result", ReturningValueSequence2TestFragmentRoute)
         waitForIdleSync()
     }
 }
 
-@FragmentNavigationDestination(containerId = com.discoveryone.test.R.id.container)
+@FragmentRoute(containerId = com.discoveryone.test.R.id.container)
 class ReturningValueSequence2TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,12 +88,12 @@ class ReturningValueSequence2TestFragment : Fragment(com.discoveryone.test.R.lay
     }
 
     fun navigateToFragment3() {
-        scene.navigateForResult("key_result2", ReturningValueSequence3TestFragmentDestination)
+        scene.navigateForResult("key_result2", ReturningValueSequence3TestFragmentRoute)
         waitForIdleSync()
     }
 }
 
-@FragmentNavigationDestination(containerId = com.discoveryone.test.R.id.container)
+@FragmentRoute(containerId = com.discoveryone.test.R.id.container)
 class ReturningValueSequence3TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     fun returnResult() {

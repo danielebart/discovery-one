@@ -1,6 +1,6 @@
 package com.discoveryone
 
-import com.discoveryone.destinations.AbstractDestination
+import com.discoveryone.routes.AbstractRoute
 import com.discoveryone.stubs.StubNavigator
 import kotlin.reflect.KClass
 
@@ -13,12 +13,12 @@ object DiscoveryOne : Navigator {
         this.navigator = navigator
     }
 
-    override fun navigate(scene: Scene, destination: AbstractDestination) {
-        navigator.navigate(scene, destination)
+    override fun navigate(scene: Scene, route: AbstractRoute) {
+        navigator.navigate(scene, route)
     }
 
-    override fun navigateForResult(scene: Scene, key: String, destination: AbstractDestination) {
-        navigator.navigateForResult(scene, key, destination)
+    override fun navigateForResult(scene: Scene, key: String, route: AbstractRoute) {
+        navigator.navigateForResult(scene, key, route)
     }
 
     override fun <T : Any> onResult(

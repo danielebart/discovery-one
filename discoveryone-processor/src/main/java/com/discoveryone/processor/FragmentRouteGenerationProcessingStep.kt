@@ -1,6 +1,6 @@
 package com.discoveryone.processor
 
-import com.discoveryone.annotations.FragmentNavigationDestination
+import com.discoveryone.annotations.FragmentRoute
 import com.google.auto.common.BasicAnnotationProcessor
 import com.google.common.collect.SetMultimap
 import javax.annotation.processing.ProcessingEnvironment
@@ -8,7 +8,7 @@ import javax.lang.model.element.Element
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.TypeElement
 
-internal class FragmentDestinationGenerationProcessingStep(
+internal class FragmentRouteGenerationProcessingStep(
     private val env: ProcessingEnvironment
 ) : BasicAnnotationProcessor.ProcessingStep {
 
@@ -18,19 +18,19 @@ internal class FragmentDestinationGenerationProcessingStep(
         elementsByAnnotation.values()
             .filter { it.kind == ElementKind.CLASS }
             .toMutableSet()
-            .let { generateDestinationClass(it) }
+            .let { generateRouteClass(it) }
 
         return mutableSetOf()
     }
 
-    private fun generateDestinationClass(elements: Set<Element>) {
+    private fun generateRouteClass(elements: Set<Element>) {
         elements.map { it as TypeElement }
             .forEach { typeElement ->
-                DestinationClassGenerator.generateFragmentDestinationClass(env, typeElement)
+                RouteClassGenerator.generateFragmentRouteClass(env, typeElement)
             }
     }
 
     override fun annotations(): Set<Class<out Annotation>> {
-        return setOf(FragmentNavigationDestination::class.java)
+        return setOf(FragmentRoute::class.java)
     }
 }
