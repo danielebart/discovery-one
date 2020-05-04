@@ -3,6 +3,7 @@ package com.discoveryone.initialization
 import android.app.Activity
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentActivity
+import com.discoveryone.exceptions.NoActivityOnStack
 import java.util.Deque
 import java.util.concurrent.LinkedBlockingDeque
 
@@ -15,7 +16,7 @@ internal object ActivityStackContainer {
     }
 
     fun peek(): FragmentActivity =
-        stack.last
+        stack.peek() ?: throw NoActivityOnStack()
 
     fun remove(activity: Activity) =
         stack.remove(activity)
