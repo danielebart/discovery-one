@@ -3,32 +3,39 @@ package com.discoveryone.initialization
 import android.app.Activity
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentActivity
-import java.util.Stack
+import com.discoveryone.exceptions.NoActivityOnStack
+import java.util.Deque
+import java.util.concurrent.LinkedBlockingDeque
 
 internal object ActivityStackContainer {
 
-    private val stack: Stack<FragmentActivity> = Stack()
+    private val deque: Deque<FragmentActivity> = LinkedBlockingDeque()
 
     fun push(activity: FragmentActivity) {
-        stack.push(activity)
+        deque.push(activity)
     }
 
     fun peek(): FragmentActivity =
-        stack.peek()
+        deque.peek() ?: throw NoActivityOnStack()
 
     fun remove(activity: Activity) =
-        stack.remove(activity)
+        deque.remove(activity)
 
     fun isEmpty(): Boolean =
-        stack.isEmpty()
+        deque.isEmpty()
 
     fun size(): Int =
-        stack.size
+        deque.size
 
     @VisibleForTesting
     fun getByName(name: String): FragmentActivity =
-        stack.first { it::class.simpleName == name }
+        deque.first { it::class.simpleName == name }
+
+    @VisibleForTesting
+    fun clear() {
+        deque.clear()
+    }
 
     fun getByHashCode(hashCode: Int): FragmentActivity =
-        stack.first { it.hashCode() == hashCode }
+        deque.first { it.hashCode() == hashCode }
 }

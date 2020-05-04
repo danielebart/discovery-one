@@ -17,3 +17,5 @@ class FragmentNotFoundOnResultRegistration :
         a result before the onCreate method of a fragment").trimIndent()
         """.trimIndent()
     )
+
+class NoActivityOnStack : RuntimeException()

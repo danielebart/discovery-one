@@ -62,7 +62,6 @@ internal object ActivityNavigation {
     }
 
     internal fun <T> closeWithResult(currentActivity: FragmentActivity, result: T) {
-
         currentActivity.setResult(
             Activity.RESULT_OK,
             Intent().putExtras(bundleOf(DEFAULT_INTENT_EXTRA_KEY to result))

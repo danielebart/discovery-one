@@ -31,6 +31,8 @@ import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import kotlin.reflect.KClass
@@ -46,6 +48,7 @@ class ActivityNavigationTest {
     @After
     fun teardown() {
         Intents.release()
+        ActivityStackContainer.clear()
     }
 
     @Test
@@ -94,7 +97,7 @@ class ActivityNavigationTest {
         val expectedResult = "expected-result"
 
         activity.navigateToActivityReturningResult(expectedResult)
-        waitForIdleSync()
+        waitForActivity()
 
         assertEquals(listOf(expectedResult), resultSpy.getRecorderResults())
     }
@@ -117,7 +120,9 @@ class ActivityNavigationTest {
         ActionLauncher.injectActivityResultSpy(resultSpy)
 
         launchActivity<ReturningValueSequence1TestActivity>().navigateToActivity2()
+        waitForActivity()
         getActivity<ReturningValueSequence2TestActivity>().navigateToActivity3()
+        waitForActivity()
 
         assertEquals(
             listOf("arg_from_activity_3", "arg_from_activity_2"),
@@ -132,9 +137,11 @@ class ActivityNavigationTest {
 
         val activity1 = launchActivity<ReturningValueSequence1TestActivity>()
         activity1.navigateToActivity2()
+        waitForActivity()
         val activity2 = getActivity<ReturningValueSequence2TestActivity>()
         activity1.recreateAndWait()
         activity2.navigateToActivity3()
+        waitForActivity()
 
         assertEquals(
             listOf("arg_from_activity_3", "arg_from_activity_2"),
@@ -143,15 +150,17 @@ class ActivityNavigationTest {
     }
 
     @Test
-    fun whenNavigatingToTwoNewDestinationsAndClosingTheLastOne_thenCurrentVisibleActivityShouldBeTheFirstOne() {
+    fun whenNavigatingToTwoNewDestinationsAndClosingTheLastOne_thenSecondActivityShouldBeInFinishingStateAndFirstNot() {
         val activity1 = launchActivity<ContainerTestActivity>()
 
         activity1.scene.navigate(EmptyTestActivityDestination)
-        waitForIdleSync()
-        ActivityStackContainer.peek().scene.close()
+        waitForActivity()
+        val activity2 = ActivityStackContainer.peek()
+        activity2.scene.close()
         waitForActivity()
 
-        assertEquals(activity1, ActivityStackContainer.peek())
+        assertTrue(activity2.isFinishing)
+        assertFalse(activity1.isFinishing)
     }
 
 
