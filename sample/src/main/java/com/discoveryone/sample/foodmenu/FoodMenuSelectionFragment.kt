@@ -20,7 +20,7 @@ class FoodMenuSelectionFragment : Fragment(R.layout.fragment_foodmenu_selection)
 
         numberOfCustomersTextView.text = getString(
             R.string.number_of_customers,
-            requireArguments().getInt("numberOfCustomers")
+            numberOfCustomers
         )
 
         cheeseburgerButton.setOnClickListener {

@@ -27,6 +27,7 @@ internal class FragmentRouteGenerationProcessingStep(
         elements.map { it as TypeElement }
             .forEach { typeElement ->
                 RouteClassGenerator.generateFragmentRouteClass(env, typeElement)
+                SafeArgsExtensionGenerator.generateSafeArgExtensionsForFragment(env, typeElement)
             }
     }
 

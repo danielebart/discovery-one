@@ -13,13 +13,10 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.STAR
-import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
-import com.squareup.kotlinpoet.asTypeName
 import javax.annotation.processing.ProcessingEnvironment
 import javax.lang.model.element.TypeElement
-import javax.lang.model.type.MirroredTypeException
 import kotlin.reflect.KClass
 
 object RouteClassGenerator {
@@ -77,6 +74,7 @@ object RouteClassGenerator {
             .writeTo(env.filer)
     }
 
+
     private fun TypeElement.commonClassTypeBuilder(
         routeName: String,
         arguments: List<RouteArgument>,
@@ -112,14 +110,6 @@ object RouteClassGenerator {
                 .addSuperinterface(routeSupertype)
                 .addProperty(classProperty)
                 .primaryConstructor(constructor)
-        }
-    }
-
-    private fun RouteArgument.getArgumentTypeName(): TypeName {
-        return try {
-            type.java.asTypeName().javaToKotlinType()
-        } catch (mte: MirroredTypeException) {
-            mte.typeMirror.asTypeName().javaToKotlinType()
         }
     }
 }

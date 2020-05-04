@@ -13,6 +13,7 @@ dependencies {
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.kotlinReflect)
     implementation(Dependencies.autocommon)
+    implementation(Dependencies.kotlinMetadata)
 
     testImplementation(Dependencies.junit)
     testImplementation(Dependencies.kotlinCompileTesting)

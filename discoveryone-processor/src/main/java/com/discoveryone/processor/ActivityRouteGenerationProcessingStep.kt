@@ -28,6 +28,7 @@ internal class ActivityRouteGenerationProcessingStep(
         elements.map { it as TypeElement }
             .forEach { typeElement ->
                 RouteClassGenerator.generateActivityRouteClass(env, typeElement)
+                SafeArgsExtensionGenerator.generateSafeArgExtensionsForActivity(env, typeElement)
             }
     }
 

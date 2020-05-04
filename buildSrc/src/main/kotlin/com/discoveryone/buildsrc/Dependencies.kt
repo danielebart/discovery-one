@@ -11,9 +11,10 @@ object Dependencies {
     const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
     const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
     const val activity = "androidx.activity:activity-ktx:${Versions.activity}"
+    const val kotlinMetadata =
+        "org.jetbrains.kotlinx:kotlinx-metadata-jvm:${Versions.kotlinMetadata}"
 
     // testing
-    const val robolectric = "org.robolectric:robolectric:${Versions.robolectric}"
     const val testCore = "androidx.test:core:${Versions.testCore}"
     const val junit = "junit:junit:${Versions.junit}"
     const val fragmentTesting = "androidx.fragment:fragment-testing:${Versions.fragmentTesting}"
