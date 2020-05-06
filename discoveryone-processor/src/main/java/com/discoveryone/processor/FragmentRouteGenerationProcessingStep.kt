@@ -1,6 +1,8 @@
 package com.discoveryone.processor
 
 import com.discoveryone.annotations.FragmentRoute
+import com.discoveryone.processor.routes.FragmentRouteClassGenerator
+import com.discoveryone.processor.safeargs.SafeArgsExtensionGenerator
 import com.google.auto.common.BasicAnnotationProcessor
 import com.google.common.collect.SetMultimap
 import javax.annotation.processing.ProcessingEnvironment
@@ -26,7 +28,8 @@ internal class FragmentRouteGenerationProcessingStep(
     private fun generateRouteClass(elements: Set<Element>) {
         elements.map { it as TypeElement }
             .forEach { typeElement ->
-                RouteClassGenerator.generateFragmentRouteClass(env, typeElement)
+                FragmentRouteClassGenerator.generateRouteClass(env, typeElement)
+                SafeArgsExtensionGenerator.generateSafeArgExtensionsForFragment(env, typeElement)
             }
     }
 

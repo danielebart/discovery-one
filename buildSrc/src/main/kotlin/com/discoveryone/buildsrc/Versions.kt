@@ -14,6 +14,7 @@ object Versions {
     const val autocommon = "0.10"
     const val coreKtx = "1.2.0"
     const val jacoco = "0.8.5"
+    const val kotlinMetadata = "0.1.0"
 
     // testing
     const val robolectric = "4.3.1"
