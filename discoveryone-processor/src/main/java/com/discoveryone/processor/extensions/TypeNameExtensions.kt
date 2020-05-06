@@ -1,4 +1,4 @@
-package com.discoveryone.processor
+package com.discoveryone.processor.extensions
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName

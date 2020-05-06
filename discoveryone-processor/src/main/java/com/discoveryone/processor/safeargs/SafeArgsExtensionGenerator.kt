@@ -1,6 +1,8 @@
-package com.discoveryone.processor
+package com.discoveryone.processor.safeargs
 
+import com.discoveryone.annotations.ActivityRoute
 import com.discoveryone.annotations.FragmentRoute
+import com.discoveryone.processor.extensions.getArgumentTypeName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
@@ -32,7 +34,7 @@ object SafeArgsExtensionGenerator {
         }
 
         arguments.fold(
-            FileSpec.builder(packageName, "${typeElement.simpleName}Extensions.kt")
+            FileSpec.builder(packageName, "${typeElement.simpleName}Extensions")
         ) { builder, routeArgument ->
             builder.apply {
                 generateCommonSafeArgExtensions(
@@ -51,7 +53,7 @@ object SafeArgsExtensionGenerator {
     ) {
         val packageName = typeElement.asClassName().packageName
         val annotation =
-            typeElement.getAnnotation(FragmentRoute::class.java)
+            typeElement.getAnnotation(ActivityRoute::class.java)
         val arguments = annotation.arguments.toList()
 
         if (arguments.isEmpty()) {
@@ -59,7 +61,7 @@ object SafeArgsExtensionGenerator {
         }
 
         arguments.fold(
-            FileSpec.builder(packageName, "${typeElement.simpleName}Extensions.kt")
+            FileSpec.builder(packageName, "${typeElement.simpleName}Extensions")
         ) { builder, routeArgument ->
             builder.apply {
                 generateCommonSafeArgExtensions(

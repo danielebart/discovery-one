@@ -1,6 +1,8 @@
 package com.discoveryone.processor
 
 import com.discoveryone.annotations.ActivityRoute
+import com.discoveryone.processor.routes.ActivityRouteClassGenerator
+import com.discoveryone.processor.safeargs.SafeArgsExtensionGenerator
 import com.google.auto.common.BasicAnnotationProcessor
 import com.google.common.collect.SetMultimap
 import javax.annotation.processing.ProcessingEnvironment
@@ -27,7 +29,7 @@ internal class ActivityRouteGenerationProcessingStep(
     private fun generateRouteClass(elements: Set<Element>) {
         elements.map { it as TypeElement }
             .forEach { typeElement ->
-                RouteClassGenerator.generateActivityRouteClass(env, typeElement)
+                ActivityRouteClassGenerator.generateRouteClass(env, typeElement)
                 SafeArgsExtensionGenerator.generateSafeArgExtensionsForActivity(env, typeElement)
             }
     }

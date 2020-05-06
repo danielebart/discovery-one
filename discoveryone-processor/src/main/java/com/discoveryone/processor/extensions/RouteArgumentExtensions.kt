@@ -1,4 +1,4 @@
-package com.discoveryone.processor
+package com.discoveryone.processor.extensions
 
 import com.discoveryone.annotations.RouteArgument
 import com.squareup.kotlinpoet.TypeName
