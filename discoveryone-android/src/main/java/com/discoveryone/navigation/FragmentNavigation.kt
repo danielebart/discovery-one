@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import com.discoveryone.exceptions.FragmentNotFoundOnResultRegistration
-import com.discoveryone.extensions.extractArgumentsFromRoute
+import com.discoveryone.extensions.extractPropertiesForBundle
 import com.discoveryone.extensions.firstFragmentOrNull
 import com.discoveryone.initialization.ActivityStackContainer
 import com.discoveryone.navigation.result.ActionLauncher
@@ -20,7 +20,7 @@ internal object FragmentNavigation {
 
     fun navigate(currentActivity: FragmentActivity, route: GeneratedFragmentRoute) {
         val fragmentClass = route.clazz as KClass<Fragment>
-        val arguments = route.extractArgumentsFromRoute().toTypedArray()
+        val arguments = route.extractPropertiesForBundle().toTypedArray()
 
         currentActivity.supportFragmentManager.beginTransaction()
             .addToBackStack("")
@@ -34,7 +34,7 @@ internal object FragmentNavigation {
         key: String
     ) {
         val fragmentClass = route.clazz as KClass<Fragment>
-        val userArgs = route.extractArgumentsFromRoute().toTypedArray()
+        val userArgs = route.extractPropertiesForBundle().toTypedArray()
         val fragmentArgs = bundleOf(
             *userArgs,
             FRAGMENT_NAVIGATION_FOR_RESULT_KEY to key

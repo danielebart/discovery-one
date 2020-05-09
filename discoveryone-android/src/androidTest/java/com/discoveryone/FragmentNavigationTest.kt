@@ -2,7 +2,6 @@ package com.discoveryone
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.discoveryone.annotations.InternalRouteArgumentMarker
 import com.discoveryone.extensions.close
 import com.discoveryone.extensions.scene
 import com.discoveryone.initialization.ActivityStackContainer
@@ -34,14 +33,13 @@ import kotlin.reflect.KClass
 class FragmentNavigationTest {
 
     @Test
-    fun givenAFragmentRouteWithoutArgs_whenNavigatingToThatFragment_thenCurrentTopFragmentShouldBeThatFragmentWithNoArgs() {
+    fun givenAFragmentRouteWithoutArgs_whenNavigatingToThatFragment_thenCurrentTopFragmentShouldBeThatFragment() {
         val activity = launchActivity<ContainerTestActivity>()
 
         activity.scene.navigate(FakeFragmentRouteWithoutArgs())
         waitForIdleSync()
 
         assertEquals(TestFragment::class, activity.getFragment()::class)
-        assertEquals(0, activity.getFragment().arguments!!.size())
     }
 
     @Test
@@ -174,7 +172,7 @@ class FragmentNavigationTest {
     data class FakeFragmentRouteWithArgs(
         override val clazz: KClass<*> = TestFragment::class,
         override val containerId: Int = com.discoveryone.test.R.id.container,
-        @InternalRouteArgumentMarker val arg1: String,
-        @InternalRouteArgumentMarker val arg2: Double
+        val arg1: String,
+        val arg2: Double
     ) : GeneratedFragmentRoute
 }

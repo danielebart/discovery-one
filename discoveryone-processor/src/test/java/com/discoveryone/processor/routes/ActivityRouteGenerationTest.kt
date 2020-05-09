@@ -79,7 +79,6 @@ class ActivityRouteGenerationTest {
             """
             package fakepackage
 
-            import com.discoveryone.annotations.InternalRouteArgumentMarker
             import com.discoveryone.routes.GeneratedActivityRoute
             import kotlin.Double
             import kotlin.Int
@@ -87,11 +86,8 @@ class ActivityRouteGenerationTest {
             import kotlin.reflect.KClass
 
             data class FAKE_ROUTE(
-              @InternalRouteArgumentMarker
               val arg1: String,
-              @InternalRouteArgumentMarker
               val arg2: Int,
-              @InternalRouteArgumentMarker
               val arg3: Double
             ) : GeneratedActivityRoute {
               override val clazz: KClass<*> = FakeActivity::class

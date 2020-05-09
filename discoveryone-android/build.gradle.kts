@@ -19,6 +19,12 @@ android {
         testInstrumentationRunner = AndroidConfig.testInstrumentationRunner
     }
 
+    buildTypes {
+        getByName("release") {
+            consumerProguardFile("proguard-rules.pro")
+        }
+    }
+
     testOptions.unitTests.apply {
         isIncludeAndroidResources = true
         all(KotlinClosure1<Test, Test>({
@@ -50,6 +56,9 @@ dependencies {
     implementation(Dependencies.activity)
 
     debugImplementation(Dependencies.leakCanary)
+
+    testImplementation(Dependencies.junit)
+    testImplementation(Dependencies.coreKtx)
 
     androidTestImplementation(Dependencies.testCore)
     androidTestImplementation(Dependencies.espressoCore)
