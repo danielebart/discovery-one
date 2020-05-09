@@ -24,9 +24,9 @@ class DiscoveryOneTest {
 
     @Test
     fun `WHEN navigating to 3 different routes THEN navigator is called 3 times`() {
-        DiscoveryOne.navigate(StubScene(), FakeRoute1)
-        DiscoveryOne.navigate(StubScene(), FakeRoute2)
-        DiscoveryOne.navigate(StubScene(), FakeRoute3)
+        DiscoveryOne.navigator.navigate(StubScene(), FakeRoute1)
+        DiscoveryOne.navigator.navigate(StubScene(), FakeRoute2)
+        DiscoveryOne.navigator.navigate(StubScene(), FakeRoute3)
 
         assertEquals(
             listOf(FakeRoute1, FakeRoute2, FakeRoute3),
@@ -36,7 +36,7 @@ class DiscoveryOneTest {
 
     @Test
     fun `WHEN navigating to a route for result given a token THEN navigator is called for result with same token`() {
-        DiscoveryOne.navigateForResult(StubScene(), "key", FakeRoute1)
+        DiscoveryOne.navigator.navigateForResult(StubScene(), "key", FakeRoute1)
 
         assertEquals(
             listOf(Pair(FakeRoute1, "key")),
@@ -46,9 +46,9 @@ class DiscoveryOneTest {
 
     @Test
     fun `WHEN registering 3 times for a result THEN navigator is called for registering a result 3 times`() {
-        DiscoveryOne.onResult(StubScene(), "key1", Int::class) { }
-        DiscoveryOne.onResult(StubScene(), "key2", Int::class) { }
-        DiscoveryOne.onResult(StubScene(), "key3", Int::class) { }
+        DiscoveryOne.navigator.onResult(StubScene(), "key1", Int::class) { }
+        DiscoveryOne.navigator.onResult(StubScene(), "key2", Int::class) { }
+        DiscoveryOne.navigator.onResult(StubScene(), "key3", Int::class) { }
 
         assertEquals(
             3,
@@ -58,10 +58,10 @@ class DiscoveryOneTest {
 
     @Test
     fun `Given a previous route showed, WHEN navigating to a new one and closing last route THEN last visible route is the only in the stack`() {
-        DiscoveryOne.navigate(StubScene(), FakeRoute1)
+        DiscoveryOne.navigator.navigate(StubScene(), FakeRoute1)
 
-        DiscoveryOne.navigate(StubScene(), FakeRoute2)
-        DiscoveryOne.close(StubScene())
+        DiscoveryOne.navigator.navigate(StubScene(), FakeRoute2)
+        DiscoveryOne.navigator.close(StubScene())
 
         assertEquals(
             listOf(FakeRoute1),
@@ -71,9 +71,9 @@ class DiscoveryOneTest {
 
     @Test
     fun `WHEN navigating to a new route and closing it with result THEN closeWithResultSpy list contains the value set as result when closing the route`() {
-        DiscoveryOne.navigate(StubScene(), FakeRoute1)
+        DiscoveryOne.navigator.navigate(StubScene(), FakeRoute1)
 
-        DiscoveryOne.closeWithResult(StubScene(), "fake-result")
+        DiscoveryOne.navigator.closeWithResult(StubScene(), "fake-result")
 
         assertEquals(
             listOf("fake-result"),
