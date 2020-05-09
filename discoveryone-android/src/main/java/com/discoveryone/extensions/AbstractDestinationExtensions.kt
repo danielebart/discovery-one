@@ -1,14 +1,14 @@
 package com.discoveryone.extensions
 
-import com.discoveryone.annotations.InternalRouteArgumentMarker
+import android.util.Log
+import com.discoveryone.bundle.canBeAddedInBundle
 import com.discoveryone.routes.AbstractRoute
 import kotlin.reflect.full.memberProperties
 
-internal fun AbstractRoute.extractArgumentsFromRoute(): List<Pair<String, Any?>> =
-    this::class.memberProperties.filter { property ->
-        property.annotations.map { annotation -> annotation.annotationClass }
-            .contains(InternalRouteArgumentMarker::class)
-    }
+internal fun AbstractRoute.extractPropertiesForBundle(): List<Pair<String, Any?>> {
+    return this::class.memberProperties
         .map { property ->
             Pair(property.name, property.getter.call(this))
         }
+        .filter { (_, value) -> value.canBeAddedInBundle() }
+}

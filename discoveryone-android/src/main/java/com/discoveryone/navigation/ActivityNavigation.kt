@@ -7,7 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.exceptions.ActivityNotFoundOnResultRegistration
 import com.discoveryone.exceptions.NoActionRegisteredForGivenKeyException
-import com.discoveryone.extensions.extractArgumentsFromRoute
+import com.discoveryone.extensions.extractPropertiesForBundle
 import com.discoveryone.initialization.ActivityStackContainer
 import com.discoveryone.navigation.result.ActionLauncher.DEFAULT_INTENT_EXTRA_KEY
 import com.discoveryone.navigation.result.ActivityResultLauncherFactory
@@ -20,8 +20,8 @@ internal object ActivityNavigation {
         mutableMapOf()
 
     fun navigate(currentActivity: FragmentActivity, route: GeneratedActivityRoute) {
-        val arguments = route.extractArgumentsFromRoute().toTypedArray()
-        val intent = Intent(currentActivity, route.clazz.java).putExtras(bundleOf(*arguments))
+        val properties = route.extractPropertiesForBundle().toTypedArray()
+        val intent = Intent(currentActivity, route.clazz.java).putExtras(bundleOf(*properties))
 
         currentActivity.startActivity(intent)
     }
@@ -35,8 +35,8 @@ internal object ActivityNavigation {
         val key = ActivityResultLauncherMapKey(scene.instanceHashCode, userKey)
         val activityResultLauncher =
             activityResultLauncherMap[key] ?: throw NoActionRegisteredForGivenKeyException()
-        val arguments = route.extractArgumentsFromRoute().toTypedArray()
-        val intent = Intent(currentActivity, route.clazz.java).putExtras(bundleOf(*arguments))
+        val properties = route.extractPropertiesForBundle().toTypedArray()
+        val intent = Intent(currentActivity, route.clazz.java).putExtras(bundleOf(*properties))
         activityResultLauncherMap.remove(key)
         activityResultLauncher.launch(intent)
     }

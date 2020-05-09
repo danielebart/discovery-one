@@ -18,12 +18,6 @@ android {
         versionName = "0.1"
         testInstrumentationRunner = AndroidConfig.testInstrumentationRunner
     }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
 }
 
 dependencies {

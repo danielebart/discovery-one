@@ -19,6 +19,12 @@ android {
         testInstrumentationRunner = AndroidConfig.testInstrumentationRunner
     }
 
+    buildTypes {
+        getByName("release") {
+            consumerProguardFile("proguard-rules.pro")
+        }
+    }
+
     testOptions.unitTests.apply {
         isIncludeAndroidResources = true
         all(KotlinClosure1<Test, Test>({

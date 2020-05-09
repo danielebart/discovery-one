@@ -82,7 +82,6 @@ class FragmentRouteGenerationTest {
             """
             package fakepackage
 
-            import com.discoveryone.annotations.InternalRouteArgumentMarker
             import com.discoveryone.routes.GeneratedFragmentRoute
             import kotlin.Double
             import kotlin.Int
@@ -90,11 +89,8 @@ class FragmentRouteGenerationTest {
             import kotlin.reflect.KClass
 
             data class FAKE_ROUTE(
-              @InternalRouteArgumentMarker
               val arg1: String,
-              @InternalRouteArgumentMarker
               val arg2: Int,
-              @InternalRouteArgumentMarker
               val arg3: Double
             ) : GeneratedFragmentRoute {
               override val clazz: KClass<*> = FakeFragment::class

@@ -1,6 +1,5 @@
 package com.discoveryone.processor.routes
 
-import com.discoveryone.annotations.InternalRouteArgumentMarker
 import com.discoveryone.annotations.RouteArgument
 import com.discoveryone.processor.extensions.getArgumentTypeName
 import com.discoveryone.routes.AbstractRoute
@@ -39,8 +38,8 @@ object CommonClassTypeBuilder {
             build()
         }
         val properties = arguments.map { arg ->
-            PropertySpec.builder(arg.name, arg.getArgumentTypeName()).initializer(arg.name)
-                .addAnnotation(InternalRouteArgumentMarker::class)
+            PropertySpec.builder(arg.name, arg.getArgumentTypeName())
+                .initializer(arg.name)
                 .build()
         }
         return TypeSpec.classBuilder(routeName)

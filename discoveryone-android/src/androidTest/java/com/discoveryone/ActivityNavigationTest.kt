@@ -7,7 +7,6 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.BundleMatchers.hasEntry
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtras
-import com.discoveryone.annotations.InternalRouteArgumentMarker
 import com.discoveryone.extensions.close
 import com.discoveryone.extensions.scene
 import com.discoveryone.initialization.ActivityStackContainer
@@ -173,7 +172,7 @@ class ActivityNavigationTest {
 
     data class FakeActivityRouteWithArgs(
         override val clazz: KClass<*> = EmptyTestActivity::class,
-        @InternalRouteArgumentMarker val arg1: String,
-        @InternalRouteArgumentMarker val arg2: Double
+        val arg1: String,
+        val arg2: Double
     ) : GeneratedActivityRoute
 }
