@@ -31,7 +31,7 @@ private fun Any.isSupportedClass(): Boolean {
         Serializable::class
     )
 
-    return supportedBundleClasses.any { clazz -> clazz.java.isAssignableFrom(this.javaClass) }
+    return supportedBundleClasses.any { clazz -> clazz.isInstance(this) }
 }
 
 private fun Array<*>.isSupportedArray(): Boolean {

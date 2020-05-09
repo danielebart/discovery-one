@@ -57,6 +57,9 @@ dependencies {
 
     debugImplementation(Dependencies.leakCanary)
 
+    testImplementation(Dependencies.junit)
+    testImplementation(Dependencies.coreKtx)
+
     androidTestImplementation(Dependencies.testCore)
     androidTestImplementation(Dependencies.espressoCore)
     androidTestImplementation(Dependencies.espressoIntents)
