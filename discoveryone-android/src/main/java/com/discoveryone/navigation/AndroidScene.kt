@@ -11,11 +11,11 @@ class AndroidScene internal constructor(
 ) : Scene {
 
     override fun navigate(route: AbstractRoute) {
-        DiscoveryOne.navigate(this, route)
+        DiscoveryOne.navigator.navigate(this, route)
     }
 
     override fun navigateForResult(key: String, route: AbstractRoute) {
-        DiscoveryOne.navigateForResult(this, key, route)
+        DiscoveryOne.navigator.navigateForResult(this, key, route)
     }
 
     override fun <T : Any> onResult(
@@ -23,14 +23,14 @@ class AndroidScene internal constructor(
         resultClass: KClass<T>,
         action: (T) -> Unit
     ) {
-        DiscoveryOne.onResult(this, key, resultClass, action)
+        DiscoveryOne.navigator.onResult(this, key, resultClass, action)
     }
 
     override fun <T> closeWithResult(result: T?) {
         if (result != null) {
-            DiscoveryOne.closeWithResult(this, result)
+            DiscoveryOne.navigator.closeWithResult(this, result)
         } else {
-            DiscoveryOne.close(this)
+            DiscoveryOne.navigator.close(this)
         }
     }
 
