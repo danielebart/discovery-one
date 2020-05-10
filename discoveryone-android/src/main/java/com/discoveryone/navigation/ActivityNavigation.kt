@@ -5,10 +5,12 @@ import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.setFragmentResultListener
 import com.discoveryone.exceptions.ActivityNotFoundOnResultRegistration
 import com.discoveryone.exceptions.NoActionRegisteredForGivenKeyException
 import com.discoveryone.extensions.extractPropertiesForBundle
 import com.discoveryone.initialization.ActivityStackContainer
+import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.navigation.result.ActionLauncher.DEFAULT_INTENT_EXTRA_KEY
 import com.discoveryone.navigation.result.ActivityResultLauncherFactory
 import com.discoveryone.routes.GeneratedActivityRoute
@@ -52,6 +54,10 @@ internal object ActivityNavigation {
             val currentActivity = ActivityStackContainer.peek()
             activityResultLauncherMap[key] =
                 ActivityResultLauncherFactory.create(resultClass, currentActivity, action)
+            currentActivity.supportFragmentManager
+                .setFragmentResultListener(userKey, currentActivity) { _, bundle ->
+                    ActionLauncher.launchActionOnResult(bundle, resultClass, action)
+                } // TODO this may be cause of bugs, find a way to improve it
         } else {
             throw ActivityNotFoundOnResultRegistration()
         }

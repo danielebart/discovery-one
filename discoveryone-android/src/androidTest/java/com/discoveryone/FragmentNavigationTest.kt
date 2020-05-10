@@ -1,7 +1,5 @@
 package com.discoveryone
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.discoveryone.extensions.close
 import com.discoveryone.extensions.scene
 import com.discoveryone.initialization.ActivityStackContainer
@@ -23,6 +21,8 @@ import com.discoveryone.testutils.TestFragment2
 import com.discoveryone.testutils.TestFragment2Route
 import com.discoveryone.testutils.TestFragmentRoute
 import com.discoveryone.testutils.TestResultSpy
+import com.discoveryone.testutils.getFragment
+import com.discoveryone.testutils.getSpecificFragment
 import com.discoveryone.testutils.launchActivity
 import com.discoveryone.testutils.recreateAndWait
 import com.discoveryone.testutils.waitForIdleSync
@@ -157,12 +157,6 @@ class FragmentNavigationTest {
         assertEquals(TestFragment::class, activity.getFragment()::class)
         assertEquals(1, activity.supportFragmentManager.fragments.size)
     }
-
-    private fun FragmentActivity.getFragment(position: Int = 0): Fragment =
-        supportFragmentManager.fragments[position]
-
-    private inline fun <reified F : Fragment> FragmentActivity.getSpecificFragment(): F =
-        supportFragmentManager.fragments.first { it is F } as F
 
     data class FakeFragmentRouteWithoutArgs(
         override val clazz: KClass<*> = TestFragment::class,

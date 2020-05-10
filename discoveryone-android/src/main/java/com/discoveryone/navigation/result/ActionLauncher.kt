@@ -20,8 +20,8 @@ internal object ActionLauncher {
     ) {
         val result = bundle.get(DEFAULT_INTENT_EXTRA_KEY)
         if (result != null && resultClass.isInstance(result)) {
-            action(result as T)
             resultSpy?.recordResult(result)
+            action(result as T)
         } else {
             Log.w(
                 DiscoveryOneLog.DISCOVERY_ONE_LOG_TAG,
