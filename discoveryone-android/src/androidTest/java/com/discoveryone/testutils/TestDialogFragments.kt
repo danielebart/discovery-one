@@ -92,9 +92,7 @@ class ReturningValueSequence1TestDialogFragment :
     DialogFragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        scene.onResult<String>("key_result") {
-            println("")
-        }
+        scene.onResult<String>("key_result") {}
     }
 
     fun navigateToDialogFragment2() {
@@ -134,9 +132,7 @@ class ListenForStringResultFromDialogTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scene.onResult<String>("key_result") {
-            println("")
-        }
+        scene.onResult<String>("key_result") {}
     }
 
     fun navigateToDialogFragmentReturningResult(valueWhichNextActivityShouldReturn: String) {
