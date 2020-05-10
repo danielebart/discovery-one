@@ -12,3 +12,5 @@ interface GeneratedFragmentRoute : AbstractRoute {
 }
 
 interface GeneratedActivityRoute : AbstractRoute
+
+interface GeneratedDialogFragmentRoute : AbstractRoute

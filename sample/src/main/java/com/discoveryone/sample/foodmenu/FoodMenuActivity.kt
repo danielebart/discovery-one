@@ -10,6 +10,8 @@ class FoodMenuActivity : FragmentActivity(R.layout.activity_foodmenu) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        scene.navigate(FoodMenuHome)
+        if (savedInstanceState == null) {
+            scene.navigate(FoodMenuHome)
+        }
     }
 }

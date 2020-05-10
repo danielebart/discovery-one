@@ -35,6 +35,6 @@ class AndroidScene internal constructor(
     }
 
     enum class ComponentType {
-        ACTIVITY, FRAGMENT
+        ACTIVITY, FRAGMENT, DIALOG_FRAGMENT
     }
 }

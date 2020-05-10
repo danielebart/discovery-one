@@ -2,11 +2,14 @@ package com.discoveryone.sample.foodmenu
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.discoveryone.annotations.FragmentRoute
 import com.discoveryone.annotations.RouteArgument
+import com.discoveryone.extensions.onResult
 import com.discoveryone.extensions.scene
 import com.discoveryone.sample.R
+import com.discoveryone.sample.foodmenu.ConfirmDialogFragment.ConfirmDialogResult
 import kotlinx.android.synthetic.main.fragment_foodmenu_selection.*
 
 @FragmentRoute(
@@ -18,21 +21,37 @@ class FoodMenuSelectionFragment : Fragment(R.layout.fragment_foodmenu_selection)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        scene.onResult<ConfirmDialogResult>(CONFIRM_RESULT_KEY) { result ->
+            when (result) {
+                is ConfirmDialogResult.Confirm -> scene.closeWithResult(result.order)
+                is ConfirmDialogResult.Cancel ->
+                    Toast.makeText(requireContext(), "order canceled", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         numberOfCustomersTextView.text = getString(
             R.string.number_of_customers,
             numberOfCustomers
         )
 
         cheeseburgerButton.setOnClickListener {
-            scene.closeWithResult(cheeseburgerButton.text)
+            openConfirmDialog(cheeseburgerButton.text.toString())
         }
 
         sushiButton.setOnClickListener {
-            scene.closeWithResult(sushiButton.text)
+            openConfirmDialog(sushiButton.text.toString())
         }
 
         pizzaButton.setOnClickListener {
-            scene.closeWithResult(pizzaButton.text)
+            openConfirmDialog(sushiButton.text.toString())
         }
+    }
+
+    private fun openConfirmDialog(order: String) {
+        scene.navigateForResult(CONFIRM_RESULT_KEY, ConfirmDialog(order))
+    }
+
+    companion object {
+        private const val CONFIRM_RESULT_KEY = "CONFIRM_RESULT_KEY"
     }
 }

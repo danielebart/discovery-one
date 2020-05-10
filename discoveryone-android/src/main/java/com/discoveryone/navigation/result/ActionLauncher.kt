@@ -13,9 +13,13 @@ internal object ActionLauncher {
         resultSpy = spy
     }
 
-    fun <T : Any> Bundle.launchActionOnResult(resultClass: KClass<T>, action: (T) -> Unit) {
-        val result = get(DEFAULT_INTENT_EXTRA_KEY)
-        if (result != null && result::class == resultClass) {
+    internal fun <T : Any> launchActionOnResult(
+        bundle: Bundle,
+        resultClass: KClass<T>,
+        action: (T) -> Unit
+    ) {
+        val result = bundle.get(DEFAULT_INTENT_EXTRA_KEY)
+        if (result != null && resultClass.isInstance(result)) {
             action(result as T)
             resultSpy?.recordResult(result)
         } else {

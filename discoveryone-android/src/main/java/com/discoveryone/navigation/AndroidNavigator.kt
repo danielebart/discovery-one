@@ -8,6 +8,7 @@ import com.discoveryone.initialization.ActivityStackContainer
 import com.discoveryone.initialization.NavigatorActivityLifecycleCallback
 import com.discoveryone.routes.AbstractRoute
 import com.discoveryone.routes.GeneratedActivityRoute
+import com.discoveryone.routes.GeneratedDialogFragmentRoute
 import com.discoveryone.routes.GeneratedFragmentRoute
 import kotlin.reflect.KClass
 
@@ -28,12 +29,16 @@ class AndroidNavigator(application: Application) : Navigator {
         scene as AndroidScene
         when (route) {
             is GeneratedFragmentRoute -> FragmentNavigation.navigate(
-                scene.currentActivity,
-                route
+                currentActivity = scene.currentActivity,
+                route = route
             )
             is GeneratedActivityRoute -> ActivityNavigation.navigate(
                 scene.currentActivity,
-                route
+                route = route
+            )
+            is GeneratedDialogFragmentRoute -> DialogFragmentNavigation.navigate(
+                scene.currentActivity,
+                route = route
             )
         }
     }
@@ -51,6 +56,11 @@ class AndroidNavigator(application: Application) : Navigator {
                 route = route,
                 userKey = key,
                 scene = scene
+            )
+            is GeneratedDialogFragmentRoute -> DialogFragmentNavigation.navigateForResult(
+                currentActivity = scene.currentActivity,
+                route = route,
+                key = key
             )
         }
     }
@@ -75,6 +85,12 @@ class AndroidNavigator(application: Application) : Navigator {
                 resultClass = resultClass,
                 action = action
             )
+            AndroidScene.ComponentType.DIALOG_FRAGMENT -> DialogFragmentNavigation.registerResultAction(
+                scene = scene,
+                key = key,
+                resultClass = resultClass,
+                action = action
+            )
         }
     }
 
@@ -83,6 +99,10 @@ class AndroidNavigator(application: Application) : Navigator {
         when (scene.componentType) {
             AndroidScene.ComponentType.ACTIVITY -> ActivityNavigation.close(scene.currentActivity)
             AndroidScene.ComponentType.FRAGMENT -> FragmentNavigation.close(scene.currentActivity)
+            AndroidScene.ComponentType.DIALOG_FRAGMENT -> DialogFragmentNavigation.close(
+                scene = scene,
+                currentActivity = scene.currentActivity
+            )
         }
     }
 
@@ -96,6 +116,13 @@ class AndroidNavigator(application: Application) : Navigator {
             )
             AndroidScene.ComponentType.FRAGMENT -> {
                 FragmentNavigation.closeWithResult(
+                    scene = scene,
+                    currentActivity = scene.currentActivity,
+                    result = result
+                )
+            }
+            AndroidScene.ComponentType.DIALOG_FRAGMENT -> {
+                DialogFragmentNavigation.closeWithResult(
                     scene = scene,
                     currentActivity = scene.currentActivity,
                     result = result

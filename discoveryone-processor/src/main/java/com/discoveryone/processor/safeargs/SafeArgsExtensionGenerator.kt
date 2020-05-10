@@ -1,6 +1,7 @@
 package com.discoveryone.processor.safeargs
 
 import com.discoveryone.annotations.ActivityRoute
+import com.discoveryone.annotations.DialogFragmentRoute
 import com.discoveryone.annotations.FragmentRoute
 import com.discoveryone.processor.extensions.getArgumentTypeName
 import com.squareup.kotlinpoet.FileSpec
@@ -27,6 +28,33 @@ object SafeArgsExtensionGenerator {
         val packageName = typeElement.asClassName().packageName
         val annotation =
             typeElement.getAnnotation(FragmentRoute::class.java)
+        val arguments = annotation.arguments.toList()
+
+        if (arguments.isEmpty()) {
+            return
+        }
+
+        arguments.fold(
+            FileSpec.builder(packageName, "${typeElement.simpleName}Extensions")
+        ) { builder, routeArgument ->
+            builder.apply {
+                generateCommonSafeArgExtensions(
+                    receiverTypeElement = typeElement,
+                    argumentName = routeArgument.name,
+                    argumentTypeName = routeArgument.getArgumentTypeName(),
+                    extensionContent = "return requireArguments().get(\"${routeArgument.name}\") as %T"
+                )
+            }
+        }.build().writeTo(env.filer)
+    }
+
+    fun generateSafeArgExtensionsForDialogFragment(
+        env: ProcessingEnvironment,
+        typeElement: TypeElement
+    ) {
+        val packageName = typeElement.asClassName().packageName
+        val annotation =
+            typeElement.getAnnotation(DialogFragmentRoute::class.java)
         val arguments = annotation.arguments.toList()
 
         if (arguments.isEmpty()) {
