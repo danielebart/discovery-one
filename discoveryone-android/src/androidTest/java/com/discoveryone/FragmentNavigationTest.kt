@@ -1,7 +1,6 @@
 package com.discoveryone
 
-import com.discoveryone.extensions.close
-import com.discoveryone.extensions.scene
+import com.discoveryone.extensions.navigator
 import com.discoveryone.initialization.ActivityStackContainer
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.routes.GeneratedFragmentRoute
@@ -36,7 +35,7 @@ class FragmentNavigationTest {
     fun givenAFragmentRouteWithoutArgs_whenNavigatingToThatFragment_thenCurrentTopFragmentShouldBeThatFragment() {
         val activity = launchActivity<ContainerTestActivity>()
 
-        activity.scene.navigate(FakeFragmentRouteWithoutArgs())
+        activity.navigator.navigate(FakeFragmentRouteWithoutArgs())
         waitForIdleSync()
 
         assertEquals(TestFragment::class, activity.getFragment()::class)
@@ -50,7 +49,7 @@ class FragmentNavigationTest {
         )
         val activity = launchActivity<ContainerTestActivity>()
 
-        activity.scene.navigate(fakeFragmentRoute)
+        activity.navigator.navigate(fakeFragmentRoute)
         waitForIdleSync()
 
         val currentFragmentArgs = activity.getFragment().arguments!!
@@ -64,7 +63,7 @@ class FragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(ListenForStringResultTestFragmentRoute)
+        activity.navigator.navigate(ListenForStringResultTestFragmentRoute)
         waitForIdleSync()
         val expectedResult = "expected-result"
 
@@ -82,7 +81,7 @@ class FragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(
+        activity.navigator.navigate(
             ListenForStringResultTestButReceiverWrongResultTypFragmentRoute
         )
         waitForIdleSync()
@@ -101,7 +100,7 @@ class FragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(ReturningValueSequence1TestFragmentRoute)
+        activity.navigator.navigate(ReturningValueSequence1TestFragmentRoute)
         waitForIdleSync()
 
         activity.getSpecificFragment<ReturningValueSequence1TestFragment>()
@@ -125,7 +124,7 @@ class FragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(ReturningValueSequence1TestFragmentRoute)
+        activity.navigator.navigate(ReturningValueSequence1TestFragmentRoute)
         waitForIdleSync()
 
         activity.getSpecificFragment<ReturningValueSequence1TestFragment>()
@@ -147,11 +146,11 @@ class FragmentNavigationTest {
     @Test
     fun whenNavigatingToTwoNewRoutesAndClosingTheLastOne_thenCurrentTopFragmentShouldBeTheFirstOne() {
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(TestFragmentRoute)
+        activity.navigator.navigate(TestFragmentRoute)
 
-        activity.scene.navigate(TestFragment2Route)
+        activity.navigator.navigate(TestFragment2Route)
         waitForIdleSync()
-        activity.getSpecificFragment<TestFragment2>().scene.close()
+        activity.getSpecificFragment<TestFragment2>().navigator.close()
         waitForIdleSync()
 
         assertEquals(TestFragment::class, activity.getFragment()::class)

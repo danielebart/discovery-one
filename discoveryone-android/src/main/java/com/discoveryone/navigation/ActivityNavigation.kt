@@ -29,12 +29,12 @@ internal object ActivityNavigation {
     }
 
     fun navigateForResult(
-        scene: AndroidScene,
+        navigationContext: NavigationContext,
         currentActivity: FragmentActivity,
         route: GeneratedActivityRoute,
         userKey: String
     ) {
-        val key = ActivityResultLauncherMapKey(scene.instanceHashCode, userKey)
+        val key = ActivityResultLauncherMapKey(navigationContext.instanceHashCode, userKey)
         val activityResultLauncher =
             activityResultLauncherMap[key] ?: throw NoActionRegisteredForGivenKeyException()
         val properties = route.extractPropertiesForBundle().toTypedArray()
@@ -44,12 +44,12 @@ internal object ActivityNavigation {
     }
 
     fun <T : Any> registerResultAction(
-        scene: AndroidScene,
+        navigationContext: NavigationContext,
         userKey: String,
         resultClass: KClass<T>,
         action: (T) -> Unit
     ) {
-        val key = ActivityResultLauncherMapKey(scene.instanceHashCode, userKey)
+        val key = ActivityResultLauncherMapKey(navigationContext.instanceHashCode, userKey)
         if (ActivityStackContainer.isEmpty().not()) {
             val currentActivity = ActivityStackContainer.peek()
             activityResultLauncherMap[key] =

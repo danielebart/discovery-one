@@ -53,12 +53,12 @@ internal object FragmentNavigation {
     }
 
     fun <T> closeWithResult(
-        scene: AndroidScene,
+        navigationContext: NavigationContext,
         currentActivity: FragmentActivity,
         result: T
     ) {
         val fragment =
-            currentActivity.firstFragmentOrNull { it.hashCode() == scene.instanceHashCode }
+            currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode }
         val key = fragment?.resultKey ?: run {
             close(currentActivity)
             return
@@ -71,7 +71,7 @@ internal object FragmentNavigation {
     }
 
     fun <T : Any> registerResultAction(
-        scene: AndroidScene,
+        navigationContext: NavigationContext,
         key: String,
         resultClass: KClass<T>,
         action: (T) -> Unit
@@ -79,7 +79,7 @@ internal object FragmentNavigation {
         if (ActivityStackContainer.isEmpty().not()) {
             val currentActivity = ActivityStackContainer.peek()
             val fragment =
-                currentActivity.firstFragmentOrNull { it.hashCode() == scene.instanceHashCode }
+                currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode }
                     ?: throw FragmentNotFoundOnResultRegistration()
 
             fragment.setFragmentResultListener(key) { _, bundle ->

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.discoveryone.annotations.DialogFragmentRoute
 import com.discoveryone.annotations.RouteArgument
-import com.discoveryone.extensions.scene
+import com.discoveryone.extensions.navigator
 import kotlinx.android.parcel.Parcelize
 
 @DialogFragmentRoute(
@@ -19,10 +19,10 @@ class ConfirmDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         AlertDialog.Builder(requireActivity()).setMessage("Are you sure you wanna order $order?")
             .setPositiveButton("Confirm") { _, _ ->
-                scene.closeWithResult(ConfirmDialogResult.Confirm(order))
+                navigator.closeWithResult(ConfirmDialogResult.Confirm(order))
             }
             .setNegativeButton("Cancel") { _, _ ->
-                scene.closeWithResult(ConfirmDialogResult.Cancel(order))
+                navigator.closeWithResult(ConfirmDialogResult.Cancel(order))
             }
             .create()
 

@@ -5,8 +5,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.discoveryone.annotations.FragmentRoute
 import com.discoveryone.annotations.RouteArgument
+import com.discoveryone.extensions.navigator
 import com.discoveryone.extensions.onResult
-import com.discoveryone.extensions.scene
 
 @FragmentRoute(containerId = com.discoveryone.test.R.id.container)
 class TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout)
@@ -18,11 +18,11 @@ class TestFragment2 : Fragment(com.discoveryone.test.R.layout.empty_layout)
 class ListenForStringResultTestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        scene.onResult<String>("key_result") {}
+        navigator.onResult<String>("key_result") {}
     }
 
     fun navigateToFragmentReturningResult(valueWhichNextFragmentShouldReturn: String) {
-        scene.navigateForResult(
+        navigator.navigateForResult(
             "key_result",
             ReturnStringValueTestFragmentRoute(valueWhichNextFragmentShouldReturn)
         )
@@ -37,7 +37,7 @@ class ReturnStringValueTestFragment : Fragment(com.discoveryone.test.R.layout.em
 
     fun returnResult() {
         val expectedReturningValue = requireArguments().getString("expectedReturningValue")
-        scene.closeWithResult(expectedReturningValue)
+        navigator.closeWithResult(expectedReturningValue)
     }
 }
 
@@ -48,11 +48,11 @@ class ListenForStringResultTestButReceiverWrongResultTypFragment :
     Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        scene.onResult<String>("key_result") {}
+        navigator.onResult<String>("key_result") {}
     }
 
     fun navigateToFragmentReturningWrongResultType() {
-        scene.navigateForResult("key_result", ReturnIntValueTestFragmentRoute)
+        navigator.navigateForResult("key_result", ReturnIntValueTestFragmentRoute)
     }
 }
 
@@ -60,7 +60,7 @@ class ListenForStringResultTestButReceiverWrongResultTypFragment :
 class ReturnIntValueTestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     fun returnResult() {
-        scene.closeWithResult(1231)
+        navigator.closeWithResult(1231)
     }
 }
 
@@ -69,11 +69,11 @@ class ReturnIntValueTestFragment : Fragment(com.discoveryone.test.R.layout.empty
 class ReturningValueSequence1TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        scene.onResult<String>("key_result") {}
+        navigator.onResult<String>("key_result") {}
     }
 
     fun navigateToFragment2() {
-        scene.navigateForResult("key_result", ReturningValueSequence2TestFragmentRoute)
+        navigator.navigateForResult("key_result", ReturningValueSequence2TestFragmentRoute)
         waitForIdleSync()
     }
 }
@@ -82,13 +82,13 @@ class ReturningValueSequence1TestFragment : Fragment(com.discoveryone.test.R.lay
 class ReturningValueSequence2TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        scene.onResult<String>("key_result2") {
-            scene.closeWithResult("arg_from_fragment_2")
+        navigator.onResult<String>("key_result2") {
+            navigator.closeWithResult("arg_from_fragment_2")
         }
     }
 
     fun navigateToFragment3() {
-        scene.navigateForResult("key_result2", ReturningValueSequence3TestFragmentRoute)
+        navigator.navigateForResult("key_result2", ReturningValueSequence3TestFragmentRoute)
         waitForIdleSync()
     }
 }
@@ -97,6 +97,6 @@ class ReturningValueSequence2TestFragment : Fragment(com.discoveryone.test.R.lay
 class ReturningValueSequence3TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     fun returnResult() {
-        scene.closeWithResult("arg_from_fragment_3")
+        navigator.closeWithResult("arg_from_fragment_3")
     }
 }
