@@ -9,11 +9,13 @@ import com.discoveryone.routes.GeneratedDialogFragmentRoute
 import com.discoveryone.routes.GeneratedFragmentRoute
 import kotlin.reflect.KClass
 
-class AndroidNavigator internal constructor(private val scene: AndroidScene) : Navigator {
+internal class AndroidNavigator internal constructor(
+    private val navigationContext: NavigationContext
+) : Navigator {
 
     private val currentActivity: FragmentActivity
-        get() = if (scene.componentType == AndroidScene.ComponentType.ACTIVITY) {
-            ActivityStackContainer.getByHashCode(scene.instanceHashCode)
+        get() = if (navigationContext.componentType == NavigationContext.ComponentType.ACTIVITY) {
+            ActivityStackContainer.getByHashCode(navigationContext.instanceHashCode)
         } else {
             ActivityStackContainer.peek()
         }
@@ -46,7 +48,7 @@ class AndroidNavigator internal constructor(private val scene: AndroidScene) : N
                 currentActivity = currentActivity,
                 route = route,
                 userKey = key,
-                scene = scene
+                navigationContext = navigationContext
             )
             is GeneratedDialogFragmentRoute -> DialogFragmentNavigation.navigateForResult(
                 currentActivity = currentActivity,
@@ -61,21 +63,21 @@ class AndroidNavigator internal constructor(private val scene: AndroidScene) : N
         resultClass: KClass<T>,
         action: (T) -> Unit
     ) {
-        when (scene.componentType) {
-            AndroidScene.ComponentType.ACTIVITY -> ActivityNavigation.registerResultAction(
+        when (navigationContext.componentType) {
+            NavigationContext.ComponentType.ACTIVITY -> ActivityNavigation.registerResultAction(
                 userKey = key,
                 resultClass = resultClass,
                 action = action,
-                scene = scene
+                navigationContext = navigationContext
             )
-            AndroidScene.ComponentType.FRAGMENT -> FragmentNavigation.registerResultAction(
-                scene = scene,
+            NavigationContext.ComponentType.FRAGMENT -> FragmentNavigation.registerResultAction(
+                navigationContext = navigationContext,
                 key = key,
                 resultClass = resultClass,
                 action = action
             )
-            AndroidScene.ComponentType.DIALOG_FRAGMENT -> DialogFragmentNavigation.registerResultAction(
-                scene = scene,
+            NavigationContext.ComponentType.DIALOG_FRAGMENT -> DialogFragmentNavigation.registerResultAction(
+                navigationContext = navigationContext,
                 key = key,
                 resultClass = resultClass,
                 action = action
@@ -84,34 +86,34 @@ class AndroidNavigator internal constructor(private val scene: AndroidScene) : N
     }
 
     override fun close() {
-        when (scene.componentType) {
-            AndroidScene.ComponentType.ACTIVITY -> ActivityNavigation.close(currentActivity)
-            AndroidScene.ComponentType.FRAGMENT -> FragmentNavigation.close(currentActivity)
-            AndroidScene.ComponentType.DIALOG_FRAGMENT -> DialogFragmentNavigation.close(
-                scene = scene,
+        when (navigationContext.componentType) {
+            NavigationContext.ComponentType.ACTIVITY -> ActivityNavigation.close(currentActivity)
+            NavigationContext.ComponentType.FRAGMENT -> FragmentNavigation.close(currentActivity)
+            NavigationContext.ComponentType.DIALOG_FRAGMENT -> DialogFragmentNavigation.close(
+                navigationContext = navigationContext,
                 currentActivity = currentActivity
             )
         }
     }
 
     override fun <T> closeWithResult(result: T) {
-        when (scene.componentType) {
-            AndroidScene.ComponentType.ACTIVITY -> ActivityNavigation.closeWithResult(
+        when (navigationContext.componentType) {
+            NavigationContext.ComponentType.ACTIVITY -> ActivityNavigation.closeWithResult(
                 currentActivity = currentActivity,
                 result = result
             )
-            AndroidScene.ComponentType.FRAGMENT -> {
+            NavigationContext.ComponentType.FRAGMENT -> {
                 FragmentNavigation.closeWithResult(
-                    scene = scene,
+                    navigationContext = navigationContext,
                     currentActivity = currentActivity,
                     result = result
                 )
             }
-            AndroidScene.ComponentType.DIALOG_FRAGMENT -> {
+            NavigationContext.ComponentType.DIALOG_FRAGMENT -> {
                 DialogFragmentNavigation.closeWithResult(
                     currentActivity = currentActivity,
                     result = result,
-                    scene = scene
+                    navigationContext = navigationContext
                 )
             }
         }

@@ -5,12 +5,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.Navigator
 import com.discoveryone.navigation.AndroidNavigator
-import com.discoveryone.navigation.AndroidScene
+import com.discoveryone.navigation.NavigationContext
 
 val Fragment.navigator: Navigator
     get() = AndroidNavigator(
-        AndroidScene(
-            componentType = AndroidScene.ComponentType.FRAGMENT,
+        NavigationContext(
+            componentType = NavigationContext.ComponentType.FRAGMENT,
             instanceHashCode = hashCode(),
             componentClass = this::class
         )
@@ -18,8 +18,8 @@ val Fragment.navigator: Navigator
 
 val FragmentActivity.navigator: Navigator
     get() = AndroidNavigator(
-        AndroidScene(
-            componentType = AndroidScene.ComponentType.ACTIVITY,
+        NavigationContext(
+            componentType = NavigationContext.ComponentType.ACTIVITY,
             instanceHashCode = hashCode(),
             componentClass = this::class
         )
@@ -27,8 +27,8 @@ val FragmentActivity.navigator: Navigator
 
 val DialogFragment.navigator: Navigator
     get() = AndroidNavigator(
-        AndroidScene(
-            componentType = AndroidScene.ComponentType.DIALOG_FRAGMENT,
+        NavigationContext(
+            componentType = NavigationContext.ComponentType.DIALOG_FRAGMENT,
             instanceHashCode = hashCode(),
             componentClass = this::class
         )

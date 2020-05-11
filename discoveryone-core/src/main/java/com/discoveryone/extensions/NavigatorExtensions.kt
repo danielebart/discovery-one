@@ -1,4 +1,4 @@
-@file:JvmName("SceneExtensions")
+@file:JvmName("NavigatorExtensions")
 
 package com.discoveryone.extensions
 

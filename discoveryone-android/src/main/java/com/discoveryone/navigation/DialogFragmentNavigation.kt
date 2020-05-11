@@ -43,21 +43,21 @@ internal object DialogFragmentNavigation {
         dialogInstance.show(currentActivity.supportFragmentManager, null)
     }
 
-    fun close(scene: AndroidScene, currentActivity: FragmentActivity) {
+    fun close(navigationContext: NavigationContext, currentActivity: FragmentActivity) {
         val dialogFragment =
-            currentActivity.firstFragmentOrNull { it.hashCode() == scene.instanceHashCode } as DialogFragment
+            currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode } as DialogFragment
         dialogFragment.dismiss()
     }
 
     fun <T> closeWithResult(
-        scene: AndroidScene,
+        navigationContext: NavigationContext,
         currentActivity: FragmentActivity,
         result: T
     ) {
         val dialogFragment =
-            currentActivity.firstFragmentOrNull { it.hashCode() == scene.instanceHashCode } as DialogFragment
+            currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode } as DialogFragment
         val key = dialogFragment.resultKey ?: run {
-            close(scene, currentActivity)
+            close(navigationContext, currentActivity)
             return
         }
         val bundleResult = bundleOf(ActionLauncher.DEFAULT_INTENT_EXTRA_KEY to result)
@@ -66,7 +66,7 @@ internal object DialogFragmentNavigation {
     }
 
     fun <T : Any> registerResultAction(
-        scene: AndroidScene,
+        navigationContext: NavigationContext,
         key: String,
         resultClass: KClass<T>,
         action: (T) -> Unit
@@ -74,7 +74,7 @@ internal object DialogFragmentNavigation {
         if (ActivityStackContainer.isEmpty().not()) {
             val currentActivity = ActivityStackContainer.peek()
             val fragment =
-                currentActivity.firstFragmentOrNull { it.hashCode() == scene.instanceHashCode }
+                currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode }
                     ?: throw FragmentNotFoundOnResultRegistration()
 
             fragment.setFragmentResultListener(key) { _, bundle ->
