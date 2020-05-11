@@ -17,6 +17,6 @@ object ActivityResultLauncherFactory {
         action: (T) -> Unit
     ): ActivityResultLauncher<Intent> =
         currentActivity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            it.data?.extras?.launchActionOnResult(resultClass, action)
+            it.data?.extras?.let { bundle -> launchActionOnResult(bundle, resultClass, action) }
         }
 }

@@ -11,7 +11,8 @@ class DiscoveryOneProcessor : BasicAnnotationProcessor() {
         val env = processingEnv
         return listOf(
             ActivityRouteGenerationProcessingStep(env),
-            FragmentRouteGenerationProcessingStep(env)
+            FragmentRouteGenerationProcessingStep(env),
+            DialogFragmentRouteGenerationProcessingStep(env)
         )
     }
 }

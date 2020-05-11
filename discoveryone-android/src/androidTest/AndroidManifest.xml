@@ -18,10 +18,10 @@
             android:name=".testutils.ReturnStringValueTestActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".testutils.ReturnIntValueTestActivity"
+            android:name=".testutils.ListenForStringResultFromDialogTestActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".testutils.TestActivityWithWrongResultType"
+            android:name=".testutils.ReturnIntValueTestActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".testutils.ReturningValueSequence1TestActivity"

@@ -13,11 +13,15 @@ internal object ActionLauncher {
         resultSpy = spy
     }
 
-    fun <T : Any> Bundle.launchActionOnResult(resultClass: KClass<T>, action: (T) -> Unit) {
-        val result = get(DEFAULT_INTENT_EXTRA_KEY)
-        if (result != null && result::class == resultClass) {
-            action(result as T)
+    internal fun <T : Any> launchActionOnResult(
+        bundle: Bundle,
+        resultClass: KClass<T>,
+        action: (T) -> Unit
+    ) {
+        val result = bundle.get(DEFAULT_INTENT_EXTRA_KEY)
+        if (result != null && resultClass.isInstance(result)) {
             resultSpy?.recordResult(result)
+            action(result as T)
         } else {
             Log.w(
                 DiscoveryOneLog.DISCOVERY_ONE_LOG_TAG,

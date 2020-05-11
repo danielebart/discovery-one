@@ -1,8 +1,7 @@
 package com.discoveryone.navigation
 
-import android.os.Handler
-import android.os.Looper
 import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
@@ -13,43 +12,41 @@ import com.discoveryone.extensions.firstFragmentOrNull
 import com.discoveryone.initialization.ActivityStackContainer
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.navigation.result.ActionLauncher.launchActionOnResult
-import com.discoveryone.routes.GeneratedFragmentRoute
+import com.discoveryone.routes.GeneratedDialogFragmentRoute
 import kotlin.reflect.KClass
+import kotlin.reflect.full.createInstance
 
-internal object FragmentNavigation {
+internal object DialogFragmentNavigation {
 
-    fun navigate(currentActivity: FragmentActivity, route: GeneratedFragmentRoute) {
-        val fragmentClass = route.clazz as KClass<Fragment>
-        val arguments = route.extractPropertiesForBundle().toTypedArray()
+    fun navigate(currentActivity: FragmentActivity, route: GeneratedDialogFragmentRoute) {
+        val dialogClass = route.clazz as KClass<DialogFragment>
+        val dialogInstance = dialogClass.createInstance().apply {
+            arguments = bundleOf(*route.extractPropertiesForBundle().toTypedArray())
+        }
 
-        currentActivity.supportFragmentManager.beginTransaction()
-            .addToBackStack("")
-            .replace(route.containerId, fragmentClass.java, bundleOf(*arguments), null)
-            .commit()
+        dialogInstance.show(currentActivity.supportFragmentManager, route.clazz.qualifiedName)
     }
 
     fun navigateForResult(
         currentActivity: FragmentActivity,
-        route: GeneratedFragmentRoute,
+        route: GeneratedDialogFragmentRoute,
         key: String
     ) {
-        val fragmentClass = route.clazz as KClass<Fragment>
-        val userArgs = route.extractPropertiesForBundle().toTypedArray()
-        val fragmentArgs = bundleOf(
-            *userArgs,
-            FRAGMENT_NAVIGATION_FOR_RESULT_KEY to key
-        )
+        val dialogClass = route.clazz as KClass<DialogFragment>
+        val dialogInstance = dialogClass.createInstance().apply {
+            arguments = bundleOf(
+                *route.extractPropertiesForBundle().toTypedArray(),
+                DIALOG_NAVIGATION_FOR_RESULT_KEY to key
+            )
+        }
 
-        currentActivity.supportFragmentManager.beginTransaction()
-            .addToBackStack("")
-            .replace(route.containerId, fragmentClass.java, fragmentArgs, null)
-            .commit()
+        dialogInstance.show(currentActivity.supportFragmentManager, null)
     }
 
-    fun close(currentActivity: FragmentActivity) {
-        Handler(Looper.getMainLooper()).post {
-            currentActivity.onBackPressed()
-        }
+    fun close(scene: AndroidScene, currentActivity: FragmentActivity) {
+        val dialogFragment =
+            currentActivity.firstFragmentOrNull { it.hashCode() == scene.instanceHashCode } as DialogFragment
+        dialogFragment.dismiss()
     }
 
     fun <T> closeWithResult(
@@ -57,17 +54,15 @@ internal object FragmentNavigation {
         currentActivity: FragmentActivity,
         result: T
     ) {
-        val fragment =
-            currentActivity.firstFragmentOrNull { it.hashCode() == scene.instanceHashCode }
-        val key = fragment?.resultKey ?: run {
-            close(currentActivity)
+        val dialogFragment =
+            currentActivity.firstFragmentOrNull { it.hashCode() == scene.instanceHashCode } as DialogFragment
+        val key = dialogFragment.resultKey ?: run {
+            close(scene, currentActivity)
             return
         }
         val bundleResult = bundleOf(ActionLauncher.DEFAULT_INTENT_EXTRA_KEY to result)
-        fragment.setFragmentResult(key, bundleResult)
-        Handler(Looper.getMainLooper()).post {
-            currentActivity.onBackPressed()
-        }
+        dialogFragment.setFragmentResult(key, bundleResult)
+        dialogFragment.dismiss()
     }
 
     fun <T : Any> registerResultAction(
@@ -91,7 +86,7 @@ internal object FragmentNavigation {
     }
 
     private val Fragment.resultKey: String?
-        get() = arguments?.getString(FRAGMENT_NAVIGATION_FOR_RESULT_KEY)
+        get() = arguments?.getString(DIALOG_NAVIGATION_FOR_RESULT_KEY)
 
-    private const val FRAGMENT_NAVIGATION_FOR_RESULT_KEY = "FRAGMENT_NAVIGATION_FOR_RESULT_KEY"
+    private const val DIALOG_NAVIGATION_FOR_RESULT_KEY = "DIALOG_NAVIGATION_FOR_RESULT_KEY"
 }
