@@ -1,16 +1,13 @@
 package com.discoveryone
 
 import androidx.fragment.app.FragmentActivity
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.BundleMatchers.hasEntry
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtras
-import com.discoveryone.extensions.close
-import com.discoveryone.extensions.scene
+import com.discoveryone.extensions.navigator
 import com.discoveryone.initialization.ActivityStackContainer
-import com.discoveryone.navigation.AndroidNavigator
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.routes.GeneratedActivityRoute
 import com.discoveryone.testutils.ContainerTestActivity
@@ -40,7 +37,6 @@ class ActivityNavigationTest {
 
     @Before
     fun setup() {
-        DiscoveryOne.install(AndroidNavigator(ApplicationProvider.getApplicationContext()))
         Intents.init()
     }
 
@@ -55,7 +51,7 @@ class ActivityNavigationTest {
         val fakeActivityRoute = FakeActivityRouteWithoutArgs()
         val activity = launchActivity<ContainerTestActivity>()
 
-        activity.scene.navigate(fakeActivityRoute)
+        activity.navigator.navigate(fakeActivityRoute)
 
         intended(
             CoreMatchers.allOf(
@@ -73,7 +69,7 @@ class ActivityNavigationTest {
         )
         val activity = launchActivity<ContainerTestActivity>()
 
-        activity.scene.navigate(fakeActivityRoute)
+        activity.navigator.navigate(fakeActivityRoute)
 
         intended(
             allOf(
@@ -152,10 +148,10 @@ class ActivityNavigationTest {
     fun whenNavigatingToTwoNewRoutesAndClosingTheLastOne_thenSecondActivityShouldBeInFinishingStateAndFirstNot() {
         val activity1 = launchActivity<ContainerTestActivity>()
 
-        activity1.scene.navigate(EmptyTestActivityRoute)
+        activity1.navigator.navigate(EmptyTestActivityRoute)
         waitForActivity()
         val activity2 = ActivityStackContainer.peek()
-        activity2.scene.close()
+        activity2.navigator.close()
         waitForActivity()
 
         assertTrue(activity2.isFinishing)

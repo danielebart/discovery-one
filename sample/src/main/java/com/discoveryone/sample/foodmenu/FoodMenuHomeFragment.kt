@@ -6,17 +6,17 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.discoveryone.Scene
+import com.discoveryone.Navigator
 import com.discoveryone.annotations.FragmentRoute
+import com.discoveryone.extensions.navigator
 import com.discoveryone.extensions.onResult
-import com.discoveryone.extensions.scene
 import com.discoveryone.sample.R
 import kotlinx.android.synthetic.main.fragment_foodmenu_home.*
 
 @FragmentRoute(name = "FoodMenuHome", containerId = R.id.foodMenuContainer)
 class FoodMenuHomeFragment : Fragment(R.layout.fragment_foodmenu_home), FoodMenuHomeView {
 
-    private val presenter = FoodMenuHomePresenter(scene, this)
+    private val presenter = FoodMenuHomePresenter(navigator, this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         presenter.start()
@@ -43,19 +43,19 @@ class FoodMenuHomeFragment : Fragment(R.layout.fragment_foodmenu_home), FoodMenu
     }
 }
 
-class FoodMenuHomePresenter(private val scene: Scene, private val view: FoodMenuHomeView) {
+class FoodMenuHomePresenter(private val navigator: Navigator, private val view: FoodMenuHomeView) {
 
     private var currentNumberOfCustomers = 0
 
     fun start() {
-        scene.onResult<String>(SELECTION_RESULT_KEY) { foodOrder ->
+        navigator.onResult<String>(SELECTION_RESULT_KEY) { foodOrder ->
             view.showToast("Order completed for $currentNumberOfCustomers customers: $foodOrder")
         }
     }
 
     fun onLaunchMenuSelectionClick() {
         if (currentNumberOfCustomers > 0) {
-            scene.navigateForResult(
+            navigator.navigateForResult(
                 SELECTION_RESULT_KEY,
                 FoodMenuSelection(numberOfCustomers = currentNumberOfCustomers)
             )

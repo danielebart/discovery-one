@@ -2,7 +2,7 @@ package com.discoveryone.sample.foodmenu
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import com.discoveryone.extensions.scene
+import com.discoveryone.extensions.navigator
 import com.discoveryone.sample.R
 
 class FoodMenuActivity : FragmentActivity(R.layout.activity_foodmenu) {
@@ -11,7 +11,7 @@ class FoodMenuActivity : FragmentActivity(R.layout.activity_foodmenu) {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            scene.navigate(FoodMenuHome)
+            navigator.navigate(FoodMenuHome)
         }
     }
 }

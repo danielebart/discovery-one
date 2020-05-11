@@ -5,13 +5,12 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
-import com.discoveryone.DiscoveryOne
-import com.discoveryone.navigation.AndroidNavigator
 
 class DiscoveryOneInitializer : ContentProvider() {
 
     override fun onCreate(): Boolean {
-        DiscoveryOne.install(AndroidNavigator(context!!.applicationContext as Application))
+        val application = context!!.applicationContext as Application
+        application.registerActivityLifecycleCallbacks(NavigatorActivityLifecycleCallback)
         return true
     }
 

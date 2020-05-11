@@ -6,8 +6,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.discoveryone.annotations.FragmentRoute
 import com.discoveryone.annotations.RouteArgument
+import com.discoveryone.extensions.navigator
 import com.discoveryone.extensions.onResult
-import com.discoveryone.extensions.scene
 import com.discoveryone.sample.R
 import com.discoveryone.sample.foodmenu.ConfirmDialogFragment.ConfirmDialogResult
 import kotlinx.android.synthetic.main.fragment_foodmenu_selection.*
@@ -21,9 +21,9 @@ class FoodMenuSelectionFragment : Fragment(R.layout.fragment_foodmenu_selection)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        scene.onResult<ConfirmDialogResult>(CONFIRM_RESULT_KEY) { result ->
+        navigator.onResult<ConfirmDialogResult>(CONFIRM_RESULT_KEY) { result ->
             when (result) {
-                is ConfirmDialogResult.Confirm -> scene.closeWithResult(result.order)
+                is ConfirmDialogResult.Confirm -> navigator.closeWithResult(result.order)
                 is ConfirmDialogResult.Cancel ->
                     Toast.makeText(requireContext(), "order canceled", Toast.LENGTH_SHORT).show()
             }
@@ -48,7 +48,7 @@ class FoodMenuSelectionFragment : Fragment(R.layout.fragment_foodmenu_selection)
     }
 
     private fun openConfirmDialog(order: String) {
-        scene.navigateForResult(CONFIRM_RESULT_KEY, ConfirmDialog(order))
+        navigator.navigateForResult(CONFIRM_RESULT_KEY, ConfirmDialog(order))
     }
 
     companion object {

@@ -1,8 +1,7 @@
 package com.discoveryone
 
 import androidx.fragment.app.FragmentActivity
-import com.discoveryone.extensions.close
-import com.discoveryone.extensions.scene
+import com.discoveryone.extensions.navigator
 import com.discoveryone.initialization.ActivityStackContainer
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.routes.GeneratedDialogFragmentRoute
@@ -40,7 +39,7 @@ class DialogFragmentNavigationTest {
     fun givenADialogFragmentRouteWithoutArgs_whenNavigatingToThatDialogFragment_thenCurrentTopDialogFragmentShouldBeThatDialogFragment() {
         val activity = launchActivity<ContainerTestActivity>()
 
-        activity.scene.navigate(FakeDialogFragmentRouteWithoutArgs())
+        activity.navigator.navigate(FakeDialogFragmentRouteWithoutArgs())
         waitForIdleSync()
 
         assertEquals(TestDialogFragment::class, activity.getFragment()::class)
@@ -54,7 +53,7 @@ class DialogFragmentNavigationTest {
         )
         val activity = launchActivity<ContainerTestActivity>()
 
-        activity.scene.navigate(fakeDialogFragmentRoute)
+        activity.navigator.navigate(fakeDialogFragmentRoute)
         waitForIdleSync()
 
         val currentDialogFragmentArgs = activity.getFragment().arguments!!
@@ -68,7 +67,7 @@ class DialogFragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(ListenForStringResultFromDialogTestFragmentRoute)
+        activity.navigator.navigate(ListenForStringResultFromDialogTestFragmentRoute)
         waitForIdleSync()
         val expectedResult = "expected-result"
 
@@ -101,7 +100,7 @@ class DialogFragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(ListenForStringResultTestDialogFragmentRoute)
+        activity.navigator.navigate(ListenForStringResultTestDialogFragmentRoute)
         waitForIdleSync()
         val expectedResult = "expected-result"
 
@@ -119,7 +118,7 @@ class DialogFragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(
+        activity.navigator.navigate(
             ListenForStringResulButReceiverWrongResultTypeFromDialogTestFragmentRoute
         )
         waitForIdleSync()
@@ -138,7 +137,7 @@ class DialogFragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(ReturningValueSequence1TestDialogFragmentRoute)
+        activity.navigator.navigate(ReturningValueSequence1TestDialogFragmentRoute)
         waitForIdleSync()
 
         activity.getSpecificFragment<ReturningValueSequence1TestDialogFragment>()
@@ -162,7 +161,7 @@ class DialogFragmentNavigationTest {
         val resultSpy = TestResultSpy()
         ActionLauncher.injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(ReturningValueSequence1TestDialogFragmentRoute)
+        activity.navigator.navigate(ReturningValueSequence1TestDialogFragmentRoute)
         waitForIdleSync()
 
         activity.getSpecificFragment<ReturningValueSequence1TestDialogFragment>()
@@ -185,11 +184,11 @@ class DialogFragmentNavigationTest {
     @Test
     fun whenNavigatingToTwoNewRoutesAndClosingTheLastOne_thenCurrentTopDialogFragmentShouldBeTheFirstOne() {
         val activity = launchActivity<ContainerTestActivity>()
-        activity.scene.navigate(TestDialogFragmentRoute)
+        activity.navigator.navigate(TestDialogFragmentRoute)
 
-        activity.scene.navigate(TestDialogFragment2Route)
+        activity.navigator.navigate(TestDialogFragment2Route)
         waitForIdleSync()
-        activity.getSpecificFragment<TestDialogFragment2>().scene.close()
+        activity.getSpecificFragment<TestDialogFragment2>().navigator.close()
         waitForIdleSync()
 
         assertEquals(TestDialogFragment::class, activity.getFragment()::class)
