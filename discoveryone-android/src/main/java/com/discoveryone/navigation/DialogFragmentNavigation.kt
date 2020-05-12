@@ -9,7 +9,7 @@ import androidx.fragment.app.setFragmentResultListener
 import com.discoveryone.exceptions.FragmentNotFoundOnResultRegistration
 import com.discoveryone.extensions.extractPropertiesForBundle
 import com.discoveryone.extensions.firstFragmentOrNull
-import com.discoveryone.initialization.ActivityStackContainer
+import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.navigation.result.ActionLauncher.launchActionOnResult
 import com.discoveryone.routes.GeneratedDialogFragmentRoute
@@ -71,8 +71,8 @@ internal object DialogFragmentNavigation {
         resultClass: KClass<T>,
         action: (T) -> Unit
     ) {
-        if (ActivityStackContainer.isEmpty().not()) {
-            val currentActivity = ActivityStackContainer.peek()
+        if (ActivityInterceptor.existsAnyActivity()) {
+            val currentActivity = ActivityInterceptor.getLast()
             val fragment =
                 currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode }
                     ?: throw FragmentNotFoundOnResultRegistration()

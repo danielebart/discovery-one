@@ -10,7 +10,7 @@ class DiscoveryOneInitializer : ContentProvider() {
 
     override fun onCreate(): Boolean {
         val application = context!!.applicationContext as Application
-        application.registerActivityLifecycleCallbacks(NavigatorActivityLifecycleCallback)
+        ActivityInterceptor.register(application)
         return true
     }
 

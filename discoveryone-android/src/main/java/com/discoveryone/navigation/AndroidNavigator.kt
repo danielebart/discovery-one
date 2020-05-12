@@ -2,7 +2,7 @@ package com.discoveryone.navigation
 
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.Navigator
-import com.discoveryone.initialization.ActivityStackContainer
+import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.routes.AbstractRoute
 import com.discoveryone.routes.GeneratedActivityRoute
 import com.discoveryone.routes.GeneratedDialogFragmentRoute
@@ -15,9 +15,9 @@ internal class AndroidNavigator internal constructor(
 
     private val currentActivity: FragmentActivity
         get() = if (navigationContext.componentType == NavigationContext.ComponentType.ACTIVITY) {
-            ActivityStackContainer.getByHashCode(navigationContext.instanceHashCode)
+            ActivityInterceptor.getActivityByHashCode(navigationContext.instanceHashCode)
         } else {
-            ActivityStackContainer.peek()
+            ActivityInterceptor.getLast()
         }
 
     override fun navigate(route: AbstractRoute) {

@@ -7,7 +7,7 @@ import androidx.test.espresso.intent.matcher.BundleMatchers.hasEntry
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtras
 import com.discoveryone.extensions.navigator
-import com.discoveryone.initialization.ActivityStackContainer
+import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.routes.GeneratedActivityRoute
 import com.discoveryone.testutils.ContainerTestActivity
@@ -43,7 +43,7 @@ class ActivityNavigationTest {
     @After
     fun teardown() {
         Intents.release()
-        ActivityStackContainer.clear()
+        ActivityInterceptor.clear()
     }
 
     @Test
@@ -150,7 +150,7 @@ class ActivityNavigationTest {
 
         activity1.navigator.navigate(EmptyTestActivityRoute)
         waitForActivity()
-        val activity2 = ActivityStackContainer.peek()
+        val activity2 = ActivityInterceptor.getLast()
         activity2.navigator.close()
         waitForActivity()
 
@@ -160,7 +160,7 @@ class ActivityNavigationTest {
 
 
     private inline fun <reified T : FragmentActivity> getActivity(): T =
-        ActivityStackContainer.getByName(T::class.simpleName.toString()) as T
+        ActivityInterceptor.getActivityByName(T::class.simpleName.toString()) as T
 
     data class FakeActivityRouteWithoutArgs(
         override val clazz: KClass<*> = EmptyTestActivity::class

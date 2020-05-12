@@ -2,7 +2,7 @@ package com.discoveryone
 
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.extensions.navigator
-import com.discoveryone.initialization.ActivityStackContainer
+import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.routes.GeneratedDialogFragmentRoute
 import com.discoveryone.testutils.ContainerTestActivity
@@ -170,7 +170,7 @@ class DialogFragmentNavigationTest {
         activity.getSpecificFragment<ReturningValueSequenceOfDialogsTestFragment>()
             .navigateToDialogFragment3()
         activity.recreateAndWait()
-        ActivityStackContainer.peek()
+        ActivityInterceptor.getLast()
             .getSpecificFragment<ReturningValueSequence3TestDialogFragment>()
             .returnResult()
         waitForIdleSync()
@@ -196,7 +196,7 @@ class DialogFragmentNavigationTest {
     }
 
     private inline fun <reified T : FragmentActivity> getActivity(): T =
-        ActivityStackContainer.getByName(T::class.simpleName.toString()) as T
+        ActivityInterceptor.getActivityByName(T::class.simpleName.toString()) as T
 
     data class FakeDialogFragmentRouteWithoutArgs(
         override val clazz: KClass<*> = TestDialogFragment::class
