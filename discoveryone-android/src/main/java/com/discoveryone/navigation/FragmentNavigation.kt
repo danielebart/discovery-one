@@ -9,7 +9,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import com.discoveryone.exceptions.FragmentNotFoundOnResultRegistration
 import com.discoveryone.extensions.extractPropertiesForBundle
-import com.discoveryone.extensions.firstFragmentOrNull
+import com.discoveryone.extensions.retrieveRelativeFragment
 import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.navigation.result.ActionLauncher.launchActionOnResult
@@ -57,8 +57,7 @@ internal object FragmentNavigation {
         currentActivity: FragmentActivity,
         result: T
     ) {
-        val fragment =
-            currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode }
+        val fragment = navigationContext.retrieveRelativeFragment(currentActivity)
         val key = fragment?.resultKey ?: run {
             close(currentActivity)
             return
@@ -78,9 +77,8 @@ internal object FragmentNavigation {
     ) {
         if (ActivityInterceptor.existsAnyActivity()) {
             val currentActivity = ActivityInterceptor.getLast()
-            val fragment =
-                currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode }
-                    ?: throw FragmentNotFoundOnResultRegistration()
+            val fragment = navigationContext.retrieveRelativeFragment(currentActivity)
+                ?: throw FragmentNotFoundOnResultRegistration()
 
             fragment.setFragmentResultListener(key) { _, bundle ->
                 launchActionOnResult(bundle, resultClass, action)

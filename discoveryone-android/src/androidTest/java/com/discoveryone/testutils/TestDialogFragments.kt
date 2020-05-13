@@ -23,12 +23,11 @@ class ListenForStringResultTestDialogFragment :
     DialogFragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        navigator.onResult<String>("key_result") {}
+        navigator.onResult<String, ReturnStringValueTestDialogFragmentRoute> {}
     }
 
     fun navigateToDialogFragmentReturningResult(valueWhichNextDialogFragmentShouldReturn: String) {
         navigator.navigateForResult(
-            "key_result",
             ReturnStringValueTestDialogFragmentRoute(valueWhichNextDialogFragmentShouldReturn)
         )
     }
@@ -39,12 +38,11 @@ class ListenForStringResultFromDialogTestFragment :
     DialogFragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        navigator.onResult<String>("key_result") { }
+        navigator.onResult<String, ReturnStringValueTestDialogFragmentRoute> { }
     }
 
     fun navigateToDialogFragmentReturningResult(valueWhichNextDialogFragmentShouldReturn: String) {
         navigator.navigateForResult(
-            "key_result",
             ReturnStringValueTestDialogFragmentRoute(valueWhichNextDialogFragmentShouldReturn)
         )
     }
@@ -69,11 +67,11 @@ class ListenForStringResulButReceiverWrongResultTypeFromDialogTestFragment :
     Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        navigator.onResult<String>("key_result") {}
+        navigator.onResult<String, ReturnIntValueTestDialogFragmentRoute> {}
     }
 
     fun navigateToDialogFragmentReturningWrongResultType() {
-        navigator.navigateForResult("key_result", ReturnIntValueTestDialogFragmentRoute)
+        navigator.navigateForResult(ReturnIntValueTestDialogFragmentRoute)
     }
 }
 
@@ -92,11 +90,11 @@ class ReturningValueSequence1TestDialogFragment :
     DialogFragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        navigator.onResult<String>("key_result") {}
+        navigator.onResult<String, ReturningValueSequenceOfDialogsTestFragmentRoute> {}
     }
 
     fun navigateToDialogFragment2() {
-        navigator.navigateForResult("key_result", ReturningValueSequenceOfDialogsTestFragmentRoute)
+        navigator.navigateForResult(ReturningValueSequenceOfDialogsTestFragmentRoute)
         waitForIdleSync()
     }
 }
@@ -106,13 +104,13 @@ class ReturningValueSequenceOfDialogsTestFragment :
     Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        navigator.onResult<String>("key_result2") {
+        navigator.onResult<String, ReturningValueSequence3TestDialogFragmentRoute> {
             navigator.closeWithResult("arg_from_DialogFragment_2")
         }
     }
 
     fun navigateToDialogFragment3() {
-        navigator.navigateForResult("key_result2", ReturningValueSequence3TestDialogFragmentRoute)
+        navigator.navigateForResult(ReturningValueSequence3TestDialogFragmentRoute)
         waitForIdleSync()
     }
 }
@@ -125,6 +123,7 @@ class ReturningValueSequence3TestDialogFragment :
         navigator.closeWithResult("arg_from_DialogFragment_3")
     }
 }
+
 //////////////////////////////////////////////////////////////////
 
 @ActivityRoute
@@ -132,12 +131,11 @@ class ListenForStringResultFromDialogTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        navigator.onResult<String>("key_result") {}
+        navigator.onResult<String, ReturnStringValueTestDialogFragmentRoute> {}
     }
 
     fun navigateToDialogFragmentReturningResult(valueWhichNextActivityShouldReturn: String) {
         navigator.navigateForResult(
-            "key_result",
             ReturnStringValueTestDialogFragmentRoute(valueWhichNextActivityShouldReturn)
         )
     }

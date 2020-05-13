@@ -7,10 +7,10 @@ interface Navigator {
 
     fun navigate(route: AbstractRoute)
 
-    fun navigateForResult(key: String, route: AbstractRoute)
+    fun navigateForResult(route: AbstractRoute)
 
-    fun <T : Any> onResult(
-        key: String,
+    fun <T : Any, R : AbstractRoute> onResult(
+        routeClass: KClass<R>,
         resultClass: KClass<T>,
         action: (T) -> Unit
     )

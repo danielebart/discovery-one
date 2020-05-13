@@ -2,7 +2,9 @@ package com.discoveryone.testutils
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.discoveryone.annotations.ActivityRoute
 import com.discoveryone.annotations.FragmentRoute
 import com.discoveryone.annotations.RouteArgument
 import com.discoveryone.extensions.navigator
@@ -18,12 +20,11 @@ class TestFragment2 : Fragment(com.discoveryone.test.R.layout.empty_layout)
 class ListenForStringResultTestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        navigator.onResult<String>("key_result") {}
+        navigator.onResult<String, ReturnStringValueTestFragmentRoute> {}
     }
 
     fun navigateToFragmentReturningResult(valueWhichNextFragmentShouldReturn: String) {
         navigator.navigateForResult(
-            "key_result",
             ReturnStringValueTestFragmentRoute(valueWhichNextFragmentShouldReturn)
         )
     }
@@ -48,11 +49,11 @@ class ListenForStringResultTestButReceiverWrongResultTypFragment :
     Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        navigator.onResult<String>("key_result") {}
+        navigator.onResult<String, ReturnIntValueTestFragmentRoute> {}
     }
 
     fun navigateToFragmentReturningWrongResultType() {
-        navigator.navigateForResult("key_result", ReturnIntValueTestFragmentRoute)
+        navigator.navigateForResult(ReturnIntValueTestFragmentRoute)
     }
 }
 
@@ -69,11 +70,11 @@ class ReturnIntValueTestFragment : Fragment(com.discoveryone.test.R.layout.empty
 class ReturningValueSequence1TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        navigator.onResult<String>("key_result") {}
+        navigator.onResult<String, ReturningValueSequence2TestFragmentRoute> {}
     }
 
     fun navigateToFragment2() {
-        navigator.navigateForResult("key_result", ReturningValueSequence2TestFragmentRoute)
+        navigator.navigateForResult(ReturningValueSequence2TestFragmentRoute)
         waitForIdleSync()
     }
 }
@@ -82,13 +83,13 @@ class ReturningValueSequence1TestFragment : Fragment(com.discoveryone.test.R.lay
 class ReturningValueSequence2TestFragment : Fragment(com.discoveryone.test.R.layout.empty_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        navigator.onResult<String>("key_result2") {
+        navigator.onResult<String, ReturningValueSequence3TestFragmentRoute> {
             navigator.closeWithResult("arg_from_fragment_2")
         }
     }
 
     fun navigateToFragment3() {
-        navigator.navigateForResult("key_result2", ReturningValueSequence3TestFragmentRoute)
+        navigator.navigateForResult(ReturningValueSequence3TestFragmentRoute)
         waitForIdleSync()
     }
 }
@@ -98,5 +99,40 @@ class ReturningValueSequence3TestFragment : Fragment(com.discoveryone.test.R.lay
 
     fun returnResult() {
         navigator.closeWithResult("arg_from_fragment_3")
+    }
+}
+
+//////////////////////////////////////////////////////////////////
+
+@FragmentRoute(containerId = com.discoveryone.test.R.id.container)
+class ListenForStringResultFromActivityTestFragment :
+    Fragment(com.discoveryone.test.R.layout.empty_layout) {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        navigator.onResult<String, ReturnStringValueTestActivityRoute> {}
+    }
+
+    fun navigateToActivityReturningResult(valueWhichNextFragmentShouldReturn: String) {
+        navigator.navigateForResult(
+            ReturnStringValueTestActivityRoute(valueWhichNextFragmentShouldReturn)
+        )
+    }
+}
+
+//////////////////////////////////////////////////////////////////
+
+@ActivityRoute
+class ListenForStringResultFromTestActivity :
+    AppCompatActivity(com.discoveryone.test.R.layout.container_layout) {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        navigator.onResult<String, ReturnStringValueTestFragmentRoute> {}
+    }
+
+    fun navigateToFragmentReturningResult(valueWhichNextActivityShouldReturn: String) {
+        navigator.navigateForResult(
+            ReturnStringValueTestFragmentRoute(valueWhichNextActivityShouldReturn)
+        )
     }
 }

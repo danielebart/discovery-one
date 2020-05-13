@@ -21,7 +21,7 @@ class FoodMenuSelectionFragment : Fragment(R.layout.fragment_foodmenu_selection)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        navigator.onResult<ConfirmDialogResult>(CONFIRM_RESULT_KEY) { result ->
+        navigator.onResult<ConfirmDialogResult, ConfirmDialog> { result ->
             when (result) {
                 is ConfirmDialogResult.Confirm -> navigator.closeWithResult(result.order)
                 is ConfirmDialogResult.Cancel ->
@@ -48,10 +48,6 @@ class FoodMenuSelectionFragment : Fragment(R.layout.fragment_foodmenu_selection)
     }
 
     private fun openConfirmDialog(order: String) {
-        navigator.navigateForResult(CONFIRM_RESULT_KEY, ConfirmDialog(order))
-    }
-
-    companion object {
-        private const val CONFIRM_RESULT_KEY = "CONFIRM_RESULT_KEY"
+        navigator.navigateForResult(ConfirmDialog(order))
     }
 }

@@ -18,12 +18,11 @@ class ListenForStringResultTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        navigator.onResult<String>("key_result") {}
+        navigator.onResult<String, ReturnStringValueTestActivityRoute> {}
     }
 
     fun navigateToActivityReturningResult(valueWhichNextActivityShouldReturn: String) {
         navigator.navigateForResult(
-            "key_result",
             ReturnStringValueTestActivityRoute(valueWhichNextActivityShouldReturn)
         )
     }
@@ -36,7 +35,6 @@ class ReturnStringValueTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val expectedReturningValue = intent.getStringExtra("expectedReturningValue")
         navigator.closeWithResult(expectedReturningValue)
     }
 }
@@ -45,11 +43,11 @@ class ListenForStringResultTestButReceiverWrongResultTypeActivity : AppCompatAct
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        navigator.onResult<String>("key_result") {}
+        navigator.onResult<String, ReturnIntValueTestActivityRoute> {}
     }
 
     fun navigateToActivityReturningWrongResultType() {
-        navigator.navigateForResult("key_result", ReturnIntValueTestActivityRoute)
+        navigator.navigateForResult(ReturnIntValueTestActivityRoute)
     }
 }
 
@@ -69,11 +67,11 @@ class ReturningValueSequence1TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        navigator.onResult<String>("key_result") {}
+        navigator.onResult<String, ReturningValueSequence2TestActivityRoute> {}
     }
 
     fun navigateToActivity2() {
-        navigator.navigateForResult("key_result", ReturningValueSequence2TestActivityRoute)
+        navigator.navigateForResult(ReturningValueSequence2TestActivityRoute)
     }
 }
 
@@ -82,13 +80,13 @@ class ReturningValueSequence2TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        navigator.onResult<String>("key_result") {
+        navigator.onResult<String, ReturningValueSequence3TestActivityRoute> {
             navigator.closeWithResult("arg_from_activity_2")
         }
     }
 
     fun navigateToActivity3() {
-        navigator.navigateForResult("key_result", ReturningValueSequence3TestActivityRoute)
+        navigator.navigateForResult(ReturningValueSequence3TestActivityRoute)
     }
 }
 

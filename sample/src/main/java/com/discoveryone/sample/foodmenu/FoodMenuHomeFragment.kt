@@ -48,17 +48,14 @@ class FoodMenuHomePresenter(private val navigator: Navigator, private val view: 
     private var currentNumberOfCustomers = 0
 
     fun start() {
-        navigator.onResult<String>(SELECTION_RESULT_KEY) { foodOrder ->
+        navigator.onResult<String, FoodMenuSelection> { foodOrder ->
             view.showToast("Order completed for $currentNumberOfCustomers customers: $foodOrder")
         }
     }
 
     fun onLaunchMenuSelectionClick() {
         if (currentNumberOfCustomers > 0) {
-            navigator.navigateForResult(
-                SELECTION_RESULT_KEY,
-                FoodMenuSelection(numberOfCustomers = currentNumberOfCustomers)
-            )
+            navigator.navigateForResult(FoodMenuSelection(numberOfCustomers = currentNumberOfCustomers))
         } else {
             view.showToast("you must insert the number of customers first")
         }
@@ -68,10 +65,6 @@ class FoodMenuHomePresenter(private val navigator: Navigator, private val view: 
         if (newText.toIntOrNull() != null) {
             currentNumberOfCustomers = newText.toInt()
         }
-    }
-
-    companion object {
-        private const val SELECTION_RESULT_KEY = "SELECTION_RESULT_KEY"
     }
 }
 

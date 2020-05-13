@@ -5,6 +5,9 @@ import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.routes.GeneratedFragmentRoute
 import com.discoveryone.testutils.ContainerTestActivity
+import com.discoveryone.testutils.ListenForStringResultFromActivityTestFragment
+import com.discoveryone.testutils.ListenForStringResultFromActivityTestFragmentRoute
+import com.discoveryone.testutils.ListenForStringResultFromTestActivity
 import com.discoveryone.testutils.ListenForStringResultTestButReceiverWrongResultTypFragment
 import com.discoveryone.testutils.ListenForStringResultTestButReceiverWrongResultTypFragmentRoute
 import com.discoveryone.testutils.ListenForStringResultTestFragment
@@ -24,6 +27,7 @@ import com.discoveryone.testutils.getFragment
 import com.discoveryone.testutils.getSpecificFragment
 import com.discoveryone.testutils.launchActivity
 import com.discoveryone.testutils.recreateAndWait
+import com.discoveryone.testutils.waitForActivity
 import com.discoveryone.testutils.waitForIdleSync
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -155,6 +159,38 @@ class FragmentNavigationTest {
 
         assertEquals(TestFragment::class, activity.getFragment()::class)
         assertEquals(1, activity.supportFragmentManager.fragments.size)
+    }
+
+    @Test
+    fun givenAFragmentListeningForAStringResult_whenNavigatingToANewActivityWhichFinishesWithResult_thenVerifyRecordedResultIsEqualsToExpectedResult() {
+        val resultSpy = TestResultSpy()
+        ActionLauncher.injectActivityResultSpy(resultSpy)
+        val expectedResult = "fake-result"
+        val activity1 = launchActivity<ContainerTestActivity>()
+        activity1.navigator.navigate(ListenForStringResultFromActivityTestFragmentRoute)
+        waitForIdleSync()
+        val fragment =
+            activity1.getSpecificFragment<ListenForStringResultFromActivityTestFragment>()
+
+        fragment.navigateToActivityReturningResult(expectedResult)
+        waitForActivity()
+
+        assertEquals(listOf(expectedResult), resultSpy.getRecorderResults())
+    }
+
+    @Test
+    fun givenAnActivityListeningForAStringResult_whenNavigatingToANewFragmentWhichFinishesWithResult_thenVerifyRecordedResultsIsEqualsToExpectedResult() {
+        val resultSpy = TestResultSpy()
+        ActionLauncher.injectActivityResultSpy(resultSpy)
+        val activity = launchActivity<ListenForStringResultFromTestActivity>()
+        val expectedResult = "expected-result"
+
+        activity.navigateToFragmentReturningResult(expectedResult)
+        waitForIdleSync()
+        activity.getSpecificFragment<ReturnStringValueTestFragment>().returnResult()
+        waitForIdleSync()
+
+        assertEquals(listOf(expectedResult), resultSpy.getRecorderResults())
     }
 
     data class FakeFragmentRouteWithoutArgs(
