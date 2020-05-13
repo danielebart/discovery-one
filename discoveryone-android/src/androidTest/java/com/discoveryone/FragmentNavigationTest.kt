@@ -1,7 +1,7 @@
 package com.discoveryone
 
 import com.discoveryone.extensions.navigator
-import com.discoveryone.initialization.ActivityStackContainer
+import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.routes.GeneratedFragmentRoute
 import com.discoveryone.testutils.ContainerTestActivity
@@ -133,7 +133,7 @@ class FragmentNavigationTest {
         activity.getSpecificFragment<ReturningValueSequence2TestFragment>()
             .navigateToFragment3()
         activity.recreateAndWait()
-        ActivityStackContainer.peek().getSpecificFragment<ReturningValueSequence3TestFragment>()
+        ActivityInterceptor.getLast().getSpecificFragment<ReturningValueSequence3TestFragment>()
             .returnResult()
         waitForIdleSync()
 

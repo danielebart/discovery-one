@@ -11,8 +11,9 @@ import com.discoveryone.extensions.onResult
 class ContainerTestActivity : AppCompatActivity(com.discoveryone.test.R.layout.container_layout)
 
 @ActivityRoute
-class EmptyTestActivity : AppCompatActivity()
+class EmptyTestActivity : AppCompatActivity(com.discoveryone.test.R.layout.empty_layout)
 
+@ActivityRoute
 class ListenForStringResultTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

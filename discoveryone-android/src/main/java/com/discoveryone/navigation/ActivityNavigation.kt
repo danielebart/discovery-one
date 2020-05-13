@@ -9,7 +9,7 @@ import androidx.fragment.app.setFragmentResultListener
 import com.discoveryone.exceptions.ActivityNotFoundOnResultRegistration
 import com.discoveryone.exceptions.NoActionRegisteredForGivenKeyException
 import com.discoveryone.extensions.extractPropertiesForBundle
-import com.discoveryone.initialization.ActivityStackContainer
+import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.navigation.result.ActionLauncher
 import com.discoveryone.navigation.result.ActionLauncher.DEFAULT_INTENT_EXTRA_KEY
 import com.discoveryone.navigation.result.ActivityResultLauncherFactory
@@ -50,8 +50,8 @@ internal object ActivityNavigation {
         action: (T) -> Unit
     ) {
         val key = ActivityResultLauncherMapKey(navigationContext.instanceHashCode, userKey)
-        if (ActivityStackContainer.isEmpty().not()) {
-            val currentActivity = ActivityStackContainer.peek()
+        if (ActivityInterceptor.existsAnyActivity()) {
+            val currentActivity = ActivityInterceptor.getLast()
             activityResultLauncherMap[key] =
                 ActivityResultLauncherFactory.create(resultClass, currentActivity, action)
             currentActivity.supportFragmentManager
