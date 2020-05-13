@@ -12,7 +12,7 @@ import com.discoveryone.utils.DiscoveryOneLog
 
 internal object ActivityInterceptor {
 
-    private val activities: HashSet<FragmentActivity> = LinkedHashSet()
+    private val activities: MutableSet<FragmentActivity> = LinkedHashSet()
 
     fun register(application: Application) {
         application.registerActivityLifecycleCallbacks(
