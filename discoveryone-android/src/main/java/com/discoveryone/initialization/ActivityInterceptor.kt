@@ -3,34 +3,53 @@ package com.discoveryone.initialization
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.exceptions.NoActivityOnStack
 import com.discoveryone.navigation.ActivityNavigation
-import java.util.Deque
-import java.util.concurrent.LinkedBlockingDeque
+import com.discoveryone.utils.DiscoveryOneLog
 
 internal object ActivityInterceptor {
 
-    private val activities: Deque<FragmentActivity> = LinkedBlockingDeque()
+    private val activities: HashSet<FragmentActivity> = LinkedHashSet()
 
     fun register(application: Application) {
-        application.registerActivityLifecycleCallbacks(object : ActivityCreationLifecycleCallback {
-            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                (activity as? FragmentActivity)?.let {
-                    activities.push(activity)
+        application.registerActivityLifecycleCallbacks(
+            object : Application.ActivityLifecycleCallbacks {
+                override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                    if (activity !is FragmentActivity) return
+                    activities.add(activity)
                 }
-            }
 
-            override fun onActivityDestroyed(activity: Activity) {
-                activities.remove(activity)
-                ActivityNavigation.unregisterActivityResultLauncher(activity)
-            }
-        })
+                override fun onActivityDestroyed(activity: Activity) {
+                    activities.remove(activity)
+                    ActivityNavigation.unregisterActivityResultLauncher(activity)
+                }
+
+                override fun onActivityStopped(activity: Activity) {
+                    activities.remove(activity)
+                }
+
+                override fun onActivityStarted(activity: Activity) {
+                    if (activity !is FragmentActivity) return
+                    activities.add(activity)
+                    logLastActivity()
+                }
+
+                override fun onActivityPaused(activity: Activity) = Unit
+                override fun onActivityResumed(activity: Activity) = Unit
+                override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) =
+                    Unit
+            })
+    }
+
+    private fun logLastActivity() {
+        Log.i(DiscoveryOneLog.DISCOVERY_ONE_LOG_TAG, "current activity: ${getLast()}")
     }
 
     fun getLast(): FragmentActivity =
-        activities.peek() ?: throw NoActivityOnStack()
+        activities.lastOrNull() ?: throw NoActivityOnStack()
 
     fun existsAnyActivity(): Boolean =
         activities.isNotEmpty()

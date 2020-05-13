@@ -15,6 +15,7 @@ import com.discoveryone.testutils.EmptyBundleMatcher
 import com.discoveryone.testutils.EmptyTestActivity
 import com.discoveryone.testutils.EmptyTestActivityRoute
 import com.discoveryone.testutils.ListenForStringResultTestActivity
+import com.discoveryone.testutils.ListenForStringResultTestActivityRoute
 import com.discoveryone.testutils.ListenForStringResultTestButReceiverWrongResultTypeActivity
 import com.discoveryone.testutils.ReturningValueSequence1TestActivity
 import com.discoveryone.testutils.ReturningValueSequence2TestActivity
@@ -158,6 +159,32 @@ class ActivityNavigationTest {
         assertFalse(activity1.isFinishing)
     }
 
+    @Test
+    fun givenTwoActivitiesOnStack_whenRecreatingTheFirst_thenLastActivityOnStackShouldAlwaysBeTheSecondOne() {
+        val activity1 = launchActivity<ContainerTestActivity>()
+        activity1.navigator.navigate(EmptyTestActivityRoute)
+        waitForActivity()
+        val activity2 = getActivity<EmptyTestActivity>()
+
+        activity1.recreateAndWait()
+
+        assertEquals(activity2, ActivityInterceptor.getLast())
+    }
+
+    @Test
+    fun givenThreeActivitiesOnStack_whenRecreatingTheSecondOne_thenLastActivityOnStackShouldAlwaysBeTheThirdOne() {
+        val activity1 = launchActivity<ContainerTestActivity>()
+        activity1.navigator.navigate(EmptyTestActivityRoute)
+        waitForActivity()
+        val activity2 = getActivity<EmptyTestActivity>()
+        activity2.navigator.navigate(ListenForStringResultTestActivityRoute)
+        waitForActivity()
+        val activity3 = getActivity<ListenForStringResultTestActivity>()
+
+        activity2.recreateAndWait()
+
+        assertEquals(activity3, ActivityInterceptor.getLast())
+    }
 
     private inline fun <reified T : FragmentActivity> getActivity(): T =
         ActivityInterceptor.getActivityByName(T::class.simpleName.toString()) as T
