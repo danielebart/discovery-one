@@ -8,7 +8,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtras
 import com.discoveryone.extensions.navigator
 import com.discoveryone.initialization.ActivityInterceptor
-import com.discoveryone.navigation.result.ActionLauncher
+import com.discoveryone.navigation.result.ResultRegistry.injectActivityResultSpy
 import com.discoveryone.routes.GeneratedActivityRoute
 import com.discoveryone.testutils.ContainerTestActivity
 import com.discoveryone.testutils.EmptyBundleMatcher
@@ -88,7 +88,7 @@ class ActivityNavigationTest {
     @Test
     fun givenAnActivityListeningForAStringResult_whenNavigatingToANewActivityWhichFinishesWithResult_thenVerifyRecordedResultsIsEqualsToExpectedResult() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ListenForStringResultTestActivity>()
         val expectedResult = "expected-result"
 
@@ -101,7 +101,7 @@ class ActivityNavigationTest {
     @Test
     fun givenAnActivityListeningForAStringResult_whenNavigatingToANewActivityWhichFinishesWithDifferentResultType_thenVerifyRecordedResultsIsEmpty() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ListenForStringResultTestButReceiverWrongResultTypeActivity>()
 
         activity.navigateToActivityReturningWrongResultType()
@@ -113,7 +113,7 @@ class ActivityNavigationTest {
     @Test
     fun givenASequenceOfActivitiesListeningAndReturningAStringValue_whenLaunchingFirstActivity_thenVerifyThatReturnedValuesAreCorrect() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
 
         launchActivity<ReturningValueSequence1TestActivity>().navigateToActivity2()
         waitForActivity()
@@ -129,7 +129,7 @@ class ActivityNavigationTest {
     @Test
     fun givenASequenceOfActivitiesListeningAndReturningAStringValue_whenLaunchingFirstActivityAndRecreating_thenVerifyThatReturnedValuesAreCorrect() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
 
         val activity1 = launchActivity<ReturningValueSequence1TestActivity>()
         activity1.navigateToActivity2()

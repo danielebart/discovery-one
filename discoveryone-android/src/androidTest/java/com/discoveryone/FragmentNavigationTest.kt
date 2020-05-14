@@ -2,7 +2,7 @@ package com.discoveryone
 
 import com.discoveryone.extensions.navigator
 import com.discoveryone.initialization.ActivityInterceptor
-import com.discoveryone.navigation.result.ActionLauncher
+import com.discoveryone.navigation.result.ResultRegistry.injectActivityResultSpy
 import com.discoveryone.routes.GeneratedFragmentRoute
 import com.discoveryone.testutils.ContainerTestActivity
 import com.discoveryone.testutils.ListenForStringResultFromActivityTestFragment
@@ -65,7 +65,7 @@ class FragmentNavigationTest {
     @Test
     fun givenAFragmentListeningForAStringResult_whenNavigatingToANewFragmentWhichFinishesWithResult_thenVerifyRecordedResultsIsEqualsToExpectedResult() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
         activity.navigator.navigate(ListenForStringResultTestFragmentRoute)
         waitForIdleSync()
@@ -83,7 +83,7 @@ class FragmentNavigationTest {
     @Test
     fun givenAFragmentListeningForAStringResult_whenNavigatingToANewFragmentWhichFinishesWithDifferentResultType_thenVerifyRecordedResultsIsEmpty() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
         activity.navigator.navigate(
             ListenForStringResultTestButReceiverWrongResultTypFragmentRoute
@@ -102,7 +102,7 @@ class FragmentNavigationTest {
     @Test
     fun givenASequenceOfFragmentsListeningAndReturningAStringValue_whenLaunchingFirstFragment_thenVerifyThatReturnedValuesAreCorrect() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
         activity.navigator.navigate(ReturningValueSequence1TestFragmentRoute)
         waitForIdleSync()
@@ -126,7 +126,7 @@ class FragmentNavigationTest {
     @Test
     fun givenASequenceOfFragmentsListeningAndReturningAStringValue_whenLaunchingFirstFragmentAndRecreatingActivity_thenVerifyThatReturnedValuesAreCorrect() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
         activity.navigator.navigate(ReturningValueSequence1TestFragmentRoute)
         waitForIdleSync()
@@ -164,7 +164,7 @@ class FragmentNavigationTest {
     @Test
     fun givenAFragmentListeningForAStringResult_whenNavigatingToANewActivityWhichFinishesWithResult_thenVerifyRecordedResultIsEqualsToExpectedResult() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val expectedResult = "fake-result"
         val activity1 = launchActivity<ContainerTestActivity>()
         activity1.navigator.navigate(ListenForStringResultFromActivityTestFragmentRoute)
@@ -181,7 +181,7 @@ class FragmentNavigationTest {
     @Test
     fun givenAnActivityListeningForAStringResult_whenNavigatingToANewFragmentWhichFinishesWithResult_thenVerifyRecordedResultsIsEqualsToExpectedResult() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ListenForStringResultFromTestActivity>()
         val expectedResult = "expected-result"
 

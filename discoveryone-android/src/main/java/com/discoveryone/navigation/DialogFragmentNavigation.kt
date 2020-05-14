@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
 import com.discoveryone.extensions.extractPropertiesForBundle
 import com.discoveryone.extensions.retrieveRelativeFragment
-import com.discoveryone.navigation.result.ActionLauncher
+import com.discoveryone.navigation.result.ResultRegistry.DEFAULT_INTENT_EXTRA_KEY
 import com.discoveryone.routes.GeneratedDialogFragmentRoute
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
@@ -56,7 +56,7 @@ internal object DialogFragmentNavigation {
             close(navigationContext, currentActivity)
             return
         }
-        val bundleResult = bundleOf(ActionLauncher.DEFAULT_INTENT_EXTRA_KEY to result)
+        val bundleResult = bundleOf(DEFAULT_INTENT_EXTRA_KEY to result)
         dialogFragment.setFragmentResult(key, bundleResult)
         dialogFragment.dismiss()
     }
