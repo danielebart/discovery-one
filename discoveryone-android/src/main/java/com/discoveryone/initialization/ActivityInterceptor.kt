@@ -19,20 +19,25 @@ internal object ActivityInterceptor {
             object : Application.ActivityLifecycleCallbacks {
                 override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
                     if (activity !is FragmentActivity) return
+
+                    // activities must be added in the onCreate since users may perform some navigation ops starting from the onCreate
                     activities.add(activity)
                 }
 
                 override fun onActivityDestroyed(activity: Activity) {
-                    activities.remove(activity)
+                    // the activity is destroyed: we don't need anymore the saved ActivityResultLauncher
                     ResultRegistry.unregisterActivityResultLauncher(activity)
                 }
 
                 override fun onActivityStopped(activity: Activity) {
+                    // since the activity is no longer visible, we don't need it anymore
                     activities.remove(activity)
                 }
 
                 override fun onActivityStarted(activity: Activity) {
                     if (activity !is FragmentActivity) return
+
+                    // activity may return visible, hence we need to re-add it to the activity set
                     activities.add(activity)
                     logLastActivity()
                 }
@@ -51,8 +56,8 @@ internal object ActivityInterceptor {
     fun getLast(): FragmentActivity =
         activities.lastOrNull() ?: throw NoActivityOnStack()
 
-    fun existsAnyActivity(): Boolean =
-        activities.isNotEmpty()
+    fun getActivityByHashCode(hashCode: Int): FragmentActivity =
+        activities.first { it.hashCode() == hashCode }
 
     @VisibleForTesting
     fun getActivityByName(name: String): FragmentActivity =
@@ -62,7 +67,4 @@ internal object ActivityInterceptor {
     fun clear() {
         activities.clear()
     }
-
-    fun getActivityByHashCode(hashCode: Int): FragmentActivity =
-        activities.first { it.hashCode() == hashCode }
 }

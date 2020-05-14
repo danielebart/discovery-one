@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
 import com.discoveryone.extensions.extractPropertiesForBundle
 import com.discoveryone.extensions.retrieveRelativeFragment
-import com.discoveryone.navigation.result.ActionLauncher
+import com.discoveryone.navigation.result.ResultRegistry.DEFAULT_INTENT_EXTRA_KEY
 import com.discoveryone.routes.GeneratedFragmentRoute
 import kotlin.reflect.KClass
 
@@ -58,7 +58,7 @@ internal object FragmentNavigation {
             close(currentActivity)
             return
         }
-        val bundleResult = bundleOf(ActionLauncher.DEFAULT_INTENT_EXTRA_KEY to result)
+        val bundleResult = bundleOf(DEFAULT_INTENT_EXTRA_KEY to result)
         fragment.setFragmentResult(key, bundleResult)
         Handler(Looper.getMainLooper()).post {
             currentActivity.onBackPressed()

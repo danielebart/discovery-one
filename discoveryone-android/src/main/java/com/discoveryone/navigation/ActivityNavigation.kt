@@ -5,8 +5,8 @@ import android.content.Intent
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.extensions.extractPropertiesForBundle
-import com.discoveryone.navigation.result.ActionLauncher.DEFAULT_INTENT_EXTRA_KEY
 import com.discoveryone.navigation.result.ResultRegistry
+import com.discoveryone.navigation.result.ResultRegistry.DEFAULT_INTENT_EXTRA_KEY
 import com.discoveryone.routes.GeneratedActivityRoute
 
 internal object ActivityNavigation {

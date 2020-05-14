@@ -3,7 +3,7 @@ package com.discoveryone
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.extensions.navigator
 import com.discoveryone.initialization.ActivityInterceptor
-import com.discoveryone.navigation.result.ActionLauncher
+import com.discoveryone.navigation.result.ResultRegistry.injectActivityResultSpy
 import com.discoveryone.routes.GeneratedDialogFragmentRoute
 import com.discoveryone.testutils.ContainerTestActivity
 import com.discoveryone.testutils.ListenForStringResulButReceiverWrongResultTypeFromDialogTestFragment
@@ -65,7 +65,7 @@ class DialogFragmentNavigationTest {
     @Test
     fun givenAFragmentListeningForAStringResult_whenNavigatingToANewDialogFragmentWhichFinishesWithResult_thenVerifyRecordedResultsIsEqualsToExpectedResult() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
         activity.navigator.navigate(ListenForStringResultFromDialogTestFragmentRoute)
         waitForIdleSync()
@@ -83,7 +83,7 @@ class DialogFragmentNavigationTest {
     @Test
     fun givenAnActivityListeningForAStringResult_whenNavigatingToANewDialogFragmentWhichFinishesWithResult_thenVerifyRecordedResultsIsEqualsToExpectedResult() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ListenForStringResultFromDialogTestActivity>()
         val expectedResult = "expected-result"
 
@@ -98,7 +98,7 @@ class DialogFragmentNavigationTest {
     @Test
     fun givenADialogFragmentListeningForAStringResult_whenNavigatingToANewDialogFragmentWhichFinishesWithResult_thenVerifyRecordedResultsIsEqualsToExpectedResult() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
         activity.navigator.navigate(ListenForStringResultTestDialogFragmentRoute)
         waitForIdleSync()
@@ -116,7 +116,7 @@ class DialogFragmentNavigationTest {
     @Test
     fun givenAFragmentListeningForAStringResult_whenNavigatingToANewDialogFragmentWhichFinishesWithDifferentResultType_thenVerifyRecordedResultsIsEmpty() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
         activity.navigator.navigate(
             ListenForStringResulButReceiverWrongResultTypeFromDialogTestFragmentRoute
@@ -135,7 +135,7 @@ class DialogFragmentNavigationTest {
     @Test
     fun givenASequenceOfDialogFragmentsListeningAndReturningAStringValue_whenLaunchingFirstDialogFragment_thenVerifyThatReturnedValuesAreCorrect() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
         activity.navigator.navigate(ReturningValueSequence1TestDialogFragmentRoute)
         waitForIdleSync()
@@ -159,7 +159,7 @@ class DialogFragmentNavigationTest {
     @Test
     fun givenASequenceOfFragmentsListeningAndReturningAStringValue_whenLaunchingFirstDialogFragmentAndRecreatingActivity_thenVerifyThatReturnedValuesAreCorrect() {
         val resultSpy = TestResultSpy()
-        ActionLauncher.injectActivityResultSpy(resultSpy)
+        injectActivityResultSpy(resultSpy)
         val activity = launchActivity<ContainerTestActivity>()
         activity.navigator.navigate(ReturningValueSequence1TestDialogFragmentRoute)
         waitForIdleSync()
