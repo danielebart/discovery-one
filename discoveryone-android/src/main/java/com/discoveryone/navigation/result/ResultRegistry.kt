@@ -6,7 +6,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResultListener
+import com.discoveryone.exceptions.FragmentNotFoundOnResultRegistration
 import com.discoveryone.exceptions.NoActionRegisteredForGivenKeyException
+import com.discoveryone.extensions.retrieveRelativeFragment
 import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.navigation.NavigationContext
 import com.discoveryone.routes.AbstractRoute
@@ -42,26 +44,65 @@ internal object ResultRegistry {
         resultClass: KClass<T>,
         action: (T) -> Unit
     ) {
-        val currentActivity = ActivityInterceptor.getLast()
         if (routeClass.isSubclassOf(GeneratedActivityRoute::class)) {
-            val key = ActivityResultLauncherMapKey(
-                activityInstanceHashCode = navigationContext.instanceHashCode, // from
-                key = routeClass.qualifiedName.toString() // to
+            registerResultActionForActivityRoute(
+                navigationContext = navigationContext,
+                routeClass = routeClass,
+                resultClass = resultClass,
+                action = action
             )
-            activityResultLauncherMap[key] =
-                createActivityResultLauncher(resultClass, currentActivity, action)
         } else if (routeClass.isFragmentOrDialogFragment()) {
-            currentActivity.supportFragmentManager
-                .setFragmentResultListener(
+            registerResultActionForFragmentRoute(
+                navigationContext = navigationContext,
+                routeClass = routeClass,
+                resultClass = resultClass,
+                action = action
+            )
+        }
+    }
+
+    private fun <T : Any, R : AbstractRoute> registerResultActionForActivityRoute(
+        navigationContext: NavigationContext,
+        routeClass: KClass<R>,
+        resultClass: KClass<T>,
+        action: (T) -> Unit
+    ) {
+        val currentActivity = ActivityInterceptor.getLast()
+        val key = ActivityResultLauncherMapKey(
+            activityInstanceHashCode = navigationContext.instanceHashCode, // from
+            key = routeClass.qualifiedName.toString() // to
+        )
+        activityResultLauncherMap[key] =
+            createActivityResultLauncher(resultClass, currentActivity, action)
+    }
+
+    private fun <T : Any, R : AbstractRoute> registerResultActionForFragmentRoute(
+        navigationContext: NavigationContext,
+        routeClass: KClass<R>,
+        resultClass: KClass<T>,
+        action: (T) -> Unit
+    ) {
+        val currentActivity = ActivityInterceptor.getLast()
+        when (navigationContext.componentType) {
+            NavigationContext.ComponentType.ACTIVITY -> {
+                currentActivity.supportFragmentManager.setFragmentResultListener(
                     requestKey = buildSimpleResultKey(routeClass),
                     lifecycleOwner = currentActivity
                 ) { _, bundle ->
                     ActionLauncher.launchActionOnResult(bundle, resultClass, action)
                 }
+            }
+            NavigationContext.ComponentType.DIALOG_FRAGMENT, NavigationContext.ComponentType.FRAGMENT -> {
+                val fragment = navigationContext.retrieveRelativeFragment(currentActivity)
+                    ?: throw FragmentNotFoundOnResultRegistration()
+                fragment.setFragmentResultListener(buildSimpleResultKey(routeClass)) { _, bundle ->
+                    ActionLauncher.launchActionOnResult(bundle, resultClass, action)
+                }
+            }
         }
     }
 
-    internal fun unregisterActivityResultLauncher(activity: Activity) {
+    fun unregisterActivityResultLauncher(activity: Activity) {
         activityResultLauncherMap
             .filter { (key, _) ->
                 key.activityInstanceHashCode == activity.hashCode()
