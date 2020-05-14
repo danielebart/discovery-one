@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.exceptions.NoActivityOnStack
-import com.discoveryone.navigation.ActivityNavigation
+import com.discoveryone.navigation.result.ResultRegistry
 import com.discoveryone.utils.DiscoveryOneLog
 
 internal object ActivityInterceptor {
@@ -24,7 +24,7 @@ internal object ActivityInterceptor {
 
                 override fun onActivityDestroyed(activity: Activity) {
                     activities.remove(activity)
-                    ActivityNavigation.unregisterActivityResultLauncher(activity)
+                    ResultRegistry.unregisterActivityResultLauncher(activity)
                 }
 
                 override fun onActivityStopped(activity: Activity) {

@@ -6,13 +6,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
-import com.discoveryone.exceptions.FragmentNotFoundOnResultRegistration
 import com.discoveryone.extensions.extractPropertiesForBundle
-import com.discoveryone.extensions.firstFragmentOrNull
-import com.discoveryone.initialization.ActivityInterceptor
+import com.discoveryone.extensions.retrieveRelativeFragment
 import com.discoveryone.navigation.result.ActionLauncher
-import com.discoveryone.navigation.result.ActionLauncher.launchActionOnResult
 import com.discoveryone.routes.GeneratedFragmentRoute
 import kotlin.reflect.KClass
 
@@ -57,8 +53,7 @@ internal object FragmentNavigation {
         currentActivity: FragmentActivity,
         result: T
     ) {
-        val fragment =
-            currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode }
+        val fragment = navigationContext.retrieveRelativeFragment(currentActivity)
         val key = fragment?.resultKey ?: run {
             close(currentActivity)
             return
@@ -67,26 +62,6 @@ internal object FragmentNavigation {
         fragment.setFragmentResult(key, bundleResult)
         Handler(Looper.getMainLooper()).post {
             currentActivity.onBackPressed()
-        }
-    }
-
-    fun <T : Any> registerResultAction(
-        navigationContext: NavigationContext,
-        key: String,
-        resultClass: KClass<T>,
-        action: (T) -> Unit
-    ) {
-        if (ActivityInterceptor.existsAnyActivity()) {
-            val currentActivity = ActivityInterceptor.getLast()
-            val fragment =
-                currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode }
-                    ?: throw FragmentNotFoundOnResultRegistration()
-
-            fragment.setFragmentResultListener(key) { _, bundle ->
-                launchActionOnResult(bundle, resultClass, action)
-            }
-        } else {
-            throw FragmentNotFoundOnResultRegistration()
         }
     }
 

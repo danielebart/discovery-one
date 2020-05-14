@@ -5,13 +5,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
-import com.discoveryone.exceptions.FragmentNotFoundOnResultRegistration
 import com.discoveryone.extensions.extractPropertiesForBundle
-import com.discoveryone.extensions.firstFragmentOrNull
-import com.discoveryone.initialization.ActivityInterceptor
+import com.discoveryone.extensions.retrieveRelativeFragment
 import com.discoveryone.navigation.result.ActionLauncher
-import com.discoveryone.navigation.result.ActionLauncher.launchActionOnResult
 import com.discoveryone.routes.GeneratedDialogFragmentRoute
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
@@ -45,7 +41,7 @@ internal object DialogFragmentNavigation {
 
     fun close(navigationContext: NavigationContext, currentActivity: FragmentActivity) {
         val dialogFragment =
-            currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode } as DialogFragment
+            navigationContext.retrieveRelativeFragment(currentActivity) as DialogFragment
         dialogFragment.dismiss()
     }
 
@@ -55,7 +51,7 @@ internal object DialogFragmentNavigation {
         result: T
     ) {
         val dialogFragment =
-            currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode } as DialogFragment
+            navigationContext.retrieveRelativeFragment(currentActivity) as DialogFragment
         val key = dialogFragment.resultKey ?: run {
             close(navigationContext, currentActivity)
             return
@@ -63,26 +59,6 @@ internal object DialogFragmentNavigation {
         val bundleResult = bundleOf(ActionLauncher.DEFAULT_INTENT_EXTRA_KEY to result)
         dialogFragment.setFragmentResult(key, bundleResult)
         dialogFragment.dismiss()
-    }
-
-    fun <T : Any> registerResultAction(
-        navigationContext: NavigationContext,
-        key: String,
-        resultClass: KClass<T>,
-        action: (T) -> Unit
-    ) {
-        if (ActivityInterceptor.existsAnyActivity()) {
-            val currentActivity = ActivityInterceptor.getLast()
-            val fragment =
-                currentActivity.firstFragmentOrNull { it.hashCode() == navigationContext.instanceHashCode }
-                    ?: throw FragmentNotFoundOnResultRegistration()
-
-            fragment.setFragmentResultListener(key) { _, bundle ->
-                launchActionOnResult(bundle, resultClass, action)
-            }
-        } else {
-            throw FragmentNotFoundOnResultRegistration()
-        }
     }
 
     private val Fragment.resultKey: String?

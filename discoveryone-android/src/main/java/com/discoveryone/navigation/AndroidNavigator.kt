@@ -3,6 +3,7 @@ package com.discoveryone.navigation
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.Navigator
 import com.discoveryone.initialization.ActivityInterceptor
+import com.discoveryone.navigation.result.ResultRegistry
 import com.discoveryone.routes.AbstractRoute
 import com.discoveryone.routes.GeneratedActivityRoute
 import com.discoveryone.routes.GeneratedDialogFragmentRoute
@@ -37,52 +38,37 @@ internal class AndroidNavigator internal constructor(
         }
     }
 
-    override fun navigateForResult(key: String, route: AbstractRoute) {
+    override fun navigateForResult(route: AbstractRoute) {
         when (route) {
             is GeneratedFragmentRoute -> FragmentNavigation.navigateForResult(
                 currentActivity = currentActivity,
                 route = route,
-                key = key
+                key = ResultRegistry.buildSimpleResultKey(route::class)
             )
             is GeneratedActivityRoute -> ActivityNavigation.navigateForResult(
                 currentActivity = currentActivity,
                 route = route,
-                userKey = key,
                 navigationContext = navigationContext
             )
             is GeneratedDialogFragmentRoute -> DialogFragmentNavigation.navigateForResult(
                 currentActivity = currentActivity,
                 route = route,
-                key = key
+                key = ResultRegistry.buildSimpleResultKey(route::class)
             )
         }
     }
 
-    override fun <T : Any> onResult(
-        key: String,
+    override fun <T : Any, R : AbstractRoute> onResult(
+        routeClass: KClass<R>,
         resultClass: KClass<T>,
         action: (T) -> Unit
     ) {
-        when (navigationContext.componentType) {
-            NavigationContext.ComponentType.ACTIVITY -> ActivityNavigation.registerResultAction(
-                userKey = key,
-                resultClass = resultClass,
-                action = action,
-                navigationContext = navigationContext
-            )
-            NavigationContext.ComponentType.FRAGMENT -> FragmentNavigation.registerResultAction(
-                navigationContext = navigationContext,
-                key = key,
-                resultClass = resultClass,
-                action = action
-            )
-            NavigationContext.ComponentType.DIALOG_FRAGMENT -> DialogFragmentNavigation.registerResultAction(
-                navigationContext = navigationContext,
-                key = key,
-                resultClass = resultClass,
-                action = action
-            )
-        }
+        ResultRegistry.registerResultAction(
+            navigationContext = navigationContext,
+            routeClass = routeClass,
+            resultClass = resultClass,
+            action = action
+        )
     }
 
     override fun close() {

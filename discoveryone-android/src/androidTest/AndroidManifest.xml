@@ -32,5 +32,8 @@
         <activity
             android:name=".testutils.ReturningValueSequence3TestActivity"
             android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".testutils.ListenForStringResultFromTestActivity"
+            android:theme="@style/Theme.AppCompat" />
     </application>
 </manifest>
