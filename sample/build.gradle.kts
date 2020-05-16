@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":discoveryone-android"))
+    implementation("org.discovery1:discoveryone-core:0.1.0")
 
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.appCompat)

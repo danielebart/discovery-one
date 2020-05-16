@@ -8,6 +8,7 @@ plugins {
     id("kotlin-android")
     id("com.discoveryone.buildsrc.coverage")
     id("kotlin-kapt")
+    id("com.discoveryone.buildsrc.deploy")
 }
 
 android {

@@ -25,4 +25,5 @@ dependencies {
     implementation("com.android.tools.build:gradle:$agp")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin")
     implementation("org.jacoco:org.jacoco.core:$jacoco")
+    implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
 }
