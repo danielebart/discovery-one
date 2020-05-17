@@ -9,9 +9,7 @@ plugins {
 }
 
 val deployVersion: String? by project
-
 version = deployVersion ?: ""
-
 val deployProperties = Properties().apply {
     load(rootProject.file("deploy.properties").inputStream())
 }
