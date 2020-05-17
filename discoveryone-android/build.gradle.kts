@@ -11,6 +11,11 @@ plugins {
     id("com.discoveryone.buildsrc.deploy")
 }
 
+deployModule {
+    artifactId = "runtime"
+    publication = "release"
+}
+
 android {
     compileSdkVersion(AndroidConfig.targetSdkVersion)
 

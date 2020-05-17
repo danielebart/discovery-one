@@ -8,30 +8,68 @@ plugins {
     id("maven-publish")
 }
 
-version = "0.1.0"
+val deployVersion: String? by project
+
+version = deployVersion ?: ""
 
 val deployProperties = Properties().apply {
-    load(rootProject.file("local.properties").inputStream())
+    load(rootProject.file("deploy.properties").inputStream())
 }
 
 bintray {
-    user = deployProperties.getProperty("bintray.user")
-    key = deployProperties.getProperty("bintray.apikey")
-
+    user = System.getenv("BINTRAY_USER")
+    key = System.getenv("BINTRAY_KEY")
     setPublications("release")
-
     pkg.apply {
-        repo = "DiscoveryOne"
-        name = "org.discovery1"
-        vcsUrl = "https://github.com/danielebart/discovery-one"
-        setLicenses("MIT")
+        repo = deployProperties.getProperty("repo")
+        name = deployProperties.getProperty("groupId")
+        vcsUrl = deployProperties.getProperty("vcsUrl")
+        setLicenses(deployProperties.getProperty("license"))
         publish = true
     }
 }
 
-
 gradle.projectsEvaluated {
-    val sourceSets = rootProject.subprojects.map { subproject ->
+    val sourceJar by tasks.registering(Jar::class) {
+        from(extractSourceSetsFromSubprojects())
+        archiveClassifier.set("sources")
+    }
+
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components[deployModuleExt.publication])
+                groupId = deployProperties.getProperty("groupId")
+                artifactId = deployModuleExt.artifactId
+                version = deployVersion ?: ""
+                artifact(sourceJar.get())
+
+                pom {
+                    name.set(deployProperties.getProperty("name"))
+                    description.set(deployProperties.getProperty("description"))
+                    licenses {
+                        license {
+                            name.set(deployProperties.getProperty("license"))
+                            url.set(deployProperties.getProperty("licenseUrl"))
+                        }
+                    }
+                    developers {
+                        developer {
+                            name.set(deployProperties.getProperty("maintainer"))
+                            email.set(deployProperties.getProperty("email"))
+                        }
+                    }
+                    scm {
+                        url.set(deployProperties.getProperty("vcsUrl"))
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun extractSourceSetsFromSubprojects(): Collection<File> =
+    rootProject.subprojects.map { subproject ->
         val androidExtensions = subproject.extensions.findByName("android") as? BaseExtension
         if (subproject.extensions.findByName("android") != null) {
             androidExtensions!!.sourceSets["main"].java.srcDirs
@@ -41,21 +79,14 @@ gradle.projectsEvaluated {
                 .java
                 .srcDirs
         }
-    }.reduce { accumulator, currentSet -> accumulator + currentSet }
+    }.flatten()
 
-    val sourceJar by tasks.registering(Jar::class) {
-        from(sourceSets)
-    }
+val deployModuleExt = project.extensions.create(
+    "deployModule",
+    DeployModule::class
+)
 
-    publishing {
-        publications {
-            create<MavenPublication>("release") {
-                from(components["release"])
-                groupId = "org.discovery1"
-                artifactId = "discoveryone-core"
-                version = "0.1.0"
-                artifact(sourceJar.get())
-            }
-        }
-    }
+open class DeployModule {
+    var artifactId: String = ""
+    var publication: String = "java"
 }

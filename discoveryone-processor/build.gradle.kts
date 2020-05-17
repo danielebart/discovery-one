@@ -4,7 +4,10 @@ plugins {
     id("kotlin")
     id("kotlin-kapt")
     id("com.discoveryone.buildsrc.coverage")
+    id("com.discoveryone.buildsrc.deploy")
 }
+
+deployModule.artifactId = "compiler"
 
 dependencies {
     implementation(project(":discoveryone-core"))
