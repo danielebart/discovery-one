@@ -1,2 +1,3 @@
 #!/bin/sh
-./gradlew publishReleasePublicationToMavenLocal bintrayUpload -PdeployVersion="$0"
+echo "releasing $1..."
+./gradlew publishReleasePublicationToMavenLocal bintrayUpload -PdeployVersion="$1"

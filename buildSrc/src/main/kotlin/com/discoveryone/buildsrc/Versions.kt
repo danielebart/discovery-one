@@ -15,6 +15,7 @@ object Versions {
     const val coreKtx = "1.2.0"
     const val jacoco = "0.8.5"
     const val kotlinMetadata = "0.1.0"
+    const val bintray = "1.8.5"
 
     // testing
     const val robolectric = "4.3.1"

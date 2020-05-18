@@ -11,6 +11,7 @@ apply {
 val agp: String by project.extra
 val kotlin: String by project.extra
 val jacoco: String by project.extra
+val bintray: String by project.extra
 
 kotlinDslPluginOptions {
     experimentalWarning.set(false)
@@ -25,5 +26,5 @@ dependencies {
     implementation("com.android.tools.build:gradle:$agp")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin")
     implementation("org.jacoco:org.jacoco.core:$jacoco")
-    implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
+    implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintray")
 }

@@ -11,11 +11,6 @@ plugins {
     id("com.discoveryone.buildsrc.deploy")
 }
 
-deployModule {
-    artifactId = "runtime"
-    publication = "release"
-}
-
 android {
     compileSdkVersion(AndroidConfig.targetSdkVersion)
 
@@ -51,7 +46,7 @@ android {
 }
 
 dependencies {
-    api(project(":discoveryone-core"))
+    api(project(":core"))
 
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.kotlinReflect)
@@ -71,5 +66,5 @@ dependencies {
     androidTestImplementation(Dependencies.espressoIntents)
     androidTestImplementation(Dependencies.fragmentTesting)
 
-    kaptAndroidTest(project(":discoveryone-processor"))
+    kaptAndroidTest(project(":compiler"))
 }

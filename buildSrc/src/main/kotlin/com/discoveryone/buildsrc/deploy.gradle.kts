@@ -36,9 +36,10 @@ gradle.projectsEvaluated {
     publishing {
         publications {
             create<MavenPublication>("release") {
-                from(components[deployModuleExt.publication])
+                val component = if (project.isAndroidProject()) "release" else "java"
+                from(components[component])
                 groupId = deployProperties.getProperty("groupId")
-                artifactId = deployModuleExt.artifactId
+                artifactId = project.name
                 version = deployVersion ?: ""
                 artifact(sourceJar.get())
 
@@ -68,9 +69,8 @@ gradle.projectsEvaluated {
 
 fun extractSourceSetsFromSubprojects(): Collection<File> =
     rootProject.subprojects.map { subproject ->
-        val androidExtensions = subproject.extensions.findByName("android") as? BaseExtension
-        if (subproject.extensions.findByName("android") != null) {
-            androidExtensions!!.sourceSets["main"].java.srcDirs
+        if (subproject.isAndroidProject()) {
+            subproject.androidExtension.sourceSets["main"].java.srcDirs
         } else {
             subproject.convention.getPlugin(JavaPluginConvention::class)
                 .sourceSets["main"]
@@ -79,12 +79,8 @@ fun extractSourceSetsFromSubprojects(): Collection<File> =
         }
     }.flatten()
 
-val deployModuleExt = project.extensions.create(
-    "deployModule",
-    DeployModule::class
-)
+fun Project.isAndroidProject(): Boolean =
+    extensions.findByName("android") is BaseExtension
 
-open class DeployModule {
-    var artifactId: String = ""
-    var publication: String = "java"
-}
+val Project.androidExtension: BaseExtension
+    get() = extensions.findByName("android") as BaseExtension

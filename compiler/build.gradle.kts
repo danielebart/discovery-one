@@ -7,10 +7,8 @@ plugins {
     id("com.discoveryone.buildsrc.deploy")
 }
 
-deployModule.artifactId = "compiler"
-
 dependencies {
-    implementation(project(":discoveryone-core"))
+    implementation(project(":core"))
 
     implementation(Dependencies.kotlinPoet)
     implementation(Dependencies.kotlinStdLib)
