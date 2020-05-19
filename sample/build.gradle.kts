@@ -8,7 +8,7 @@ plugins {
     id("kotlin-kapt")
 }
 
-val discoveryOneVersion = "0.5.0"
+val discoveryOneVersion = "0.6.0"
 
 android {
     compileSdkVersion(AndroidConfig.targetSdkVersion)
