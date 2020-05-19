@@ -8,6 +8,7 @@ plugins {
     id("kotlin-android")
     id("com.discoveryone.buildsrc.coverage")
     id("kotlin-kapt")
+    id("com.discoveryone.buildsrc.deploy")
 }
 
 android {
@@ -45,7 +46,7 @@ android {
 }
 
 dependencies {
-    api(project(":discoveryone-core"))
+    api(project(":core"))
 
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.kotlinReflect)
@@ -65,5 +66,5 @@ dependencies {
     androidTestImplementation(Dependencies.espressoIntents)
     androidTestImplementation(Dependencies.fragmentTesting)
 
-    kaptAndroidTest(project(":discoveryone-processor"))
+    kaptAndroidTest(project(":compiler"))
 }

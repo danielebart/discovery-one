@@ -2,7 +2,7 @@ package com.discoveryone.testutils
 
 import com.discoveryone.navigation.result.ResultSpy
 
-class TestResultSpy: ResultSpy {
+class TestResultSpy : ResultSpy {
 
     private val results: MutableList<Any> = mutableListOf()
 

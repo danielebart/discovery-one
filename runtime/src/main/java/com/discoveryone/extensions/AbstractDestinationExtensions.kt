@@ -1,6 +1,5 @@
 package com.discoveryone.extensions
 
-import android.util.Log
 import com.discoveryone.bundle.canBeAddedInBundle
 import com.discoveryone.routes.AbstractRoute
 import kotlin.reflect.full.memberProperties

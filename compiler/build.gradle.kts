@@ -4,10 +4,11 @@ plugins {
     id("kotlin")
     id("kotlin-kapt")
     id("com.discoveryone.buildsrc.coverage")
+    id("com.discoveryone.buildsrc.deploy")
 }
 
 dependencies {
-    implementation(project(":discoveryone-core"))
+    implementation(project(":core"))
 
     implementation(Dependencies.kotlinPoet)
     implementation(Dependencies.kotlinStdLib)
