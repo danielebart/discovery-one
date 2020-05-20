@@ -1,13 +1,20 @@
 package com.discoveryone.testutils
 
 import android.app.Activity
+import android.content.Intent
 import android.os.SystemClock
 import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
+import java.util.UUID
 
 inline fun <reified T : Activity> launchActivity(): T {
     lateinit var activity: Activity
-    ActivityScenario.launch(T::class.java).onActivity { launchedActivity ->
+    val intent = Intent(
+        ApplicationProvider.getApplicationContext(),
+        T::class.java
+    ).putExtra("ACTIVITY_TAG_KEY", UUID.randomUUID().toString())
+    ActivityScenario.launch<T>(intent).onActivity { launchedActivity ->
         activity = launchedActivity
     }
     return activity as T

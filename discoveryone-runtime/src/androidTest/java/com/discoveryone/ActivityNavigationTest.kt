@@ -11,7 +11,6 @@ import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.navigation.result.ResultRegistry.injectActivityResultSpy
 import com.discoveryone.routes.GeneratedActivityRoute
 import com.discoveryone.testutils.ContainerTestActivity
-import com.discoveryone.testutils.EmptyBundleMatcher
 import com.discoveryone.testutils.EmptyTestActivity
 import com.discoveryone.testutils.EmptyTestActivityRoute
 import com.discoveryone.testutils.ListenForStringResultTestActivity
@@ -24,7 +23,6 @@ import com.discoveryone.testutils.launchActivity
 import com.discoveryone.testutils.recreateAndWait
 import com.discoveryone.testutils.waitForActivity
 import com.discoveryone.testutils.waitForIdleSync
-import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -54,12 +52,7 @@ class ActivityNavigationTest {
 
         activity.navigator.navigate(fakeActivityRoute)
 
-        intended(
-            CoreMatchers.allOf(
-                hasComponent(EmptyTestActivity::class.qualifiedName),
-                hasExtras(EmptyBundleMatcher())
-            )
-        )
+        intended(hasComponent(EmptyTestActivity::class.qualifiedName))
     }
 
     @Test

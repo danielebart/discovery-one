@@ -5,4 +5,4 @@ import androidx.fragment.app.FragmentActivity
 import com.discoveryone.navigation.NavigationContext
 
 internal fun NavigationContext.retrieveRelativeFragment(activity: FragmentActivity): Fragment? =
-    activity.supportFragmentManager.fragments.firstOrNull { it.hashCode() == instanceHashCode }
+    activity.supportFragmentManager.fragments.firstOrNull { it.tag == instanceHashCode.toString() || it.hashCode() == instanceHashCode }

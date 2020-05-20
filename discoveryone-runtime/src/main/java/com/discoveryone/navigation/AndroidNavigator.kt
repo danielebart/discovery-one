@@ -10,13 +10,13 @@ import com.discoveryone.routes.GeneratedDialogFragmentRoute
 import com.discoveryone.routes.GeneratedFragmentRoute
 import kotlin.reflect.KClass
 
-internal class AndroidNavigator internal constructor(
+internal class AndroidNavigator constructor(
     private val navigationContext: NavigationContext
 ) : Navigator {
 
     private val currentActivity: FragmentActivity
         get() = if (navigationContext.componentType == NavigationContext.ComponentType.ACTIVITY) {
-            ActivityInterceptor.getActivityByHashCode(navigationContext.instanceHashCode)
+            ActivityInterceptor.getActivityFromNavigationContext(navigationContext)
         } else {
             ActivityInterceptor.getLast()
         }

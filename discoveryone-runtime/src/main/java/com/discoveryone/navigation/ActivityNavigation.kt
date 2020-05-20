@@ -8,12 +8,18 @@ import com.discoveryone.extensions.extractPropertiesForBundle
 import com.discoveryone.navigation.result.ResultRegistry
 import com.discoveryone.navigation.result.ResultRegistry.DEFAULT_INTENT_EXTRA_KEY
 import com.discoveryone.routes.GeneratedActivityRoute
+import java.util.UUID
 
 internal object ActivityNavigation {
 
     fun navigate(currentActivity: FragmentActivity, route: GeneratedActivityRoute) {
         val properties = route.extractPropertiesForBundle().toTypedArray()
-        val intent = Intent(currentActivity, route.clazz.java).putExtras(bundleOf(*properties))
+        val intent = Intent(currentActivity, route.clazz.java).putExtras(
+            bundleOf(
+                *properties,
+                ACTIVITY_TAG_KEY to UUID.randomUUID().toString() // TODO refactor activity tagging
+            )
+        )
 
         currentActivity.startActivity(intent)
     }
@@ -24,7 +30,12 @@ internal object ActivityNavigation {
         route: GeneratedActivityRoute
     ) {
         val properties = route.extractPropertiesForBundle().toTypedArray()
-        val intent = Intent(currentActivity, route.clazz.java).putExtras(bundleOf(*properties))
+        val intent = Intent(currentActivity, route.clazz.java).putExtras(
+            bundleOf(
+                *properties,
+                ACTIVITY_TAG_KEY to UUID.randomUUID().toString() // TODO refactor activity tagging
+            )
+        )
         ResultRegistry.executeActivityResultLauncher(
             routeClass = route::class,
             navigationContext = navigationContext,
@@ -43,4 +54,6 @@ internal object ActivityNavigation {
         )
         currentActivity.finish()
     }
+
+    internal const val ACTIVITY_TAG_KEY = "ACTIVITY_TAG_KEY"
 }
