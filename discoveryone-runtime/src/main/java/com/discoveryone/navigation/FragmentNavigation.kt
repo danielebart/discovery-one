@@ -11,16 +11,21 @@ import com.discoveryone.extensions.retrieveRelativeFragment
 import com.discoveryone.navigation.result.ResultRegistry.DEFAULT_INTENT_EXTRA_KEY
 import com.discoveryone.routes.GeneratedFragmentRoute
 import kotlin.reflect.KClass
+import kotlin.reflect.full.createInstance
 
 internal object FragmentNavigation {
 
     fun navigate(currentActivity: FragmentActivity, route: GeneratedFragmentRoute) {
         val fragmentClass = route.clazz as KClass<Fragment>
-        val arguments = route.extractPropertiesForBundle().toTypedArray()
+        val userArgs = route.extractPropertiesForBundle().toTypedArray()
+        val fragmentArgs = bundleOf(*userArgs)
+        val fragmentInstance = fragmentClass.createInstance().apply {
+            arguments = fragmentArgs
+        }
 
         currentActivity.supportFragmentManager.beginTransaction()
             .addToBackStack("")
-            .replace(route.containerId, fragmentClass.java, bundleOf(*arguments), null)
+            .replace(route.containerId, fragmentInstance, fragmentInstance.hashCode().toString())
             .commit()
     }
 
@@ -35,10 +40,13 @@ internal object FragmentNavigation {
             *userArgs,
             FRAGMENT_NAVIGATION_FOR_RESULT_KEY to key
         )
+        val fragmentInstance = fragmentClass.createInstance().apply {
+            arguments = fragmentArgs
+        }
 
         currentActivity.supportFragmentManager.beginTransaction()
             .addToBackStack("")
-            .replace(route.containerId, fragmentClass.java, fragmentArgs, null)
+            .replace(route.containerId, fragmentInstance, fragmentInstance.hashCode().toString())
             .commit()
     }
 

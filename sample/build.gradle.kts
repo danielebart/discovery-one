@@ -18,6 +18,10 @@ android {
         versionName = "0.1"
         testInstrumentationRunner = AndroidConfig.testInstrumentationRunner
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {

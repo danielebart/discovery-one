@@ -7,6 +7,8 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentActivity
 import com.discoveryone.exceptions.NoActivityOnStack
+import com.discoveryone.navigation.ActivityNavigation.ACTIVITY_TAG_KEY
+import com.discoveryone.navigation.NavigationContext
 import com.discoveryone.navigation.result.ResultRegistry
 import com.discoveryone.utils.DiscoveryOneLog
 
@@ -56,8 +58,11 @@ internal object ActivityInterceptor {
     fun getLast(): FragmentActivity =
         activities.lastOrNull() ?: throw NoActivityOnStack()
 
-    fun getActivityByHashCode(hashCode: Int): FragmentActivity =
-        activities.first { it.hashCode() == hashCode }
+    fun getActivityFromNavigationContext(navigatonContext: NavigationContext): FragmentActivity =
+        activities.first { activity ->
+            navigatonContext.extra != null &&
+                    activity.intent.getStringExtra(ACTIVITY_TAG_KEY) == navigatonContext.extra
+        }
 
     @VisibleForTesting
     fun getActivityByName(name: String): FragmentActivity =

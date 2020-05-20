@@ -20,7 +20,10 @@ internal object DialogFragmentNavigation {
             arguments = bundleOf(*route.extractPropertiesForBundle().toTypedArray())
         }
 
-        dialogInstance.show(currentActivity.supportFragmentManager, route.clazz.qualifiedName)
+        dialogInstance.show(
+            currentActivity.supportFragmentManager,
+            dialogInstance.hashCode().toString()
+        )
     }
 
     fun navigateForResult(
@@ -36,7 +39,10 @@ internal object DialogFragmentNavigation {
             )
         }
 
-        dialogInstance.show(currentActivity.supportFragmentManager, null)
+        dialogInstance.show(
+            currentActivity.supportFragmentManager,
+            dialogInstance.hashCode().toString()
+        )
     }
 
     fun close(navigationContext: NavigationContext, currentActivity: FragmentActivity) {

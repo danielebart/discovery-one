@@ -50,7 +50,7 @@ class ActivityNavigationTest {
     @Test
     fun givenAnActivityRouteWithoutArguments_whenNavigatingToThatActivity_thenInterceptedIntentContainsTheActivityCmpName() {
         val fakeActivityRoute = FakeActivityRouteWithoutArgs()
-        val activity = launchActivity<ContainerTestActivity>()
+        val activity = launchActivity<ContainerTestActivity>(withActivityTag = false)
 
         activity.navigator.navigate(fakeActivityRoute)
 
