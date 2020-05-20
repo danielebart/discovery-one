@@ -8,8 +8,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-val discoveryOneVersion = "0.6.0"
-
 android {
     compileSdkVersion(AndroidConfig.targetSdkVersion)
     defaultConfig {
@@ -23,12 +21,12 @@ android {
 }
 
 dependencies {
-    implementation("com.github.danielebart:runtime:$discoveryOneVersion")
+    implementation(project(":discoveryone-runtime"))
 
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.appCompat)
     implementation(Dependencies.activity)
     implementation(Dependencies.fragment)
 
-    kapt("com.github.danielebart:compiler:$discoveryOneVersion")
+    kapt(project(":discoveryone-compiler"))
 }

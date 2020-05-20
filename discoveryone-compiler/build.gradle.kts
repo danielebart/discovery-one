@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":discoveryone-core"))
 
     implementation(Dependencies.kotlinPoet)
     implementation(Dependencies.kotlinStdLib)

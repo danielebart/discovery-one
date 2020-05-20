@@ -46,7 +46,7 @@ android {
 }
 
 dependencies {
-    api(project(":core"))
+    api(project(":discoveryone-core"))
 
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.kotlinReflect)
@@ -66,5 +66,5 @@ dependencies {
     androidTestImplementation(Dependencies.espressoIntents)
     androidTestImplementation(Dependencies.fragmentTesting)
 
-    kaptAndroidTest(project(":compiler"))
+    kaptAndroidTest(project(":discoveryone-compiler"))
 }

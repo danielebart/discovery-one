@@ -2,7 +2,7 @@ rootProject.name = "discoveryone"
 
 include(
     ":sample",
-    ":runtime",
-    ":compiler",
-    ":core"
+    ":discoveryone-runtime",
+    ":discoveryone-compiler",
+    ":discoveryone-core"
 )
