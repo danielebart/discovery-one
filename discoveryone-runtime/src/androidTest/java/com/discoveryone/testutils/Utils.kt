@@ -8,15 +8,12 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import java.util.UUID
 
-inline fun <reified T : Activity> launchActivity(withActivityTag: Boolean = true): T {
+inline fun <reified T : Activity> launchActivity(): T {
     lateinit var activity: Activity
     val intent = Intent(
         ApplicationProvider.getApplicationContext(),
         T::class.java
-    )
-    if (withActivityTag) {
-        intent.putExtra("ACTIVITY_TAG_KEY", UUID.randomUUID().toString())
-    }
+    ).putExtra("ACTIVITY_TAG_KEY", UUID.randomUUID().toString())
     ActivityScenario.launch<T>(intent).onActivity { launchedActivity ->
         activity = launchedActivity
     }
