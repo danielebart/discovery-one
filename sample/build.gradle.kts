@@ -23,12 +23,12 @@ android {
 }
 
 dependencies {
-    implementation("org.discovery1:runtime:$discoveryOneVersion")
+    implementation("com.github.danielebart:runtime:$discoveryOneVersion")
 
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.appCompat)
     implementation(Dependencies.activity)
     implementation(Dependencies.fragment)
 
-    kapt("org.discovery1:compiler:$discoveryOneVersion")
+    kapt("com.github.danielebart:compiler:$discoveryOneVersion")
 }

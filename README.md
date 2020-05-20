@@ -1,6 +1,6 @@
 # Discovery One
 
-[ ![download](https://api.bintray.com/packages/danielebartorilla/DiscoveryOne/org.discovery1/images/download.svg) ](https://bintray.com/danielebartorilla/DiscoveryOne/org.discovery1/_latestVersion)
+[ ![download](https://api.bintray.com/packages/danielebartorilla/DiscoveryOne/com.github.danielebart/images/download.svg) ](https://bintray.com/danielebartorilla/DiscoveryOne/com.github.danielebart/_latestVersion)
 [![codecov](https://codecov.io/gh/danielebart/discovery-one/branch/master/graph/badge.svg)](https://codecov.io/gh/danielebart/discovery-one)
 [![build](https://github.com/danielebart/discovery-one/workflows/master/badge.svg?branch=master)](https://github.com/danielebart/discovery-one/actions?query=workflow%3Amaster)
 [![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
