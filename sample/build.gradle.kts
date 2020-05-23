@@ -34,5 +34,5 @@ dependencies {
     implementation(Dependencies.activity)
     implementation(Dependencies.fragment)
 
-    kapt("com.github.danielebart:discoveryone-kapt:$discoveryOneVersion")
+    kapt("com.github.danielebart:discoveryone-compiler:$discoveryOneVersion")
 }
