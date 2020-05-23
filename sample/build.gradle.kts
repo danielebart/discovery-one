@@ -25,12 +25,14 @@ android {
 }
 
 dependencies {
-    implementation(project(":discoveryone-runtime"))
+    val discoveryOneVersion = "0.9.0"
+
+    implementation("com.github.danielebart:discoveryone-runtime:$discoveryOneVersion")
 
     implementation(Dependencies.kotlinStdLib)
     implementation(Dependencies.appCompat)
     implementation(Dependencies.activity)
     implementation(Dependencies.fragment)
 
-    kapt(project(":discoveryone-compiler"))
+    kapt("com.github.danielebart:discoveryone-compiler:$discoveryOneVersion")
 }
