@@ -13,7 +13,7 @@ Navigation in Android has always been a pain. This library abstracts the Android
 ## Setup
 #### Jcenter
 
-Check that you have the `jcenter` repository in you `build.gradle` 
+Check that you have the `jcenter` repository in you `build.gradle`:
 
 ```
 repositories {
@@ -23,8 +23,8 @@ repositories {
 
 #### Add dependenices
 There are two dependencies to add:
-- `discoveryone-runtime` which contains all the library code you need to navigate to a route
-- `discoveryone-compiler` which must be applied using `kapt`, this will help you to generate you're routes automatically
+- `discoveryone-runtime` which contains all the library code you need to navigate to a route.
+- `discoveryone-compiler` which must be applied using `kapt`, this will help you to generate you're routes automatically.
 
 
 ```
