@@ -17,7 +17,7 @@ Check that you have the `jcenter` repository in you `build.gradle`
 
 ```
 repositories {
-        jcenter() // add it if needed
+    jcenter() // add it if needed
 }
 ```
 
@@ -33,9 +33,9 @@ apply plugin: 'kotlin-kapt' // add the kotlin-kapt plugin to the top of your mod
 def discoveryOneVersion = "0.9.0"
 
 dependencies {
-  ...
-  implementation "com.github.danielebart:discoveryone-runtime:$discoveryOneVersion"
-  ...
+    ...
+    implementation "com.github.danielebart:discoveryone-runtime:$discoveryOneVersion"
+    ...
 }
 
 kapt "com.github.danielebart:discoveryone-compiler:$discoveryOneVersion"
@@ -65,7 +65,7 @@ In order to retrieve a `Navigator` instance you must use one of the extension fu
 ```
 class MyFragment : Fragment() {
 
-  val myNavigator = this.navigator // use the com.discoveryone.extensions.navigator extensions to retrieve a Navigator instance
+    val myNavigator = this.navigator // use the com.discoveryone.extensions.navigator extensions to retrieve a Navigator instance
 
   ...
 }
@@ -95,7 +95,7 @@ For instance:
 class MyPresenter(private val navigator: Navigator, private val view: MyView) {
 
     fun onStart() {
-       ...
+        ...
     }
 
     fun onMyButtonClick() {
@@ -175,11 +175,9 @@ Finally, to close a current route with a result:
 class MyFragment : Fragment() {
     
     override onViewCreated(savedInstanceState: Bundle) {
-      
         myButton.setOnClickListener {
-            navigator.closeWithResult("here my result!")
-        }
-    }
+        navigator.closeWithResult("here my result!")
+  }
 }
 ```
 
