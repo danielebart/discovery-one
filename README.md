@@ -6,9 +6,9 @@
 [![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![License MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
 
-Navigation in Android has always been a pain. This library abstracts the Android navigation allowing to easily create Routes framework-agnostic through an annotation processor and navigate without using the `Context`.
+Navigation in Android has always been a pain. This library abstracts the Android navigation allowing to easily create framework-agnostic Routes through an annotation processor and to navigate across your app without using a `Context`.
 
-*This library is still in experimental phase and uses the new androidx activity and fragment libraries for registering results which are still in alpha... don't use it in production!* 
+*This library is still in experimental phase and uses the new androidx activity and fragment libraries for registering results... don't use it in production!* 
 
 ## Setup
 #### Jcenter
@@ -23,8 +23,8 @@ repositories {
 
 #### Add dependenices
 There are two dependencies to add:
-- `discoveryone-runtime` which contains all the library code you need to navigate to a route.
-- `discoveryone-compiler` which must be applied using `kapt`, this will help you to generate you're routes automatically.
+- `discoveryone-runtime` contains all the library code you need to navigate to a route.
+- `discoveryone-compiler` must be applied using `kapt`, this will help you to generate you're routes automatically.
 
 
 ```
@@ -44,7 +44,7 @@ kapt "com.github.danielebart:discoveryone-compiler:$discoveryOneVersion"
 ## Creating a Route
 A Route is an Android-independent simple object which may contains a list of argument.
 To define a route you need to apply the relative route annotation to an `Activity`, `Fragment` or `DialogFragment`.
-For instance, the code below will automatically generate a `MyFavouriteRoute` data class that you can create passing the two argument you define in the `@FragmentRoute` annotation.
+For instance, the code below will automatically generate a `MyFavouriteRoute` data class that you can create passing the two argument you defined in the `@FragmentRoute` annotation.
 
 ```
 @FragmentRoute(
