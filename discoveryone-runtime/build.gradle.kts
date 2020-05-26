@@ -43,6 +43,10 @@ android {
     lintOptions {
         isWarningsAsErrors = true
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
