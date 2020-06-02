@@ -1,8 +1,6 @@
 package com.discoveryone
 
-import androidx.fragment.app.FragmentActivity
 import com.discoveryone.extensions.navigator
-import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.navigation.result.ResultRegistry.injectActivityResultSpy
 import com.discoveryone.routes.GeneratedDialogFragmentRoute
 import com.discoveryone.testutils.ContainerTestActivity
@@ -27,7 +25,6 @@ import com.discoveryone.testutils.TestResultSpy
 import com.discoveryone.testutils.getFragment
 import com.discoveryone.testutils.getSpecificFragment
 import com.discoveryone.testutils.launchActivity
-import com.discoveryone.testutils.recreateAndWait
 import com.discoveryone.testutils.waitForIdleSync
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -157,31 +154,6 @@ class DialogFragmentNavigationTest {
     }
 
     @Test
-    fun givenASequenceOfFragmentsListeningAndReturningAStringValue_whenLaunchingFirstDialogFragmentAndRecreatingActivity_thenVerifyThatReturnedValuesAreCorrect() {
-        val resultSpy = TestResultSpy()
-        injectActivityResultSpy(resultSpy)
-        val activity = launchActivity<ContainerTestActivity>()
-        activity.navigator.navigate(ReturningValueSequence1TestDialogFragmentRoute)
-        waitForIdleSync()
-
-        activity.getSpecificFragment<ReturningValueSequence1TestDialogFragment>()
-            .navigateToDialogFragment2()
-        waitForIdleSync()
-        activity.getSpecificFragment<ReturningValueSequenceOfDialogsTestFragment>()
-            .navigateToDialogFragment3()
-        activity.recreateAndWait()
-        ActivityInterceptor.getLast()
-            .getSpecificFragment<ReturningValueSequence3TestDialogFragment>()
-            .returnResult()
-        waitForIdleSync()
-
-        assertEquals(
-            listOf("arg_from_DialogFragment_3", "arg_from_DialogFragment_2"),
-            resultSpy.getRecorderResults()
-        )
-    }
-
-    @Test
     fun whenNavigatingToTwoNewRoutesAndClosingTheLastOne_thenCurrentTopDialogFragmentShouldBeTheFirstOne() {
         val activity = launchActivity<ContainerTestActivity>()
         activity.navigator.navigate(TestDialogFragmentRoute)
@@ -194,9 +166,6 @@ class DialogFragmentNavigationTest {
         assertEquals(TestDialogFragment::class, activity.getFragment()::class)
         assertEquals(1, activity.supportFragmentManager.fragments.size)
     }
-
-    private inline fun <reified T : FragmentActivity> getActivity(): T =
-        ActivityInterceptor.getActivityByName(T::class.simpleName.toString()) as T
 
     data class FakeDialogFragmentRouteWithoutArgs(
         override val clazz: KClass<*> = TestDialogFragment::class

@@ -24,15 +24,6 @@
             android:name=".testutils.ReturnIntValueTestActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".testutils.ReturningValueSequence1TestActivity"
-            android:theme="@style/Theme.AppCompat" />
-        <activity
-            android:name=".testutils.ReturningValueSequence2TestActivity"
-            android:theme="@style/Theme.AppCompat" />
-        <activity
-            android:name=".testutils.ReturningValueSequence3TestActivity"
-            android:theme="@style/Theme.AppCompat" />
-        <activity
             android:name=".testutils.ListenForStringResultFromTestActivity"
             android:theme="@style/Theme.AppCompat" />
     </application>

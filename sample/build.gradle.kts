@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    val discoveryOneVersion = "0.9.0"
+    val discoveryOneVersion = "0.11.0"
 
     implementation("com.github.danielebart:discoveryone-runtime:$discoveryOneVersion")
 

@@ -1,4 +1,4 @@
-# [Work in Progress] Discovery One
+# [Experimental] Discovery One
 
 [ ![download](https://api.bintray.com/packages/danielebartorilla/DiscoveryOne/com.github.danielebart/images/download.svg) ](https://bintray.com/danielebartorilla/DiscoveryOne/com.github.danielebart/_latestVersion)
 [![codecov](https://codecov.io/gh/danielebart/discovery-one/branch/master/graph/badge.svg)](https://codecov.io/gh/danielebart/discovery-one)
@@ -6,9 +6,9 @@
 [![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![License MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
 
-Navigation in Android has always been a pain. This library abstracts the Android navigation allowing to easily create framework-agnostic Routes through an annotation processor and to navigate across your app without using a `Context`.
+Navigation in Android has always been a pain. This library abstracts the Android navigation allowing to easily create framework-agnostic Routes through an annotation processor and to navigate across your app without using a `Context` (with some caveats of course :D).
 
-*This library is still in experimental phase and uses the new androidx activity and fragment libraries for registering results... don't use it in production!* 
+*This library is just an experiment and uses the new androidx activity and fragment libraries for registering results... don't use it in production!*
 
 ## Setup
 #### Jcenter
@@ -30,7 +30,7 @@ There are two dependencies to add:
 ```
 apply plugin: 'kotlin-kapt' // add the kotlin-kapt plugin to the top of your module build.gradle
 
-def discoveryOneVersion = "0.9.0"
+def discoveryOneVersion = "0.11.0"
 
 dependencies {
     ...
@@ -88,7 +88,8 @@ class MainActivity : AppCompatActivity() {
 
 ```
 
-This has the pleasant effect that you can handle your navigation logic outside of the Activity/Fragment context. For instance, you could navigate to a new Route in a `Presenter`/`ViewModel` or in your use cases without worrying about the Android Context.
+This has the pleasant effect that you can handle your navigation logic outside of the Activity/Fragment context (see below for more info, be aware that if used wrongly it may produce unwanted leaks). For instance, you could navigate to a new Route in a `Presenter` or in your use cases without worrying about the Android Context.
+**Important, since the internal implementation stores a reference to the activity you MUST NOT pass the Navigator instance to a ViewModel or to any object which lives longer then the Fragment/Activity**:
 For instance:
 
 ```
