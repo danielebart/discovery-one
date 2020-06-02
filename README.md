@@ -65,7 +65,10 @@ In order to retrieve a `Navigator` instance you must use one of the extension fu
 ```
 class MyFragment : Fragment() {
 
-    val myNavigator = this.navigator // use the com.discoveryone.extensions.navigator extensions to retrieve a Navigator instance
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val myNavigator = this.navigator // use the com.discoveryone.extensions.navigator extensions to retrieve a Navigator instance
+    }
+    
 
   ...
 }
