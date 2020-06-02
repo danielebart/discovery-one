@@ -4,11 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.discoveryone.Navigator
 import com.discoveryone.annotations.FragmentRoute
 import com.discoveryone.annotations.RouteArgument
@@ -25,14 +22,12 @@ import kotlinx.android.synthetic.main.fragment_foodmenu_selection.*
 )
 class FoodMenuSelectionFragment : Fragment(R.layout.fragment_foodmenu_selection) {
 
-    private val viewModel by viewModels<FoodMenuSelectionViewModel> {
-        FoodMenuSelectionViewModel.factory(navigator)
-    }
+    private val presenter by lazy { FoodMenuSelectionPresenter(navigator) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.registerResults()
+        presenter.start()
 
-        viewModel.displayToastLiveData.observe(viewLifecycleOwner, Observer { text ->
+        presenter.displayToastLiveData.observe(viewLifecycleOwner, Observer { text ->
             Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
         })
 
@@ -42,24 +37,24 @@ class FoodMenuSelectionFragment : Fragment(R.layout.fragment_foodmenu_selection)
         )
 
         cheeseburgerButton.setOnClickListener {
-            viewModel.onFoodButtonClick(cheeseburgerButton.text.toString())
+            presenter.onFoodButtonClick(cheeseburgerButton.text.toString())
         }
 
         sushiButton.setOnClickListener {
-            viewModel.onFoodButtonClick(sushiButton.text.toString())
+            presenter.onFoodButtonClick(sushiButton.text.toString())
         }
 
         pizzaButton.setOnClickListener {
-            viewModel.onFoodButtonClick(pizzaButton.text.toString())
+            presenter.onFoodButtonClick(pizzaButton.text.toString())
         }
     }
 }
 
-class FoodMenuSelectionViewModel(private val navigator: Navigator) : ViewModel() {
+class FoodMenuSelectionPresenter(private val navigator: Navigator) {
 
     val displayToastLiveData: MutableLiveData<String> = MutableLiveData()
 
-    fun registerResults() {
+    fun start() {
         navigator.onResult<ConfirmDialogResult, ConfirmDialog> { result ->
             when (result) {
                 is ConfirmDialogResult.Confirm -> navigator.closeWithResult(result.order)
@@ -70,14 +65,5 @@ class FoodMenuSelectionViewModel(private val navigator: Navigator) : ViewModel()
 
     fun onFoodButtonClick(order: String) {
         navigator.navigateForResult(ConfirmDialog(order))
-    }
-
-    companion object {
-        @Suppress("UNCHECKED_CAST")
-        fun factory(navigator: Navigator): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                    FoodMenuSelectionViewModel(navigator) as T
-            }
     }
 }

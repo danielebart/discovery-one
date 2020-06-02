@@ -1,7 +1,6 @@
 package com.discoveryone
 
 import com.discoveryone.extensions.navigator
-import com.discoveryone.initialization.ActivityInterceptor
 import com.discoveryone.navigation.result.ResultRegistry.injectActivityResultSpy
 import com.discoveryone.routes.GeneratedFragmentRoute
 import com.discoveryone.testutils.ContainerTestActivity
@@ -26,7 +25,6 @@ import com.discoveryone.testutils.TestResultSpy
 import com.discoveryone.testutils.getFragment
 import com.discoveryone.testutils.getSpecificFragment
 import com.discoveryone.testutils.launchActivity
-import com.discoveryone.testutils.recreateAndWait
 import com.discoveryone.testutils.waitForActivity
 import com.discoveryone.testutils.waitForIdleSync
 import org.junit.Assert.assertEquals
@@ -114,30 +112,6 @@ class FragmentNavigationTest {
             .navigateToFragment3()
         waitForIdleSync()
         activity.getSpecificFragment<ReturningValueSequence3TestFragment>()
-            .returnResult()
-        waitForIdleSync()
-
-        assertEquals(
-            listOf("arg_from_fragment_3", "arg_from_fragment_2"),
-            resultSpy.getRecorderResults()
-        )
-    }
-
-    @Test
-    fun givenASequenceOfFragmentsListeningAndReturningAStringValue_whenLaunchingFirstFragmentAndRecreatingActivity_thenVerifyThatReturnedValuesAreCorrect() {
-        val resultSpy = TestResultSpy()
-        injectActivityResultSpy(resultSpy)
-        val activity = launchActivity<ContainerTestActivity>()
-        activity.navigator.navigate(ReturningValueSequence1TestFragmentRoute)
-        waitForIdleSync()
-
-        activity.getSpecificFragment<ReturningValueSequence1TestFragment>()
-            .navigateToFragment2()
-        waitForIdleSync()
-        activity.getSpecificFragment<ReturningValueSequence2TestFragment>()
-            .navigateToFragment3()
-        activity.recreateAndWait()
-        ActivityInterceptor.getLast().getSpecificFragment<ReturningValueSequence3TestFragment>()
             .returnResult()
         waitForIdleSync()
 

@@ -16,10 +16,11 @@ import kotlinx.android.synthetic.main.fragment_foodmenu_home.*
 @FragmentRoute(name = "FoodMenuHome", containerId = R.id.foodMenuContainer)
 class FoodMenuHomeFragment : Fragment(R.layout.fragment_foodmenu_home), FoodMenuHomeView {
 
-    private val presenter = FoodMenuHomePresenter(navigator, this)
+    private val presenter by lazy { FoodMenuHomePresenter(navigator, this) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        presenter.start()
+        val restoredState = savedInstanceState?.getInt(KEY_STATE)
+        presenter.start(restoredState)
 
         launchMenuSelectionButton.setOnClickListener {
             presenter.onLaunchMenuSelectionClick()
@@ -34,12 +35,20 @@ class FoodMenuHomeFragment : Fragment(R.layout.fragment_foodmenu_home), FoodMenu
                 Unit
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-
         })
     }
 
     override fun showToast(text: String) {
         Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_STATE, presenter.getState())
+    }
+
+    private companion object {
+        private const val KEY_STATE = "KEY_STATE"
     }
 }
 
@@ -47,7 +56,8 @@ class FoodMenuHomePresenter(private val navigator: Navigator, private val view: 
 
     private var currentNumberOfCustomers = 0
 
-    fun start() {
+    fun start(restoredState: Int?) {
+        currentNumberOfCustomers = restoredState ?: 0
         navigator.onResult<String, FoodMenuSelection> { foodOrder ->
             view.showToast("Order completed for $currentNumberOfCustomers customers: $foodOrder")
         }
@@ -66,6 +76,8 @@ class FoodMenuHomePresenter(private val navigator: Navigator, private val view: 
             currentNumberOfCustomers = newText.toInt()
         }
     }
+
+    fun getState(): Int = currentNumberOfCustomers
 }
 
 interface FoodMenuHomeView {

@@ -2,11 +2,8 @@ package com.discoveryone.navigation
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.setFragmentResult
 import com.discoveryone.extensions.extractPropertiesForBundle
-import com.discoveryone.extensions.retrieveRelativeFragment
 import com.discoveryone.navigation.result.ResultRegistry.DEFAULT_INTENT_EXTRA_KEY
 import com.discoveryone.routes.GeneratedDialogFragmentRoute
 import kotlin.reflect.KClass
@@ -46,9 +43,10 @@ internal object DialogFragmentNavigation {
     }
 
     fun close(navigationContext: NavigationContext, currentActivity: FragmentActivity) {
-        val dialogFragment =
-            navigationContext.retrieveRelativeFragment(currentActivity) as DialogFragment
-        dialogFragment.dismiss()
+        val currentDialogFragment = currentActivity.supportFragmentManager
+            .fragments
+            .first { it.hashCode() == navigationContext.instanceHashCode } as DialogFragment
+        currentDialogFragment.dismiss()
     }
 
     fun <T> closeWithResult(
@@ -56,19 +54,14 @@ internal object DialogFragmentNavigation {
         currentActivity: FragmentActivity,
         result: T
     ) {
-        val dialogFragment =
-            navigationContext.retrieveRelativeFragment(currentActivity) as DialogFragment
-        val key = dialogFragment.resultKey ?: run {
-            close(navigationContext, currentActivity)
+        val key = navigationContext.extra ?: run {
+            currentActivity.onBackPressed()
             return
         }
         val bundleResult = bundleOf(DEFAULT_INTENT_EXTRA_KEY to result)
-        dialogFragment.setFragmentResult(key, bundleResult)
-        dialogFragment.dismiss()
+        currentActivity.supportFragmentManager.setFragmentResult(key, bundleResult)
+        close(navigationContext, currentActivity)
     }
 
-    private val Fragment.resultKey: String?
-        get() = arguments?.getString(DIALOG_NAVIGATION_FOR_RESULT_KEY)
-
-    private const val DIALOG_NAVIGATION_FOR_RESULT_KEY = "DIALOG_NAVIGATION_FOR_RESULT_KEY"
+    internal const val DIALOG_NAVIGATION_FOR_RESULT_KEY = "DIALOG_NAVIGATION_FOR_RESULT_KEY"
 }
