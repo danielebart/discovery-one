@@ -30,7 +30,7 @@ There are two dependencies to add:
 ```
 apply plugin: 'kotlin-kapt' // add the kotlin-kapt plugin to the top of your module build.gradle
 
-def discoveryOneVersion = "0.9.0"
+def discoveryOneVersion = "0.11.0"
 
 dependencies {
     ...
